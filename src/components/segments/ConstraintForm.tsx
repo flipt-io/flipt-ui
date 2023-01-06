@@ -1,4 +1,14 @@
+import { Dialog } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Form, Formik } from "formik";
+import React, { useState } from "react";
 import * as Yup from "yup";
+import Button from "~/components/forms/Button";
+import Input from "~/components/forms/Input";
+import Select from "~/components/forms/Select";
+import MoreInfo from "~/components/MoreInfo";
+import { createConstraint, updateConstraint } from "~/data/api";
+import { requiredValidation } from "~/data/validations";
 import {
   ComparisonType,
   ConstraintBooleanOperators,
@@ -7,17 +17,7 @@ import {
   IConstraint,
   IConstraintBase,
   Operator,
-} from "types/Constraint";
-import { Form, Formik } from "formik";
-import React, { useState } from "react";
-import { createConstraint, updateConstraint } from "data/api";
-import Button from "components/forms/Button";
-import { Dialog } from "@headlessui/react";
-import Input from "components/forms/Input";
-import MoreInfo from "components/MoreInfo";
-import Select from "components/forms/Select";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { requiredValidation } from "data/validations";
+} from "~/types/Constraint";
 
 type ConstraintFormProps = {
   setOpen: (open: boolean) => void;

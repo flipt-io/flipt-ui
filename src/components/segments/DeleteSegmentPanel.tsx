@@ -1,7 +1,7 @@
-import Button from "components/forms/Button";
 import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { deleteSegment } from "data/api";
+import Button from "~/components/forms/Button";
+import { deleteSegment } from "~/data/api";
 
 type DeleteSegmentPanelProps = {
   setOpen: (open: boolean) => void;

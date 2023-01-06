@@ -1,13 +1,13 @@
-import * as Yup from "yup";
 import { Form, Formik } from "formik";
-import { ISegment, ISegmentBase, SegmentMatchType } from "types/Segment";
-import { createSegment, updateSegment } from "data/api";
-import { keyValidation, requiredValidation } from "data/validations";
-import Button from "components/forms/Button";
-import Input from "components/forms/Input";
-import { stringAsKey } from "data/utils";
-import { useRouter } from "next/router";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import Button from "~/components/forms/Button";
+import Input from "~/components/forms/Input";
+import { createSegment, updateSegment } from "~/data/api";
+import { keyValidation, requiredValidation } from "~/data/validations";
+import { ISegment, ISegmentBase, SegmentMatchType } from "~/types/Segment";
+import { stringAsKey } from "~/utils/helpers";
 
 const segmentMatchTypes = [
   {
@@ -32,7 +32,7 @@ type SegmentFormProps = {
 export default function SegmentForm(props: SegmentFormProps) {
   const { segment, segmentChanged, setError, setShowError } = props;
   const isNew = segment === undefined;
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [selectedMatchType, setSelectedMatchType] = useState(
     segment?.matchType || ("ALL_MATCH_TYPE" as SegmentMatchType)
@@ -65,7 +65,7 @@ export default function SegmentForm(props: SegmentFormProps) {
               setShowError(false);
 
               if (isNew) {
-                router.push("/segments/" + values.key);
+                navigate("/segments/" + values.key);
                 return;
               }
 
@@ -208,7 +208,7 @@ export default function SegmentForm(props: SegmentFormProps) {
                   </div>
                 </div>
                 <div className="flex justify-end">
-                  <Button type="button" onClick={() => router.back()}>
+                  <Button type="button" onClick={() => navigate(-1)}>
                     Cancel
                   </Button>
                   <Button

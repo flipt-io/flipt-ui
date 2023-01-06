@@ -1,22 +1,22 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
-import { ISegment, SegmentMatchType } from "types/Segment";
 import {
-  PaginationState,
-  Row,
-  SortingState,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
+  Row,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
-import Link from "next/link";
-import Pagination from "components/Pagination";
-import Searchbox from "components/Searchbox";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import Pagination from "~/components/Pagination";
+import Searchbox from "~/components/Searchbox";
+import { ISegment, SegmentMatchType } from "~/types/Segment";
 
 type SegmentTableProps = {
   segments: ISegment[];
@@ -39,7 +39,7 @@ export default function SegmentTable(props: SegmentTableProps) {
     columnHelper.accessor("key", {
       header: "Key",
       cell: (info) => (
-        <Link href={`/segments/${info.getValue()}`} className="text-violet-500">
+        <Link to={info.getValue()} className="text-violet-500">
           {info.getValue()}
         </Link>
       ),

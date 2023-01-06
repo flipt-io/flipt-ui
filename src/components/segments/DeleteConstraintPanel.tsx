@@ -1,8 +1,8 @@
-import Button from "components/forms/Button";
 import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { IConstraint } from "types/Constraint";
-import { deleteConstraint } from "data/api";
+import Button from "~/components/forms/Button";
+import { deleteConstraint } from "~/data/api";
+import { IConstraint } from "~/types/Constraint";
 
 type DeleteConstraintPanelProps = {
   setOpen: (open: boolean) => void;

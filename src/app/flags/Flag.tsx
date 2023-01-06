@@ -20,8 +20,7 @@ export async function flagLoader({ params }): Promise<IFlag> {
 }
 
 export default function Flag() {
-  const initialFlag = useLoaderData() as IFlag;
-  const [flag, setFlag] = useState<IFlag>(initialFlag);
+  const [flag, setFlag] = useState<IFlag>(useLoaderData() as IFlag);
   const [flagVersion, setFlagVersion] = useState(0);
 
   const [showVariantForm, setShowVariantForm] = useState<boolean>(false);

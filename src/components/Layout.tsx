@@ -1,14 +1,11 @@
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
-type LayoutProps = {
-  children: React.ReactNode;
-};
-
 // const userNavigation = [{ name: "Sign out", href: "#" }];
 
-export default function Layout({ children }: LayoutProps) {
+export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -19,7 +16,7 @@ export default function Layout({ children }: LayoutProps) {
 
         <main className="flex px-6 py-10">
           <div className="w-full overflow-x-auto px-4 sm:px-6 lg:px-8">
-            {children}
+            <Outlet />
           </div>
         </main>
         {/* <Footer /> */}

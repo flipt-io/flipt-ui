@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import EmptyState from "~/components/EmptyState";
 import ErrorNotification from "~/components/ErrorNotification";
-import FlagTable from "~/components/flag/FlagTable";
+import FlagTable from "~/components/flags/FlagTable";
 import Button from "~/components/forms/Button";
 import { IFlagList } from "~/types/Flag";
 

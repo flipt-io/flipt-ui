@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ErrorNotification from "~/components/ErrorNotification";
-import FlagForm from "~/components/flag/FlagForm";
+import FlagForm from "~/components/flags/FlagForm";
 import MoreInfo from "~/components/MoreInfo";
 
 export default function NewFlag() {

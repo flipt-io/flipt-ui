@@ -1,7 +1,7 @@
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "~/components/Modal";
 import { IFlag } from "~/types/Flag";
 import { classNames } from "~/utils/helpers";
@@ -16,6 +16,7 @@ type FlagHeaderProps = {
 
 export default function FlagHeader(props: FlagHeaderProps) {
   const { flag, tab, setError, setShowError } = props;
+  const navigate = useNavigate();
 
   const [showDeleteFlagModal, setShowDeleteFlagModal] =
     useState<boolean>(false);
@@ -44,6 +45,7 @@ export default function FlagHeader(props: FlagHeaderProps) {
             setShowDeleteFlagModal(false);
             setError(null);
             setShowError(false);
+            navigate("/");
           }}
           onError={(err) => {
             setError(err);

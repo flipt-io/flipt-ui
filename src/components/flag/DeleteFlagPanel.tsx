@@ -1,6 +1,5 @@
 import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
 import Button from "~/components/forms/Button";
 import { deleteFlag } from "~/data/api";
 
@@ -13,7 +12,6 @@ type DeleteFlagPanelProps = {
 
 export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
   const { setOpen, flagKey, onSuccess, onError } = props;
-  const navigate = useNavigate();
 
   const handleSubmit = () => {
     if (flagKey) {
@@ -54,7 +52,6 @@ export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
             handleSubmit()
               ?.then(() => {
                 onSuccess();
-                navigate("/");
               })
               .catch((err: Error) => {
                 onError(err);

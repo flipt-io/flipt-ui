@@ -92,13 +92,12 @@ type NavItemProps = {
   to: string;
   name: string;
   Icon: Icon;
-  active?: boolean;
   external?: boolean;
   onClick?: () => void;
 };
 
 function NavItem(props: NavItemProps) {
-  const { to, name, Icon, active, external, onClick } = props;
+  const { to, name, Icon, external, onClick } = props;
 
   return external ? (
     <a
@@ -106,30 +105,15 @@ function NavItem(props: NavItemProps) {
       href={to}
       target="_blank"
       rel="noreferrer"
-      className={classNames(
-        active
-          ? "bg-violet-100 text-gray-600 md:bg-gray-50"
-          : "text-white hover:bg-violet-400 md:text-gray-600 md:hover:bg-gray-50",
-        "group flex items-center rounded-md px-2 py-2 text-sm font-medium"
-      )}
+      className="group flex items-center rounded-md px-2 py-2 text-sm font-medium text-white hover:bg-violet-400 md:text-gray-600 md:hover:bg-gray-50"
     >
       <Icon
-        className={classNames(
-          active
-            ? "bg-violet-100 text-gray-500 md:bg-gray-50"
-            : "text-wite hover:bg-gray-50 md:text-gray-500",
-          "mr-3 h-6 w-6 flex-shrink-0"
-        )}
+        className="text-wite mr-3 h-6 w-6 flex-shrink-0 hover:bg-gray-50 md:text-gray-500"
         aria-hidden="true"
       />
       {name}
       <ArrowTopRightOnSquareIcon
-        className={classNames(
-          active
-            ? "bg-violet-100 text-gray-500 md:bg-gray-50"
-            : "text-wite hover:bg-gray-50 md:text-gray-400",
-          "ml-2 h-4 w-4"
-        )}
+        className="ml-2 h-4 w-4 text-white hover:bg-gray-50 md:text-gray-400"
         aria-hidden="true"
       />
     </a>
@@ -137,21 +121,18 @@ function NavItem(props: NavItemProps) {
     <NavLink
       key={name}
       to={to}
-      className={classNames(
-        active
-          ? "bg-violet-100 text-gray-600 md:bg-gray-50"
-          : "text-white hover:bg-violet-400 md:text-gray-600 md:hover:bg-gray-50",
-        "group flex items-center rounded-md px-2 py-2 text-sm font-medium"
-      )}
+      className={({ isActive }) => {
+        return classNames(
+          isActive
+            ? "bg-violet-100 text-gray-600 md:bg-gray-50"
+            : "text-white hover:bg-violet-400 md:text-gray-600 md:hover:bg-gray-50",
+          "group flex items-center rounded-md px-2 py-2 text-sm font-medium"
+        );
+      }}
       onClick={onClick}
     >
       <Icon
-        className={classNames(
-          active
-            ? "bg-violet-100 text-gray-500 md:bg-gray-50"
-            : "text-wite hover:bg-gray-50 md:text-gray-500",
-          "mr-3 h-6 w-6 flex-shrink-0"
-        )}
+        className="text-wite mr-3 h-6 w-6 flex-shrink-0 hover:bg-gray-50 md:text-gray-500"
         aria-hidden="true"
       />
       {name}

@@ -3,7 +3,7 @@ import hljs from "highlight.js";
 import javascript from "highlight.js/lib/languages/json";
 import "highlight.js/styles/tokyo-night-dark.css";
 import React, { useCallback, useEffect, useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
 import EmptyState from "~/components/EmptyState";
@@ -24,12 +24,7 @@ hljs.registerLanguage("json", javascript);
 
 type SelectableFlag = IFlag & ISelectable;
 
-export async function flagsLoader(): Promise<IFlagList> {
-  return listFlags();
-}
-
 export default function Console() {
-  const initialFlagList = useLoaderData() as IFlagList;
   const [flags, setFlags] = useState<SelectableFlag[]>([]);
   const [selectedFlag, setSelectedFlag] = useState<SelectableFlag | null>(null);
   const [response, setResponse] = useState<string | null>(null);
@@ -38,6 +33,7 @@ export default function Console() {
 
   const loadData = useCallback(async () => {
     try {
+      const initialFlagList = (await listFlags()) as IFlagList;
       const flags = initialFlagList.flags;
 
       setFlags(
@@ -55,7 +51,7 @@ export default function Console() {
     } catch (err) {
       setError(err instanceof Error ? err : Error(String(err)));
     }
-  }, [initialFlagList]);
+  }, []);
 
   const handleSubmit = (values: IConsole) => {
     const { flagKey, entityId, context } = values;

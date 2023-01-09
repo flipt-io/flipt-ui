@@ -28,7 +28,7 @@ export default function Console() {
   const [flags, setFlags] = useState<SelectableFlag[]>([]);
   const [selectedFlag, setSelectedFlag] = useState<SelectableFlag | null>(null);
   const [response, setResponse] = useState<string | null>(null);
-  const { setError } = useError();
+  const { setError, clearError } = useError();
   const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
@@ -48,6 +48,7 @@ export default function Console() {
           };
         })
       );
+      clearError();
     } catch (err) {
       setError(err instanceof Error ? err : Error(String(err)));
     }

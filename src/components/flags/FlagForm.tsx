@@ -19,7 +19,7 @@ export default function FlagForm(props: FlagFormProps) {
   const { flag, flagChanged } = props;
   const isNew = flag === undefined;
   const navigate = useNavigate();
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const handleSubmit = (values: IFlagBase) => {
     if (isNew) {
@@ -43,6 +43,8 @@ export default function FlagForm(props: FlagFormProps) {
         onSubmit={(values) => {
           handleSubmit(values)
             .then(() => {
+              clearError();
+
               if (isNew) {
                 navigate("/flags/" + values.key);
                 return;

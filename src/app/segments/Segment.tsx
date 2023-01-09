@@ -49,12 +49,13 @@ export default function Segment() {
   const [showDeleteSegmentModal, setShowDeleteSegmentModal] =
     useState<boolean>(false);
 
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const fetchSegment = useCallback(() => {
     getSegment(segment.key)
       .then((segment) => {
         setSegment(segment);
+        clearError();
       })
       .catch((err) => {
         setError(err);

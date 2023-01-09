@@ -32,7 +32,7 @@ export default function SegmentForm(props: SegmentFormProps) {
   const { segment, segmentChanged } = props;
   const isNew = segment === undefined;
   const navigate = useNavigate();
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const [selectedMatchType, setSelectedMatchType] = useState(
     segment?.matchType || ("ALL_MATCH_TYPE" as SegmentMatchType)
@@ -61,11 +61,12 @@ export default function SegmentForm(props: SegmentFormProps) {
         onSubmit={(values) => {
           handleSubmit(values)
             .then(() => {
+              clearError();
+
               if (isNew) {
                 navigate("/segments/" + values.key);
                 return;
               }
-
               segmentChanged && segmentChanged();
             })
             .catch((err) => {

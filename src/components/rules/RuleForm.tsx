@@ -44,7 +44,7 @@ type SelectableVariant = IVariant & ISelectable;
 
 export default function RuleForm(props: RuleFormProps) {
   const { setOpen, rulesChanged, flag, rank, segments } = props;
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const [ruleType, setRuleType] = useState("single");
 
@@ -91,6 +91,7 @@ export default function RuleForm(props: RuleFormProps) {
     }
 
     rulesChanged();
+    clearError();
     setOpen(false);
   };
 

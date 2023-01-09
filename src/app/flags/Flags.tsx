@@ -12,12 +12,14 @@ export default function Flags() {
   const { data, error } = useSWR<IFlagList>("/flags");
   const flags = data?.flags;
   const navigate = useNavigate();
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   useEffect(() => {
     if (error) {
       setError(error);
+      return;
     }
+    clearError();
   }, error);
 
   return (

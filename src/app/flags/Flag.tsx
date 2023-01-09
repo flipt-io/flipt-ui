@@ -27,7 +27,7 @@ export default function Flag() {
   const [flag, setFlag] = useState<IFlag>(initialFlag);
   const [flagVersion, setFlagVersion] = useState(0);
 
-  const { setError } = useError();
+  const { setError, clearError } = useError();
   const navigate = useNavigate();
 
   const [showDeleteFlagModal, setShowDeleteFlagModal] =
@@ -37,6 +37,7 @@ export default function Flag() {
     getFlag(flag.key)
       .then((flag) => {
         setFlag(flag);
+        clearError();
       })
       .catch((err) => {
         setError(err);

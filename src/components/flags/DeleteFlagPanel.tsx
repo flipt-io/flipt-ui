@@ -12,7 +12,7 @@ type DeleteFlagPanelProps = {
 
 export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
   const { setOpen, flagKey, onSuccess } = props;
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const handleSubmit = () => {
     if (flagKey) {
@@ -52,6 +52,7 @@ export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
           onClick={() => {
             handleSubmit()
               ?.then(() => {
+                clearError();
                 onSuccess();
               })
               .catch((err) => {

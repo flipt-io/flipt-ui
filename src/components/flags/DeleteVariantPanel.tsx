@@ -14,7 +14,7 @@ type DeleteVariantPanelProps = {
 
 export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
   const { setOpen, flagKey, variant, onSuccess } = props;
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const handleSubmit = () => {
     if (variant) {
@@ -56,6 +56,7 @@ export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
           onClick={() => {
             handleSubmit()
               ?.then(() => {
+                clearError();
                 onSuccess();
               })
               .catch((err) => {

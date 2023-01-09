@@ -14,7 +14,7 @@ type DeleteRulePanelProps = {
 
 export default function DeleteRulePanel(props: DeleteRulePanelProps) {
   const { setOpen, flagKey, rule, onSuccess } = props;
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const handleSubmit = () => {
     if (rule) {
@@ -57,6 +57,7 @@ export default function DeleteRulePanel(props: DeleteRulePanelProps) {
           onClick={() => {
             handleSubmit()
               ?.then(() => {
+                clearError();
                 onSuccess();
               })
               .catch((err) => {

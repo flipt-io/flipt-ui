@@ -12,7 +12,7 @@ type DeleteSegmentPanelProps = {
 
 export default function DeleteSegmentPanel(props: DeleteSegmentPanelProps) {
   const { setOpen, segmentKey, onSuccess } = props;
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const handleSubmit = () => {
     if (segmentKey) {
@@ -52,6 +52,7 @@ export default function DeleteSegmentPanel(props: DeleteSegmentPanelProps) {
           onClick={() => {
             handleSubmit()
               ?.then(() => {
+                clearError();
                 onSuccess();
               })
               .catch((err) => {

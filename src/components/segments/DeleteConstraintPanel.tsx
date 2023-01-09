@@ -16,7 +16,7 @@ export default function DeleteConstraintPanel(
   props: DeleteConstraintPanelProps
 ) {
   const { setOpen, segmentKey, constraint, onSuccess } = props;
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const handleSubmit = () => {
     if (constraint) {
@@ -58,6 +58,7 @@ export default function DeleteConstraintPanel(
           onClick={() => {
             handleSubmit()
               ?.then(() => {
+                clearError();
                 onSuccess();
               })
               .catch((err) => {

@@ -37,7 +37,7 @@ type SelectableVariant = IVariant & ISelectable;
 
 export default function EditRuleForm(props: RuleFormProps) {
   const { setOpen, rule, onSuccess } = props;
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const [editingRule, setEditingRule] = useState<IEvaluatable>(cloneDeep(rule));
 
@@ -79,6 +79,7 @@ export default function EditRuleForm(props: RuleFormProps) {
       onSubmit={() => {
         handleSubmit()
           ?.then(() => {
+            clearError();
             onSuccess();
           })
           .catch((err) => {

@@ -22,7 +22,7 @@ export default function VariantForm(props: VariantFormProps) {
   const { setOpen, flagKey, variant, onSuccess } = props;
   const isNew = variant === undefined;
   const title = isNew ? "New Variant" : "Edit Variant";
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const handleSubmit = async (values: IVariantBase) => {
     if (isNew) {
@@ -43,6 +43,7 @@ export default function VariantForm(props: VariantFormProps) {
       onSubmit={(values) => {
         handleSubmit(values)
           .then(() => {
+            clearError();
             onSuccess();
           })
           .catch((err) => {

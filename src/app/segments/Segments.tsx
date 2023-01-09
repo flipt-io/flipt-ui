@@ -12,12 +12,14 @@ export default function Segments() {
   const { data, error } = useSWR<ISegmentList>("/segments");
   const segments = data?.segments;
   const navigate = useNavigate();
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   useEffect(() => {
     if (error) {
       setError(error);
+      return;
     }
+    clearError();
   }, error);
 
   return (

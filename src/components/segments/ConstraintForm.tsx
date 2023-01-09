@@ -29,7 +29,7 @@ type ConstraintFormProps = {
 
 export default function ConstraintForm(props: ConstraintFormProps) {
   const { setOpen, segmentKey, constraint, onSuccess } = props;
-  const { setError } = useError();
+  const { setError, clearError } = useError();
 
   const isNew = constraint === undefined;
   const title = isNew ? "New Constraint" : "Edit Constraint";
@@ -55,6 +55,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
       onSubmit={(values) => {
         handleSubmit(values)
           .then(() => {
+            clearError();
             onSuccess();
           })
           .catch((err) => {
@@ -128,6 +129,10 @@ export default function ConstraintForm(props: ConstraintFormProps) {
                         formik.handleChange(e);
                         const option = e.target.options[e.target.selectedIndex];
                         const show = option.value !== "BOOLEAN_COMPARISON_TYPE";
+                        // TODO: need to update to valid boolean values if operator is invalid
+                        // if (option.value === "BOOLEAN_COMPARISON_TYPE") {
+                        //   formik.setFieldValue("operator", "true");
+                        // }
                         setHasValue(show);
                       }}
                     />

@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
+import logoLight from "~/assets/logo-light.png";
 import Nav from "./Nav";
 
 type SidebarProps = {
@@ -66,13 +67,13 @@ export default function Sidebar(props: SidebarProps) {
                   </div>
                 </Transition.Child>
                 <div className="mt-2 flex flex-shrink-0 items-center px-4">
-                  {/* <Image
-                    src="/logo-light.png"
+                  <img
+                    src={logoLight}
                     alt="logo"
                     width={549}
                     height={191}
                     className="h-10 w-auto"
-                  /> */}
+                  />
                 </div>
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
                   <Nav
@@ -93,13 +94,13 @@ export default function Sidebar(props: SidebarProps) {
       <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
         <div className="flex min-h-0 flex-1 flex-col bg-gray-200">
           <div className="relative flex h-16 flex-shrink-0 items-center bg-violet-400 px-4 pt-2">
-            {/* <Image
-              src="/logo-light.png"
+            <img
+              src={logoLight}
               alt="logo"
               width={549}
               height={191}
               className="h-10 w-auto"
-            /> */}
+            />
           </div>
           <div className="flex flex-1 flex-col overflow-y-auto">
             <Nav className="flex-1 py-4" />

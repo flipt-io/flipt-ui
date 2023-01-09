@@ -1,8 +1,8 @@
-import { Dialog } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import Button from "~/components/forms/Button";
-import { deleteFlag } from "~/data/api";
-import useError from "~/data/hooks/errors";
+import { Dialog } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import Button from '~/components/forms/Button';
+import { deleteFlag } from '~/data/api';
+import useError from '~/data/hooks/errors';
 
 type DeleteFlagPanelProps = {
   setOpen: (open: boolean) => void;
@@ -38,8 +38,10 @@ export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete the flag{" "}
-              <span className="font-medium text-violet-500">{flagKey}</span>?
+              Are you sure you want to delete the flag
+              {' '}
+              <span className="font-medium text-violet-500">{flagKey}</span>
+              ?
               This action cannot be undone.
             </p>
           </div>

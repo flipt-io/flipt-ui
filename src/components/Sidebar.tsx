@@ -1,8 +1,8 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Fragment } from "react";
-import logoLight from "~/assets/logo-light.png";
-import Nav from "./Nav";
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Fragment } from 'react';
+import logoLight from '~/assets/logo-light.png';
+import Nav from './Nav';
 
 type SidebarProps = {
   sidebarOpen: boolean;

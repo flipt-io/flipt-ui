@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState } from 'react';
 
 export const ErrorContext = createContext({
   error: null as Error | null,

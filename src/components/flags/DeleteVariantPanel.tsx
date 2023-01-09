@@ -1,9 +1,9 @@
-import { Dialog } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import Button from "~/components/forms/Button";
-import { deleteVariant } from "~/data/api";
-import useError from "~/data/hooks/errors";
-import { IVariant } from "~/types/Variant";
+import { Dialog } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import Button from '~/components/forms/Button';
+import { deleteVariant } from '~/data/api';
+import useError from '~/data/hooks/errors';
+import { IVariant } from '~/types/Variant';
 
 type DeleteVariantPanelProps = {
   setOpen: (open: boolean) => void;
@@ -13,7 +13,9 @@ type DeleteVariantPanelProps = {
 };
 
 export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
-  const { setOpen, flagKey, variant, onSuccess } = props;
+  const {
+    setOpen, flagKey, variant, onSuccess,
+  } = props;
   const { setError, clearError } = useError();
 
   const handleSubmit = () => {
@@ -40,7 +42,8 @@ export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete the variant{" "}
+              Are you sure you want to delete the variant
+              {' '}
               <span className="font-medium text-violet-500">
                 {variant?.key}
               </span>

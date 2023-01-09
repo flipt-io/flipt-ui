@@ -1,8 +1,8 @@
-import { Combobox as C } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import { useField } from "formik";
-import { useState } from "react";
-import { classNames } from "~/utils/helpers";
+import { Combobox as C } from '@headlessui/react';
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline';
+import { useField } from 'formik';
+import { useState } from 'react';
+import { classNames } from '~/utils/helpers';
 
 type ComboboxProps<T extends ISelectable> = {
   id: string;
@@ -17,13 +17,13 @@ type ComboboxProps<T extends ISelectable> = {
 
 export interface ISelectable {
   key: string;
-  status?: "active" | "inactive";
+  status?: 'active' | 'inactive';
   filterValue: string;
   displayValue: string;
 }
 
 export default function Combobox<T extends ISelectable>(
-  props: ComboboxProps<T>
+  props: ComboboxProps<T>,
 ) {
   const {
     id,
@@ -35,12 +35,10 @@ export default function Combobox<T extends ISelectable>(
     disabled,
   } = props;
 
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [field] = useField(props);
 
-  const filteredValues = values?.filter((v) => {
-    return v.filterValue.toLowerCase().includes(query.toLowerCase());
-  });
+  const filteredValues = values?.filter((v) => v.filterValue.toLowerCase().includes(query.toLowerCase()));
 
   return (
     <C
@@ -49,7 +47,7 @@ export default function Combobox<T extends ISelectable>(
       value={selected}
       onChange={(v: T | null) => {
         setSelected && setSelected(v);
-        field.onChange({ target: { value: v?.key, id: id } });
+        field.onChange({ target: { value: v?.key, id } });
       }}
       nullable
     >
@@ -72,17 +70,15 @@ export default function Combobox<T extends ISelectable>(
         </C.Button>
       </div>
       <C.Options className="z-10 mt-1 flex max-h-60 w-full flex-col overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-        {filteredValues &&
-          filteredValues.map((v) => (
+        {filteredValues
+          && filteredValues.map((v) => (
             <C.Option
               key={v?.key}
               value={v}
-              className={({ active }) =>
-                classNames(
-                  "relative w-full cursor-default select-none py-2 pl-3 pr-9 text-gray-900",
-                  active ? "bg-violet-100" : ""
-                )
-              }
+              className={({ active }) => classNames(
+                'relative w-full cursor-default select-none py-2 pl-3 pr-9 text-gray-900',
+                active ? 'bg-violet-100' : '',
+              )}
             >
               {({ active, selected }) => (
                 <>
@@ -90,16 +86,16 @@ export default function Combobox<T extends ISelectable>(
                     {v?.status && (
                       <span
                         className={classNames(
-                          "mr-3 inline-block h-2 w-2 flex-shrink-0 rounded-full",
-                          v.status === "active" ? "bg-green-400" : "bg-gray-200"
+                          'mr-3 inline-block h-2 w-2 flex-shrink-0 rounded-full',
+                          v.status === 'active' ? 'bg-green-400' : 'bg-gray-200',
                         )}
                         aria-hidden="true"
                       />
                     )}
                     <span
                       className={classNames(
-                        "truncate",
-                        selected ? "font-semibold" : ""
+                        'truncate',
+                        selected ? 'font-semibold' : '',
                       )}
                     >
                       {v?.filterValue}
@@ -112,8 +108,8 @@ export default function Combobox<T extends ISelectable>(
                   {selected && (
                     <span
                       className={classNames(
-                        "absolute inset-y-0 right-0 flex items-center pr-4",
-                        active ? "text-white" : "text-violet-600"
+                        'absolute inset-y-0 right-0 flex items-center pr-4',
+                        active ? 'text-white' : 'text-violet-600',
                       )}
                     >
                       <CheckIcon className="h-5 w-5" aria-hidden="true" />

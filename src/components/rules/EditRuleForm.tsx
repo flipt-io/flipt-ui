@@ -1,16 +1,16 @@
-import { Dialog } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Form, Formik } from "formik";
-import { cloneDeep } from "lodash";
-import { useState } from "react";
-import Button from "~/components/forms/Button";
-import Combobox, { ISelectable } from "~/components/forms/Combobox";
-import MoreInfo from "~/components/MoreInfo";
-import { updateDistribution } from "~/data/api";
-import useError from "~/data/hooks/errors";
-import { IEvaluatable } from "~/types/Evaluatable";
-import { ISegment } from "~/types/Segment";
-import { IVariant } from "~/types/Variant";
+import { Dialog } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Form, Formik } from 'formik';
+import { cloneDeep } from 'lodash';
+import { useState } from 'react';
+import Button from '~/components/forms/Button';
+import Combobox, { ISelectable } from '~/components/forms/Combobox';
+import MoreInfo from '~/components/MoreInfo';
+import { updateDistribution } from '~/data/api';
+import useError from '~/data/hooks/errors';
+import { IEvaluatable } from '~/types/Evaluatable';
+import { ISegment } from '~/types/Segment';
+import { IVariant } from '~/types/Variant';
 
 type RuleFormProps = {
   setOpen: (open: boolean) => void;
@@ -20,14 +20,14 @@ type RuleFormProps = {
 
 const distTypes = [
   {
-    id: "single",
-    name: "Single Variant",
-    description: "Always returns the same variant",
+    id: 'single',
+    name: 'Single Variant',
+    description: 'Always returns the same variant',
   },
   {
-    id: "multi",
-    name: "Multi-Variant",
-    description: "Returns different variants based on percentages",
+    id: 'multi',
+    name: 'Multi-Variant',
+    description: 'Returns different variants based on percentages',
   },
 ];
 
@@ -42,19 +42,19 @@ export default function EditRuleForm(props: RuleFormProps) {
   const [editingRule, setEditingRule] = useState<IEvaluatable>(cloneDeep(rule));
 
   const [ruleType, setRuleType] = useState(
-    editingRule.rollouts.length > 1 ? "multi" : "single"
+    editingRule.rollouts.length > 1 ? 'multi' : 'single',
   );
 
-  const handleSubmit = async () => {
+  const handleSubmit = async () =>
     // update distributions that changed
-    return Promise.all(
+    Promise.all(
       editingRule.rollouts.map((rollout) => {
         const found = rule.rollouts.find(
-          (r) => r.distribution.id === rollout.distribution.id
+          (r) => r.distribution.id === rollout.distribution.id,
         );
         if (
-          found &&
-          found.distribution.rollout !== rollout.distribution.rollout
+          found
+          && found.distribution.rollout !== rollout.distribution.rollout
         ) {
           return updateDistribution(
             rule.flag.key,
@@ -63,18 +63,16 @@ export default function EditRuleForm(props: RuleFormProps) {
             {
               variantId: rollout.distribution.variantId,
               rollout: rollout.distribution.rollout,
-            }
+            },
           );
         }
         return Promise.resolve();
-      })
+      }),
     );
-  };
-
   return (
     <Formik
       initialValues={{
-        segmentKey: rule.segment.key || "",
+        segmentKey: rule.segment.key || '',
       }}
       onSubmit={() => {
         handleSubmit()
@@ -92,15 +90,15 @@ export default function EditRuleForm(props: RuleFormProps) {
           <div className="bg-gray-50 px-4 py-6 sm:px-6">
             <div className="flex items-start justify-between space-x-3">
               <div className="space-y-1">
-                <Dialog.Title className="text-lg font-medium text-gray-900">
+              <Dialog.Title className="text-lg font-medium text-gray-900">
                   Edit Rule
                 </Dialog.Title>
-                <MoreInfo href="https://www.flipt.io/docs/concepts#rules">
+              <MoreInfo href="https://www.flipt.io/docs/concepts#rules">
                   Learn more about rules
                 </MoreInfo>
-              </div>
+            </div>
               <div className="flex h-7 items-center">
-                <button
+              <button
                   type="button"
                   className="text-gray-400 hover:text-gray-500"
                   onClick={() => setOpen(false)}
@@ -108,43 +106,43 @@ export default function EditRuleForm(props: RuleFormProps) {
                   <span className="sr-only">Close panel</span>
                   <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-              </div>
+            </div>
             </div>
           </div>
           <div className="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0">
             <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
               <div>
-                <label
+              <label
                   htmlFor="segmentKey"
                   className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                 >
                   Segment
                 </label>
-              </div>
+            </div>
               <div className="sm:col-span-2">
-                <Combobox<SelectableSegment>
+              <Combobox<SelectableSegment>
                   id="segmentKey"
                   name="segmentKey"
-                  disabled={true}
+                  disabled
                   selected={{
                     filterValue: rule.segment.key,
                     displayValue: rule.segment.key,
                     ...rule.segment,
                   }}
                 />
-              </div>
+            </div>
             </div>
             <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
               <div>
-                <label
+              <label
                   htmlFor="segmentKey"
                   className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                 >
                   Type
                 </label>
-              </div>
+            </div>
               <div className="sm:col-span-2">
-                <fieldset>
+              <fieldset>
                   <legend className="sr-only">Type</legend>
                   <div className="space-y-5">
                     {distTypes.map((dist) => (
@@ -161,7 +159,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                             }}
                             checked={dist.id === ruleType}
                             value={dist.id}
-                            disabled={true}
+                            disabled
                           />
                         </div>
                         <div className="ml-3 text-sm">
@@ -182,12 +180,12 @@ export default function EditRuleForm(props: RuleFormProps) {
                     ))}
                   </div>
                 </fieldset>
-              </div>
+            </div>
             </div>
 
-            {ruleType === "single" && (
-              <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-                <div>
+            {ruleType === 'single' && (
+            <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+            <div>
                   <label
                     htmlFor="variantKey"
                     className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
@@ -195,7 +193,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                     Variant
                   </label>
                 </div>
-                <div className="sm:col-span-2">
+            <div className="sm:col-span-2">
                   <Combobox<SelectableVariant>
                     id="variant"
                     name="variant"
@@ -206,12 +204,12 @@ export default function EditRuleForm(props: RuleFormProps) {
                     }}
                   />
                 </div>
-              </div>
+          </div>
             )}
 
-            {ruleType === "multi" && (
-              <div>
-                <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+            {ruleType === 'multi' && (
+            <div>
+            <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                   <div>
                     <label
                       htmlFor="variantKey"
@@ -221,7 +219,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                     </label>
                   </div>
                 </div>
-                {editingRule.rollouts?.map((dist, index) => (
+            {editingRule.rollouts?.map((dist, index) => (
                   <div
                     className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-1"
                     key={dist.variant.id}
@@ -247,7 +245,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                         onChange={(e) => {
                           const newRollouts = [...editingRule.rollouts];
                           newRollouts[index].distribution.rollout = parseFloat(
-                            e.target.value
+                            e.target.value,
                           );
                           setEditingRule({
                             ...editingRule,
@@ -266,7 +264,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                     </div>
                   </div>
                 ))}
-              </div>
+          </div>
             )}
           </div>
         </div>

@@ -1,6 +1,6 @@
-import { Transition } from "@headlessui/react";
-import { XCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import useError from "~/data/hooks/errors";
+import { Transition } from '@headlessui/react';
+import { XCircleIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import useError from '~/data/hooks/errors';
 
 export default function ErrorNotification() {
   const { error, clearError } = useError();

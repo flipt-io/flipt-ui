@@ -1,17 +1,17 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
-import EmptyState from "~/components/EmptyState";
-import DeleteVariantPanel from "~/components/flags/DeleteVariantPanel";
-import FlagForm from "~/components/flags/FlagForm";
-import VariantForm from "~/components/flags/VariantForm";
-import Button from "~/components/forms/Button";
-import Modal from "~/components/Modal";
-import MoreInfo from "~/components/MoreInfo";
-import Slideover from "~/components/Slideover";
-import { IFlag } from "~/types/Flag";
-import { IVariant } from "~/types/Variant";
-import FlagMenu from "./FlagMenu";
+import { PlusIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import EmptyState from '~/components/EmptyState';
+import DeleteVariantPanel from '~/components/flags/DeleteVariantPanel';
+import FlagForm from '~/components/flags/FlagForm';
+import VariantForm from '~/components/flags/VariantForm';
+import Button from '~/components/forms/Button';
+import Modal from '~/components/Modal';
+import MoreInfo from '~/components/MoreInfo';
+import Slideover from '~/components/Slideover';
+import { IFlag } from '~/types/Flag';
+import { IVariant } from '~/types/Variant';
+import FlagMenu from './FlagMenu';
 
 type flagProps = {
   flag: IFlag;
@@ -23,8 +23,7 @@ export default function EditFlag() {
 
   const [showVariantForm, setShowVariantForm] = useState<boolean>(false);
   const [editingVariant, setEditingVariant] = useState<IVariant | null>(null);
-  const [showDeleteVariantModal, setShowDeleteVariantModal] =
-    useState<boolean>(false);
+  const [showDeleteVariantModal, setShowDeleteVariantModal] = useState<boolean>(false);
   const [deletingVariant, setDeletingVariant] = useState<IVariant | null>(null);
 
   return (
@@ -162,7 +161,10 @@ export default function EditFlag() {
                           }}
                         >
                           Edit
-                          <span className="sr-only">, {variant.key}</span>
+                          <span className="sr-only">
+                            ,
+                            {variant.key}
+                          </span>
                         </a>
                         |
                         <a
@@ -174,7 +176,10 @@ export default function EditFlag() {
                           }}
                         >
                           Delete
-                          <span className="sr-only">, {variant.key}</span>
+                          <span className="sr-only">
+                            ,
+                            {variant.key}
+                          </span>
                         </a>
                       </td>
                     </tr>

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from 'react';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 type SearchboxProps = {
   value: string;
@@ -13,7 +13,7 @@ export default function Searchbox(props: SearchboxProps) {
     value: initialValue,
     onChange,
     debounce = 500,
-    className = "",
+    className = '',
   } = props;
   const [value, setValue] = useState<string>(initialValue);
 

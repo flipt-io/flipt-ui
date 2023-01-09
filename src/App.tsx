@@ -1,19 +1,19 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { SWRConfig } from "swr";
-import Flag, { flagLoader } from "~/app/flags/Flag";
-import Console from "./app/console/Console";
-import EditFlag from "./app/flags/EditFlag";
-import Evaluation from "./app/flags/Evaluation";
-import Flags from "./app/flags/Flags";
-import NewFlag from "./app/flags/NewFlag";
-import NewSegment from "./app/segments/NewSegment";
-import Segment, { segmentLoader } from "./app/segments/Segment";
-import Segments from "./app/segments/Segments";
-import Layout from "./components/Layout";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { SWRConfig } from 'swr';
+import Flag, { flagLoader } from '~/app/flags/Flag';
+import Console from './app/console/Console';
+import EditFlag from './app/flags/EditFlag';
+import Evaluation from './app/flags/Evaluation';
+import Flags from './app/flags/Flags';
+import NewFlag from './app/flags/NewFlag';
+import NewSegment from './app/segments/NewSegment';
+import Segment, { segmentLoader } from './app/segments/Segment';
+import Segments from './app/segments/Segments';
+import Layout from './components/Layout';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <Layout />,
     children: [
       {
@@ -21,60 +21,58 @@ const router = createBrowserRouter([
         index: true,
       },
       {
-        path: "flags/new",
+        path: 'flags/new',
         element: <NewFlag />,
       },
       {
-        path: "flags/:flagKey",
+        path: 'flags/:flagKey',
         element: <Flag />,
         loader: flagLoader,
         children: [
           {
-            path: "",
+            path: '',
             element: <EditFlag />,
           },
           {
-            path: "evaluation",
+            path: 'evaluation',
             element: <Evaluation />,
           },
         ],
       },
       {
-        path: "segments",
+        path: 'segments',
         element: <Segments />,
       },
       {
-        path: "segments/new",
+        path: 'segments/new',
         element: <NewSegment />,
       },
       {
-        path: "segments/:segmentKey",
+        path: 'segments/:segmentKey',
         element: <Segment />,
         loader: segmentLoader,
       },
       {
-        path: "console",
+        path: 'console',
         element: <Console />,
       },
     ],
   },
 ]);
 
-const apiURL = (import.meta.env.FLIPT_BASE_URL ?? "") + "/api/v1";
+const apiURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/api/v1`;
 
 const fetcher = (uri: string) => fetch(apiURL + uri).then((res) => res.json());
 
 export default function App() {
   return (
-    <>
-      <SWRConfig
-        value={{
-          refreshInterval: 10000, // 10 seconds
-          fetcher: fetcher,
-        }}
-      >
-        <RouterProvider router={router} />
-      </SWRConfig>
-    </>
+    <SWRConfig
+      value={{
+        refreshInterval: 10000, // 10 seconds
+        fetcher,
+      }}
+    >
+      <RouterProvider router={router} />
+    </SWRConfig>
   );
 }

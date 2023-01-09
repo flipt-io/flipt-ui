@@ -1,8 +1,8 @@
-import { Dialog } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import Button from "~/components/forms/Button";
-import { deleteSegment } from "~/data/api";
-import useError from "~/data/hooks/errors";
+import { Dialog } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import Button from '~/components/forms/Button';
+import { deleteSegment } from '~/data/api';
+import useError from '~/data/hooks/errors';
 
 type DeleteSegmentPanelProps = {
   setOpen: (open: boolean) => void;
@@ -38,8 +38,10 @@ export default function DeleteSegmentPanel(props: DeleteSegmentPanelProps) {
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete the segment{" "}
-              <span className="font-medium text-violet-500">{segmentKey}</span>?
+              Are you sure you want to delete the segment
+              {' '}
+              <span className="font-medium text-violet-500">{segmentKey}</span>
+              ?
               This action cannot be undone.
             </p>
           </div>

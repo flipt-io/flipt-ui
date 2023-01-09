@@ -1,9 +1,9 @@
 import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon,
-} from "@heroicons/react/20/solid";
-import { usePagination } from "~/data/hooks/pagination";
-import { classNames } from "~/utils/helpers";
+} from '@heroicons/react/20/solid';
+import { usePagination } from '~/data/hooks/pagination';
+import { classNames } from '~/utils/helpers';
 
 export type PaginationProps = {
   className?: string;
@@ -15,7 +15,7 @@ export type PaginationProps = {
 
 export default function Pagination(props: PaginationProps) {
   const {
-    className = "",
+    className = '',
     currentPage,
     totalCount,
     pageSize,
@@ -62,16 +62,14 @@ export default function Pagination(props: PaginationProps) {
         )}
       </div>
       <div className="hidden md:-mt-px md:flex">
-        {paginationRange.map((page, i) => {
-          return (
-            <Page
-              key={i}
-              page={page}
-              currentPage={currentPage}
-              onPageChange={onPageChange}
-            />
-          );
-        })}
+        {paginationRange.map((page, i) => (
+          <Page
+            key={i}
+            page={page}
+            currentPage={currentPage}
+            onPageChange={onPageChange}
+          />
+        ))}
       </div>
       <div className="-mt-px flex w-0 flex-1 justify-end">
         {currentPage < lastPage && (
@@ -104,10 +102,12 @@ type PageProps = {
 function Page(props: PageProps) {
   const { page, currentPage, onPageChange } = props;
   // we are using '...' (string) to represent page links that should not be rendered
-  if (typeof page === "string") {
+  if (typeof page === 'string') {
     return (
       <span className="border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-700">
-        &#8230; {/* ellipsis */}
+        &#8230;
+        {' '}
+        {/* ellipsis */}
       </span>
     );
   }
@@ -117,11 +117,11 @@ function Page(props: PageProps) {
       href="#"
       className={classNames(
         page === currentPage
-          ? "border-violet-500 text-violet-600"
-          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-        "inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium"
+          ? 'border-violet-500 text-violet-600'
+          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+        'inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium',
       )}
-      aria-current={page === currentPage ? "page" : undefined}
+      aria-current={page === currentPage ? 'page' : undefined}
       onClick={(e) => {
         e.preventDefault();
         onPageChange(page);

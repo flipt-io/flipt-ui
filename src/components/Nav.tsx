@@ -4,9 +4,9 @@ import {
   FlagIcon,
   QuestionMarkCircleIcon,
   UsersIcon,
-} from "@heroicons/react/24/outline";
-import { NavLink } from "react-router-dom";
-import { classNames } from "../utils/helpers";
+} from '@heroicons/react/24/outline';
+import { NavLink } from 'react-router-dom';
+import { classNames } from '../utils/helpers';
 
 type NavProps = {
   className?: string;
@@ -19,18 +19,18 @@ export default function Nav(props: NavProps) {
 
   const navigation = [
     {
-      name: "Flags",
-      to: "/",
+      name: 'Flags',
+      to: '/',
       Icon: FlagIcon,
     },
     {
-      name: "Segments",
-      to: "segments",
+      name: 'Segments',
+      to: 'segments',
       Icon: UsersIcon,
     },
     {
-      name: "Console",
-      to: "console",
+      name: 'Console',
+      to: 'console',
       Icon: CodeBracketIcon,
     },
   ];
@@ -42,51 +42,49 @@ export default function Nav(props: NavProps) {
     //   Icon: Cog6ToothIcon,
     // },
     {
-      name: "Documentation",
-      to: "https://flipt.io/docs?utm_source=app",
+      name: 'Documentation',
+      to: 'https://flipt.io/docs?utm_source=app',
       Icon: QuestionMarkCircleIcon,
       external: true,
     },
   ];
 
   return (
-    <>
-      <nav
-        className={`${className} divide-y divide-gray-300`}
-        aria-label="Sidebar"
-      >
-        <div className="space-y-1 px-2">
-          {navigation.map((item) => (
-            <NavItem
-              key={item.name}
-              {...item}
-              onClick={() => {
-                if (sidebarOpen && setSidebarOpen) {
-                  setSidebarOpen(false);
-                }
-              }}
-            />
-          ))}
-        </div>
-        <div className="mt-4 space-y-1 px-2 pt-4">
-          {secondaryNavigation.map((item) => (
-            <NavItem
-              key={item.name}
-              {...item}
-              onClick={() => {
-                if (sidebarOpen && setSidebarOpen) {
-                  setSidebarOpen(false);
-                }
-              }}
-            />
-          ))}
-        </div>
-      </nav>
-    </>
+    <nav
+      className={`${className} divide-y divide-gray-300`}
+      aria-label="Sidebar"
+    >
+      <div className="space-y-1 px-2">
+        {navigation.map((item) => (
+          <NavItem
+            key={item.name}
+            {...item}
+            onClick={() => {
+              if (sidebarOpen && setSidebarOpen) {
+                setSidebarOpen(false);
+              }
+            }}
+          />
+        ))}
+      </div>
+      <div className="mt-4 space-y-1 px-2 pt-4">
+        {secondaryNavigation.map((item) => (
+          <NavItem
+            key={item.name}
+            {...item}
+            onClick={() => {
+              if (sidebarOpen && setSidebarOpen) {
+                setSidebarOpen(false);
+              }
+            }}
+          />
+        ))}
+      </div>
+    </nav>
   );
 }
 
-type Icon = (props: React.ComponentProps<"svg">) => JSX.Element;
+type Icon = (props: React.ComponentProps<'svg'>) => JSX.Element;
 
 type NavItemProps = {
   to: string;
@@ -97,7 +95,9 @@ type NavItemProps = {
 };
 
 function NavItem(props: NavItemProps) {
-  const { to, name, Icon, external, onClick } = props;
+  const {
+    to, name, Icon, external, onClick,
+  } = props;
 
   return external ? (
     <a
@@ -121,14 +121,12 @@ function NavItem(props: NavItemProps) {
     <NavLink
       key={name}
       to={to}
-      className={({ isActive }) => {
-        return classNames(
-          isActive
-            ? "bg-violet-100 text-gray-600 md:bg-gray-50"
-            : "text-white hover:bg-violet-400 md:text-gray-600 md:hover:bg-gray-50",
-          "group flex items-center rounded-md px-2 py-2 text-sm font-medium"
-        );
-      }}
+      className={({ isActive }) => classNames(
+        isActive
+          ? 'bg-violet-100 text-gray-600 md:bg-gray-50'
+          : 'text-white hover:bg-violet-400 md:text-gray-600 md:hover:bg-gray-50',
+        'group flex items-center rounded-md px-2 py-2 text-sm font-medium',
+      )}
       onClick={onClick}
     >
       <Icon

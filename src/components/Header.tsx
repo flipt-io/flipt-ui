@@ -1,13 +1,13 @@
-import { Menu, Transition } from "@headlessui/react";
-import { Bars3BottomLeftIcon } from "@heroicons/react/24/outline";
-import { Fragment } from "react";
-import { classNames } from "../utils/helpers";
+import { Menu, Transition } from '@headlessui/react';
+import { Bars3BottomLeftIcon } from '@heroicons/react/24/outline';
+import { Fragment } from 'react';
+import { classNames } from '../utils/helpers';
 
 type HeaderProps = {
   setSidebarOpen: (sidebarOpen: boolean) => void;
 };
 
-const userNavigation = [{ name: "Sign Out", href: "#" }];
+const userNavigation = [{ name: 'Sign Out', href: '#' }];
 
 export default function Header(props: HeaderProps) {
   const { setSidebarOpen } = props;
@@ -24,7 +24,7 @@ export default function Header(props: HeaderProps) {
         <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
       </button>
       <div className="flex flex-1 justify-between px-4">
-        <div className="flex flex-1"></div>
+        <div className="flex flex-1" />
         <div className="ml-4 flex items-center md:ml-6">
           {/* TODO: Add back notifications when we support them */}
           {/* <button
@@ -37,7 +37,7 @@ export default function Header(props: HeaderProps) {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-300"></span>
               </span>
-            )} 
+            )}
             <span className="sr-only">View notifications</span>
             <BellIcon
               className="h-8 w-6 hover:fill-violet-300"
@@ -74,8 +74,8 @@ export default function Header(props: HeaderProps) {
                       <a
                         href={item.href}
                         className={classNames(
-                          active ? "bg-gray-100" : "",
-                          "block px-4 py-2 text-sm text-gray-700"
+                          active ? 'bg-gray-100' : '',
+                          'block px-4 py-2 text-sm text-gray-700',
                         )}
                       >
                         {item.name}

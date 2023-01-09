@@ -11,6 +11,7 @@ import MoreInfo from "~/components/MoreInfo";
 import Slideover from "~/components/Slideover";
 import { IFlag } from "~/types/Flag";
 import { IVariant } from "~/types/Variant";
+import FlagMenu from "./FlagMenu";
 
 type flagProps = {
   flag: IFlag;
@@ -28,6 +29,8 @@ export default function EditFlag() {
 
   return (
     <>
+      <FlagMenu flag={flag} selected="details" />
+
       {/* variant edit form */}
       <Slideover open={showVariantForm} setOpen={setShowVariantForm}>
         <VariantForm

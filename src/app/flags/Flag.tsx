@@ -3,7 +3,6 @@ import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import {
   LoaderFunctionArgs,
-  NavLink,
   Outlet,
   useLoaderData,
   useNavigate,
@@ -13,7 +12,6 @@ import Modal from "~/components/Modal";
 import { getFlag } from "~/data/api";
 import useError from "~/data/hooks/errors";
 import { IFlag } from "~/types/Flag";
-import { classNames } from "~/utils/helpers";
 
 export async function flagLoader({
   params,
@@ -94,40 +92,6 @@ export default function Flag() {
           >
             Delete
           </button>
-        </div>
-      </div>
-      <div className="mt-3 flex flex-row sm:mt-5">
-        <div className="border-b-2 border-gray-200">
-          <nav className="-mb-px flex space-x-8">
-            <NavLink
-              key="details"
-              to={`/flags/${flag.key}`}
-              className={({ isActive }) => {
-                return classNames(
-                  isActive
-                    ? "border-violet-500 text-violet-600"
-                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                  "whitespace-nowrap border-b-2 px-1 py-3 text-sm font-medium"
-                );
-              }}
-            >
-              Details
-            </NavLink>
-            <NavLink
-              key="evaluation"
-              to={`/flags/${flag.key}/evaluation`}
-              className={({ isActive }) => {
-                return classNames(
-                  isActive
-                    ? "border-violet-500 text-violet-600"
-                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                  "whitespace-nowrap border-b-2 px-1 py-3 text-sm font-medium"
-                );
-              }}
-            >
-              Evaluation
-            </NavLink>
-          </nav>
         </div>
       </div>
       <Outlet context={{ flag, onFlagChange: incrementFlagVersion }} />

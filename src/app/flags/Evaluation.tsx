@@ -33,6 +33,7 @@ import { IRule, IRuleList } from "~/types/Rule";
 import { ISegment, ISegmentList } from "~/types/Segment";
 import { IVariant } from "~/types/Variant";
 import { classNames } from "~/utils/helpers";
+import FlagMenu from "./FlagMenu";
 
 type flagProps = {
   flag: IFlag;
@@ -159,6 +160,8 @@ export default function Evaluation() {
 
   return (
     <>
+      <FlagMenu flag={flag} selected="evaluation" />
+
       {/* rule delete modal */}
       <Modal open={showDeleteRuleModal} setOpen={setShowDeleteRuleModal}>
         <DeleteRulePanel

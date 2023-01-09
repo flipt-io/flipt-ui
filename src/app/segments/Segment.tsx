@@ -1,7 +1,11 @@
 import { CalendarIcon } from "@heroicons/react/20/solid";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import {
+  LoaderFunctionArgs,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import EmptyState from "~/components/EmptyState";
 import Button from "~/components/forms/Button";
 import Modal from "~/components/Modal";
@@ -20,16 +24,13 @@ import {
 } from "~/types/Constraint";
 import { ISegment } from "~/types/Segment";
 
-interface segmentLoaderParams {
-  params: {
-    segmentKey: string;
-  };
-}
-
 export async function segmentLoader({
   params,
-}: segmentLoaderParams): Promise<ISegment> {
-  return getSegment(params.segmentKey);
+}: LoaderFunctionArgs): Promise<ISegment> {
+  if (params.segmentKey) {
+    return getSegment(params.segmentKey);
+  }
+  return Promise.reject(new Error("No segment key provided"));
 }
 
 export default function Segment() {

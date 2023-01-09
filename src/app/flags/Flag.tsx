@@ -1,7 +1,13 @@
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import { NavLink, Outlet, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  LoaderFunctionArgs,
+  NavLink,
+  Outlet,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import DeleteFlagPanel from "~/components/flags/DeleteFlagPanel";
 import Modal from "~/components/Modal";
 import { getFlag } from "~/data/api";
@@ -9,13 +15,13 @@ import useError from "~/data/hooks/errors";
 import { IFlag } from "~/types/Flag";
 import { classNames } from "~/utils/helpers";
 
-interface flagLoaderParams {
-  params: {
-    flagKey: string;
-  };
-}
-export async function flagLoader({ params }: flagLoaderParams): Promise<IFlag> {
-  return getFlag(params.flagKey);
+export async function flagLoader({
+  params,
+}: LoaderFunctionArgs): Promise<IFlag> {
+  if (params.flagKey) {
+    return getFlag(params.flagKey);
+  }
+  return Promise.reject(new Error("No flag key provided"));
 }
 
 export default function Flag() {

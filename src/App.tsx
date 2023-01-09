@@ -1,8 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SWRConfig } from "swr";
 import Flag, { flagLoader } from "~/app/flags/Flag";
+import EditFlag from "./app/flags/EditFlag";
+import Evaluation from "./app/flags/Evaluation";
 import Flags from "./app/flags/Flags";
 import NewFlag from "./app/flags/NewFlag";
+import NewSegment from "./app/segments/NewSegment";
 import Segment, { segmentLoader } from "./app/segments/Segment";
 import Segments from "./app/segments/Segments";
 import Layout from "./components/Layout";
@@ -24,10 +27,24 @@ const router = createBrowserRouter([
         path: "flags/:flagKey",
         element: <Flag />,
         loader: flagLoader,
+        children: [
+          {
+            path: "",
+            element: <EditFlag />,
+          },
+          {
+            path: "evaluation",
+            element: <Evaluation />,
+          },
+        ],
       },
       {
         path: "segments",
         element: <Segments />,
+      },
+      {
+        path: "segments/new",
+        element: <NewSegment />,
       },
       {
         path: "segments/:segmentKey",

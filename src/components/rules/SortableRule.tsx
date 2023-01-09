@@ -1,6 +1,6 @@
-import { IEvaluatable } from "types/Evaluatable";
-import Rule from "./Rule";
 import { useSortable } from "@dnd-kit/sortable";
+import { IEvaluatable } from "~/types/Evaluatable";
+import Rule from "./Rule";
 
 type SortableRuleProps = {
   rule: IEvaluatable;

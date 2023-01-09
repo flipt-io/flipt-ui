@@ -1,14 +1,14 @@
-import Combobox, { ISelectable } from "components/forms/Combobox";
-import { Form, Formik } from "formik";
-import { createDistribution, createRule } from "data/api";
-import Button from "components/forms/Button";
 import { Dialog } from "@headlessui/react";
-import { IFlag } from "types/Flag";
-import { ISegment } from "types/Segment";
-import { IVariant } from "types/Variant";
-import MoreInfo from "components/MoreInfo";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Form, Formik } from "formik";
 import { useState } from "react";
+import Button from "~/components/forms/Button";
+import Combobox, { ISelectable } from "~/components/forms/Combobox";
+import MoreInfo from "~/components/MoreInfo";
+import { createDistribution, createRule } from "~/data/api";
+import { IFlag } from "~/types/Flag";
+import { ISegment } from "~/types/Segment";
+import { IVariant } from "~/types/Variant";
 
 interface distribution {
   variantId: string;

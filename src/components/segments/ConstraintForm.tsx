@@ -24,11 +24,11 @@ type ConstraintFormProps = {
   segmentKey: string;
   constraint?: IConstraint;
   onSuccess: () => void;
-  onError: (error: Error) => void;
 };
 
 export default function ConstraintForm(props: ConstraintFormProps) {
-  const { setOpen, segmentKey, constraint, onSuccess, onError } = props;
+  const { setOpen, segmentKey, constraint, onSuccess } = props;
+
   const isNew = constraint === undefined;
   const title = isNew ? "New Constraint" : "Edit Constraint";
   const [hasValue, setHasValue] = useState(true);
@@ -51,13 +51,9 @@ export default function ConstraintForm(props: ConstraintFormProps) {
     <Formik
       initialValues={initialValues}
       onSubmit={(values) => {
-        handleSubmit(values)
-          .then(() => {
-            onSuccess();
-          })
-          .catch((err) => {
-            onError(err);
-          });
+        handleSubmit(values).then(() => {
+          onSuccess();
+        });
       }}
       validationSchema={Yup.object({
         property: requiredValidation,

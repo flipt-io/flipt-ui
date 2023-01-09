@@ -1,48 +1,26 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { CalendarIcon } from "@heroicons/react/24/outline";
+import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
-import { useLoaderData } from "react-router-dom";
-import EmptyState from "~/components/EmptyState";
-import ErrorNotification from "~/components/ErrorNotification";
-import DeleteVariantPanel from "~/components/flags/DeleteVariantPanel";
-import FlagForm from "~/components/flags/FlagForm";
-import FlagHeader from "~/components/flags/FlagHeader";
-import VariantForm from "~/components/flags/VariantForm";
-import Button from "~/components/forms/Button";
+import { NavLink, Outlet, useLoaderData, useNavigate } from "react-router-dom";
+import DeleteFlagPanel from "~/components/flags/DeleteFlagPanel";
 import Modal from "~/components/Modal";
-import MoreInfo from "~/components/MoreInfo";
-import Slideover from "~/components/Slideover";
 import { getFlag } from "~/data/api";
 import { IFlag } from "~/types/Flag";
-import { IVariant } from "~/types/Variant";
+import { classNames } from "~/utils/helpers";
 
 export async function flagLoader({ params }): Promise<IFlag> {
   return getFlag(params.flagKey);
 }
 
 export default function Flag() {
-  const [flag, setFlag] = useState<IFlag>(useLoaderData() as IFlag);
+  const initialFlag = useLoaderData() as IFlag;
+  const [flag, setFlag] = useState<IFlag>(initialFlag);
   const [flagVersion, setFlagVersion] = useState(0);
 
-  const [showVariantForm, setShowVariantForm] = useState<boolean>(false);
-  const [editingVariant, setEditingVariant] = useState<IVariant | null>(null);
-  const [showDeleteVariantModal, setShowDeleteVariantModal] =
-    useState<boolean>(false);
-  const [deletingVariant, setDeletingVariant] = useState<IVariant | null>(null);
-
-  const [error, setError] = useState<Error | null>(null);
-  const [showError, setShowError] = useState<boolean>(false);
-
   const fetchFlag = useCallback(() => {
-    getFlag(flag.key)
-      .then((flag) => {
-        setFlag(flag);
-        setError(null);
-        setShowError(false);
-      })
-      .catch((err) => {
-        setError(err);
-        setShowError(true);
-      });
+    getFlag(flag.key).then((flag) => {
+      setFlag(flag);
+    });
   }, [flagVersion]);
 
   const incrementFlagVersion = () => {
@@ -53,206 +31,100 @@ export default function Flag() {
     fetchFlag();
   }, [flagVersion, fetchFlag]);
 
-  if (error || !flag) {
-    return (
-      <ErrorNotification open={showError} setOpen={setShowError}>
-        {error?.message}
-      </ErrorNotification>
-    );
-  }
+  return (
+    <>
+      <FlagHeader flag={flag} />
+      <Outlet context={{ flag, onFlagChange: incrementFlagVersion }} />
+    </>
+  );
+}
+
+type FlagHeaderProps = {
+  flag: IFlag;
+};
+
+function FlagHeader(props: FlagHeaderProps) {
+  const { flag } = props;
+  const navigate = useNavigate();
+
+  const [showDeleteFlagModal, setShowDeleteFlagModal] =
+    useState<boolean>(false);
 
   return (
     <>
-      {/* variant edit form */}
-      <Slideover open={showVariantForm} setOpen={setShowVariantForm}>
-        <VariantForm
+      {/* flag delete modal */}
+      <Modal open={showDeleteFlagModal} setOpen={setShowDeleteFlagModal}>
+        <DeleteFlagPanel
           flagKey={flag.key}
-          variant={editingVariant || undefined}
-          setOpen={setShowVariantForm}
+          setOpen={setShowDeleteFlagModal}
           onSuccess={() => {
-            setError(null);
-            setShowError(false);
-            setShowVariantForm(false);
-            incrementFlagVersion();
-          }}
-          onError={(err) => {
-            setError(err);
-            setShowError(true);
-          }}
-        />
-      </Slideover>
-
-      {/* variant delete modal */}
-      <Modal open={showDeleteVariantModal} setOpen={setShowDeleteVariantModal}>
-        <DeleteVariantPanel
-          flagKey={flag.key}
-          variant={deletingVariant}
-          setOpen={setShowDeleteVariantModal}
-          onSuccess={() => {
-            setError(null);
-            setShowError(false);
-            incrementFlagVersion();
-            setShowDeleteVariantModal(false);
-          }}
-          onError={(err) => {
-            setError(err);
-            setShowError(true);
+            setShowDeleteFlagModal(false);
+            navigate("/");
           }}
         />
       </Modal>
 
-      <FlagHeader
-        flag={flag}
-        tab={"details"}
-        setError={setError}
-        setShowError={setShowError}
-      />
-
-      <div className="flex flex-col">
-        {/* flag details */}
-        <div className="my-10">
-          <div className="md:grid md:grid-cols-3 md:gap-6">
-            <div className="md:col-span-1">
-              <p className="mt-1 text-sm text-gray-500">
-                Basic information about the flag and its status.
-              </p>
-              <MoreInfo
-                className="mt-5"
-                href="https://www.flipt.io/docs/concepts#flags"
-              >
-                Learn more about flags
-              </MoreInfo>
-            </div>
-            <div className="mt-5 md:col-span-2 md:mt-0">
-              <FlagForm
-                flag={flag}
-                flagChanged={incrementFlagVersion}
-                onSuccess={() => {
-                  setError(null);
-                  setShowError(false);
-                }}
-                onError={(err) => {
-                  setError(err);
-                  setShowError(true);
-                }}
+      {/* flag header / delete button */}
+      <div className="flex items-center justify-between">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+            {flag.name}
+          </h2>
+          <div className="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
+            <div className="mt-2 flex items-center text-sm text-gray-500">
+              <CalendarIcon
+                className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                aria-hidden="true"
               />
+              Created{" "}
+              {formatDistanceToNowStrict(parseISO(flag.createdAt), {
+                addSuffix: true,
+              })}
             </div>
           </div>
         </div>
-
-        {/* variants */}
-        <div className="mt-10">
-          <div className="sm:flex sm:items-center">
-            <div className="sm:flex-auto">
-              <h1 className="text-lg font-medium leading-6 text-gray-900">
-                Variants
-              </h1>
-              <p className="mt-1 text-sm text-gray-500">
-                Return different values based on rules you define
-              </p>
-            </div>
-            {flag.variants && flag.variants.length > 0 && (
-              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                <Button
-                  primary
-                  type="button"
-                  onClick={() => {
-                    setEditingVariant(null);
-                    setShowVariantForm(true);
-                  }}
-                >
-                  <PlusIcon
-                    className="-ml-1.5 mr-1 h-5 w-5 text-white"
-                    aria-hidden="true"
-                  />
-                  <span>New Variant</span>
-                </Button>
-              </div>
-            )}
-          </div>
-
-          <div className="my-10">
-            {flag.variants && flag.variants.length > 0 ? (
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead>
-                  <tr>
-                    <th
-                      scope="col"
-                      className="pb-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Key
-                    </th>
-                    <th
-                      scope="col"
-                      className="hidden px-3 pb-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="hidden px-3 pb-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell"
-                    >
-                      Description
-                    </th>
-                    <th
-                      scope="col"
-                      className="relative pb-3.5 pl-3 pr-4 sm:pr-6"
-                    >
-                      <span className="sr-only">Edit</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {flag.variants.map((variant) => (
-                    <tr key={variant.key}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-600 sm:pl-6">
-                        {variant.key}
-                      </td>
-                      <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                        {variant.name}
-                      </td>
-                      <td className="hidden whitespace-nowrap px-3 py-4 text-sm text-gray-500 lg:table-cell">
-                        {variant.description}
-                      </td>
-                      <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <a
-                          href="#"
-                          className="pr-2 text-violet-600 hover:text-violet-900"
-                          onClick={() => {
-                            setEditingVariant(variant);
-                            setShowVariantForm(true);
-                          }}
-                        >
-                          Edit
-                          <span className="sr-only">, {variant.key}</span>
-                        </a>
-                        |
-                        <a
-                          href="#"
-                          className="pl-2 text-violet-600 hover:text-violet-900"
-                          onClick={() => {
-                            setDeletingVariant(variant);
-                            setShowDeleteVariantModal(true);
-                          }}
-                        >
-                          Delete
-                          <span className="sr-only">, {variant.key}</span>
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <EmptyState
-                text="Add Variant"
-                onClick={() => {
-                  setEditingVariant(null);
-                  setShowVariantForm(true);
-                }}
-              />
-            )}
-          </div>
+        <div className="flex flex-none">
+          <button
+            type="button"
+            className="mt-5 mb-1 inline-flex items-center justify-center rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-400 focus:outline-none enabled:hover:bg-red-50 sm:mt-0"
+            onClick={() => setShowDeleteFlagModal(true)}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-row sm:mt-5">
+        <div className="border-b-2 border-gray-200">
+          <nav className="-mb-px flex space-x-8">
+            <NavLink
+              key="details"
+              to=""
+              className={({ isActive }) => {
+                return classNames(
+                  isActive
+                    ? "border-violet-500 text-violet-600"
+                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                  "whitespace-nowrap border-b-2 px-1 py-3 text-sm font-medium"
+                );
+              }}
+            >
+              Details
+            </NavLink>
+            <NavLink
+              key="evaluation"
+              to="evaluation"
+              className={({ isActive }) => {
+                return classNames(
+                  isActive
+                    ? "border-violet-500 text-violet-600"
+                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                  "whitespace-nowrap border-b-2 px-1 py-3 text-sm font-medium"
+                );
+              }}
+            >
+              Evaluation
+            </NavLink>
+          </nav>
         </div>
       </div>
     </>

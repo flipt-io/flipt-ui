@@ -9,13 +9,12 @@ type DeleteConstraintPanelProps = {
   segmentKey: string;
   constraint: IConstraint | null;
   onSuccess: () => void;
-  onError: (error: Error) => void;
 };
 
 export default function DeleteConstraintPanel(
   props: DeleteConstraintPanelProps
 ) {
-  const { setOpen, segmentKey, constraint, onSuccess, onError } = props;
+  const { setOpen, segmentKey, constraint, onSuccess } = props;
 
   const handleSubmit = () => {
     if (constraint) {
@@ -55,13 +54,9 @@ export default function DeleteConstraintPanel(
           primary
           type="button"
           onClick={() => {
-            handleSubmit()
-              ?.then(() => {
-                onSuccess();
-              })
-              .catch((err) => {
-                onError(err);
-              });
+            handleSubmit()?.then(() => {
+              onSuccess();
+            });
           }}
         >
           Delete

@@ -7,11 +7,10 @@ type DeleteFlagPanelProps = {
   setOpen: (open: boolean) => void;
   flagKey: string;
   onSuccess: () => void;
-  onError: (error: Error) => void;
 };
 
 export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
-  const { setOpen, flagKey, onSuccess, onError } = props;
+  const { setOpen, flagKey, onSuccess } = props;
 
   const handleSubmit = () => {
     if (flagKey) {
@@ -49,13 +48,9 @@ export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
           primary
           type="button"
           onClick={() => {
-            handleSubmit()
-              ?.then(() => {
-                onSuccess();
-              })
-              .catch((err: Error) => {
-                onError(err);
-              });
+            handleSubmit()?.then(() => {
+              onSuccess();
+            });
           }}
         >
           Delete

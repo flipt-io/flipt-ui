@@ -1,22 +1,15 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import EmptyState from "~/components/EmptyState";
-import ErrorNotification from "~/components/ErrorNotification";
 import Button from "~/components/forms/Button";
 import SegmentTable from "~/components/segments/SegmentTable";
 import { ISegmentList } from "~/types/Segment";
 
 export default function Segments() {
-  const { data, error } = useSWR<ISegmentList>("/segments");
+  const { data } = useSWR<ISegmentList>("/segments");
   const segments = data?.segments;
-  const [showError, setShowError] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setShowError(!!error);
-  }, [error]);
 
   return (
     <>
@@ -49,12 +42,6 @@ export default function Segments() {
             text="Create Segment"
             onClick={() => navigate("/segments/new")}
           />
-        )}
-
-        {error && (
-          <ErrorNotification open={showError} setOpen={setShowError}>
-            {error?.message}
-          </ErrorNotification>
         )}
       </div>
     </>

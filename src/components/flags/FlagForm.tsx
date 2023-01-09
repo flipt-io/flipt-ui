@@ -12,12 +12,10 @@ import { stringAsKey } from "~/utils/helpers";
 type FlagFormProps = {
   flag?: IFlag;
   flagChanged?: () => void;
-  onSuccess: () => void;
-  onError: (error: Error) => void;
 };
 
 export default function FlagForm(props: FlagFormProps) {
-  const { flag, flagChanged, onSuccess, onError } = props;
+  const { flag, flagChanged } = props;
   const isNew = flag === undefined;
   const navigate = useNavigate();
 
@@ -41,20 +39,14 @@ export default function FlagForm(props: FlagFormProps) {
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(values) => {
-          handleSubmit(values)
-            .then(() => {
-              onSuccess();
+          handleSubmit(values).then(() => {
+            if (isNew) {
+              navigate("/flags/" + values.key);
+              return;
+            }
 
-              if (isNew) {
-                navigate("/flags/" + values.key);
-                return;
-              }
-
-              flagChanged && flagChanged();
-            })
-            .catch((err) => {
-              onError(err);
-            });
+            flagChanged && flagChanged();
+          });
         }}
         validationSchema={Yup.object({
           key: keyValidation,

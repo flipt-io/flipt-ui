@@ -3,7 +3,6 @@ import { formatDistanceToNowStrict, parseISO } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import EmptyState from "~/components/EmptyState";
-import ErrorNotification from "~/components/ErrorNotification";
 import Button from "~/components/forms/Button";
 import Modal from "~/components/Modal";
 import MoreInfo from "~/components/MoreInfo";
@@ -40,20 +39,10 @@ export default function Segment() {
   const [showDeleteSegmentModal, setShowDeleteSegmentModal] =
     useState<boolean>(false);
 
-  const [error, setError] = useState<Error | null>(null);
-  const [showError, setShowError] = useState<boolean>(false);
-
   const fetchSegment = useCallback(() => {
-    getSegment(segment.key)
-      .then((segment) => {
-        setSegment(segment);
-        setError(null);
-        setShowError(false);
-      })
-      .catch((err) => {
-        setError(err);
-        setShowError(true);
-      });
+    getSegment(segment.key).then((segment) => {
+      setSegment(segment);
+    });
   }, [segmentVerison]);
 
   const incrementSegmentVersion = () => {
@@ -72,14 +61,6 @@ export default function Segment() {
     return ConstraintOperators[o as keyof typeof ConstraintOperators].label;
   };
 
-  if (error || !segment) {
-    return (
-      <ErrorNotification open={showError} setOpen={setShowError}>
-        {error?.message}
-      </ErrorNotification>
-    );
-  }
-
   return (
     <>
       {/* variant edit form */}
@@ -89,14 +70,8 @@ export default function Segment() {
           constraint={editingConstraint || undefined}
           setOpen={setShowConstraintForm}
           onSuccess={() => {
-            setError(null);
-            setShowError(false);
             setShowConstraintForm(false);
             incrementSegmentVersion();
-          }}
-          onError={(err) => {
-            setError(err);
-            setShowError(true);
           }}
         />
       </Slideover>
@@ -111,14 +86,8 @@ export default function Segment() {
           constraint={deletingConstraint}
           setOpen={setShowDeleteConstraintModal}
           onSuccess={() => {
-            setError(null);
-            setShowError(false);
             incrementSegmentVersion();
             setShowDeleteConstraintModal(false);
-          }}
-          onError={(err) => {
-            setError(err);
-            setShowError(true);
           }}
         />
       </Modal>
@@ -129,13 +98,7 @@ export default function Segment() {
           segmentKey={segment.key}
           setOpen={setShowDeleteSegmentModal}
           onSuccess={() => {
-            setError(null);
-            setShowError(false);
             navigate("/segments");
-          }}
-          onError={(err) => {
-            setError(err);
-            setShowError(true);
           }}
         />
       </Modal>
@@ -192,8 +155,6 @@ export default function Segment() {
               <SegmentForm
                 segment={segment}
                 segmentChanged={incrementSegmentVersion}
-                setError={setError}
-                setShowError={setShowError}
               />
             </div>
           </div>

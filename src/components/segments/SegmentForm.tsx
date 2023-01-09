@@ -25,12 +25,10 @@ const segmentMatchTypes = [
 type SegmentFormProps = {
   segment?: ISegment;
   segmentChanged?: () => void;
-  setError: (error: Error | null) => void;
-  setShowError: (showError: boolean) => void;
 };
 
 export default function SegmentForm(props: SegmentFormProps) {
-  const { segment, segmentChanged, setError, setShowError } = props;
+  const { segment, segmentChanged } = props;
   const isNew = segment === undefined;
   const navigate = useNavigate();
 
@@ -59,22 +57,14 @@ export default function SegmentForm(props: SegmentFormProps) {
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(values) => {
-          handleSubmit(values)
-            .then(() => {
-              setError(null);
-              setShowError(false);
+          handleSubmit(values).then(() => {
+            if (isNew) {
+              navigate("/segments/" + values.key);
+              return;
+            }
 
-              if (isNew) {
-                navigate("/segments/" + values.key);
-                return;
-              }
-
-              segmentChanged && segmentChanged();
-            })
-            .catch((err) => {
-              setError(err);
-              setShowError(true);
-            });
+            segmentChanged && segmentChanged();
+          });
         }}
         validationSchema={Yup.object({
           key: keyValidation,

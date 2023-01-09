@@ -1,24 +1,15 @@
-import { XCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { Transition } from "@headlessui/react";
+import { XCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import { useState } from "react";
 
-type ErrorNotificationProps = {
-  className?: string;
-  title?: string;
-  children?: React.ReactNode;
-  open: boolean;
-  setOpen: (open: boolean) => void;
-};
-
-export default function ErrorNotification(props: ErrorNotificationProps) {
-  const { className, title = "Error", children, open, setOpen } = props;
+export default function ErrorNotification(props: { error: Error | null }) {
+  const { error } = props;
+  const [open, setOpen] = useState(error !== null);
 
   return (
     <Transition show={open}>
       <div className="max-w-s absolute bottom-0 right-0 z-10 m-4">
-        <div
-          className={`${className} rounded-md bg-red-50 p-4 shadow-sm`}
-          role="alert"
-        >
+        <div className={`rounded-md bg-red-50 p-4 shadow-sm`} role="alert">
           <div className="flex">
             <div className="flex-shrink-0">
               <XCircleIcon
@@ -27,9 +18,9 @@ export default function ErrorNotification(props: ErrorNotificationProps) {
               />
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">{title}</h3>
-              {children && (
-                <div className="mt-2 text-sm text-red-700">{children}</div>
+              <h3 className="text-sm font-medium text-red-800">Error</h3>
+              {error && (
+                <div className="mt-2 text-sm text-red-700">{error.message}</div>
               )}
             </div>
             <div className="ml-auto pl-10">

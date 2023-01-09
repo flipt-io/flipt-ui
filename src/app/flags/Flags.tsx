@@ -1,22 +1,15 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import EmptyState from "~/components/EmptyState";
-import ErrorNotification from "~/components/ErrorNotification";
 import FlagTable from "~/components/flags/FlagTable";
 import Button from "~/components/forms/Button";
 import { IFlagList } from "~/types/Flag";
 
 export default function Flags() {
-  const { data, error } = useSWR<IFlagList>("/flags");
+  const { data } = useSWR<IFlagList>("/flags");
   const flags = data?.flags;
-  const [showError, setShowError] = useState<boolean>(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setShowError(!!error);
-  }, [error]);
 
   return (
     <>
@@ -51,12 +44,6 @@ export default function Flags() {
           />
         )}
       </div>
-
-      {error && (
-        <ErrorNotification open={showError} setOpen={setShowError}>
-          {error?.message}
-        </ErrorNotification>
-      )}
     </>
   );
 }

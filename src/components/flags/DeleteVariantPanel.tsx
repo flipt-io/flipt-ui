@@ -9,11 +9,10 @@ type DeleteVariantPanelProps = {
   flagKey: string;
   variant: IVariant | null;
   onSuccess: () => void;
-  onError: (error: Error) => void;
 };
 
 export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
-  const { setOpen, flagKey, variant, onSuccess, onError } = props;
+  const { setOpen, flagKey, variant, onSuccess } = props;
 
   const handleSubmit = () => {
     if (variant) {
@@ -53,13 +52,9 @@ export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
           primary
           type="button"
           onClick={() => {
-            handleSubmit()
-              ?.then(() => {
-                onSuccess();
-              })
-              .catch((err) => {
-                onError(err);
-              });
+            handleSubmit()?.then(() => {
+              onSuccess();
+            });
           }}
         >
           Delete

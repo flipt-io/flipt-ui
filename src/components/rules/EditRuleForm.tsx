@@ -1,21 +1,20 @@
-import Combobox, { ISelectable } from "components/forms/Combobox";
-import { Form, Formik } from "formik";
-import Button from "components/forms/Button";
 import { Dialog } from "@headlessui/react";
-import { IEvaluatable } from "types/Evaluatable";
-import { ISegment } from "types/Segment";
-import { IVariant } from "types/Variant";
-import MoreInfo from "components/MoreInfo";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Form, Formik } from "formik";
 import { cloneDeep } from "lodash";
-import { updateDistribution } from "data/api";
 import { useState } from "react";
+import Button from "~/components/forms/Button";
+import Combobox, { ISelectable } from "~/components/forms/Combobox";
+import MoreInfo from "~/components/MoreInfo";
+import { updateDistribution } from "~/data/api";
+import { IEvaluatable } from "~/types/Evaluatable";
+import { ISegment } from "~/types/Segment";
+import { IVariant } from "~/types/Variant";
 
 type RuleFormProps = {
   setOpen: (open: boolean) => void;
   rule: IEvaluatable;
   onSuccess: () => void;
-  onError: (error: Error) => void;
 };
 
 const distTypes = [
@@ -36,7 +35,7 @@ type SelectableSegment = ISegment & ISelectable;
 type SelectableVariant = IVariant & ISelectable;
 
 export default function EditRuleForm(props: RuleFormProps) {
-  const { setOpen, rule, onSuccess, onError } = props;
+  const { setOpen, rule, onSuccess } = props;
 
   const [editingRule, setEditingRule] = useState<IEvaluatable>(cloneDeep(rule));
 
@@ -76,13 +75,9 @@ export default function EditRuleForm(props: RuleFormProps) {
         segmentKey: rule.segment.key || "",
       }}
       onSubmit={() => {
-        handleSubmit()
-          ?.then(() => {
-            onSuccess();
-          })
-          .catch((err) => {
-            onError(err);
-          });
+        handleSubmit()?.then(() => {
+          onSuccess();
+        });
       }}
     >
       <Form className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">

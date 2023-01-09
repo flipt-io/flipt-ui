@@ -15,11 +15,10 @@ type VariantFormProps = {
   flagKey: string;
   variant?: IVariant;
   onSuccess: () => void;
-  onError: (error: Error) => void;
 };
 
 export default function VariantForm(props: VariantFormProps) {
-  const { setOpen, flagKey, variant, onSuccess, onError } = props;
+  const { setOpen, flagKey, variant, onSuccess } = props;
   const isNew = variant === undefined;
   const title = isNew ? "New Variant" : "Edit Variant";
 
@@ -40,13 +39,9 @@ export default function VariantForm(props: VariantFormProps) {
         attachment: variant?.attachment || "",
       }}
       onSubmit={(values) => {
-        handleSubmit(values)
-          .then(() => {
-            onSuccess();
-          })
-          .catch((err) => {
-            onError(err);
-          });
+        handleSubmit(values).then(() => {
+          onSuccess();
+        });
       }}
       validationSchema={Yup.object({
         key: keyValidation,

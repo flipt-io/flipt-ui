@@ -1,13 +1,13 @@
-import FlagForm from "~/components/flags/FlagForm";
 import MoreInfo from "~/components/MoreInfo";
+import SegmentForm from "~/components/segments/SegmentForm";
 
-export default function NewFlag() {
+export default function NewSegment() {
   return (
     <>
       <div className="lg:flex lg:items-center lg:justify-between">
         <div className="min-w-0 flex-1">
           <h2 className="text-2xl font-semibold leading-6 text-gray-900">
-            New Flag
+            New Segment
           </h2>
         </div>
       </div>
@@ -18,17 +18,17 @@ export default function NewFlag() {
               Details
             </h3>
             <p className="mt-2 text-sm text-gray-500">
-              Basic information about the flag and its status.
+              Basic information about the segment.
             </p>
             <MoreInfo
               className="mt-5"
-              href="https://www.flipt.io/docs/concepts#flags"
+              href="https://www.flipt.io/docs/concepts#segments"
             >
-              Learn more about flags
+              Learn more about segmentation
             </MoreInfo>
           </div>
           <div className="mt-5 md:col-span-2 md:mt-0">
-            <FlagForm />
+            <SegmentForm />
           </div>
         </div>
       </div>

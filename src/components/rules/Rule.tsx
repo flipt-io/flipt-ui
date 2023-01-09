@@ -5,7 +5,7 @@ import {
   VariableIcon,
 } from "@heroicons/react/24/outline";
 import { forwardRef, Ref } from "react";
-import { IEvaluatable } from "types/Evaluatable";
+import { IEvaluatable } from "~/types/Evaluatable";
 // import Link from "next/link";
 
 type RuleProps = {

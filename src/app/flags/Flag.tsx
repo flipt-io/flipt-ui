@@ -5,6 +5,7 @@ import { NavLink, Outlet, useLoaderData, useNavigate } from "react-router-dom";
 import DeleteFlagPanel from "~/components/flags/DeleteFlagPanel";
 import Modal from "~/components/Modal";
 import { getFlag } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { IFlag } from "~/types/Flag";
 import { classNames } from "~/utils/helpers";
 
@@ -17,10 +18,16 @@ export default function Flag() {
   const [flag, setFlag] = useState<IFlag>(initialFlag);
   const [flagVersion, setFlagVersion] = useState(0);
 
+  const { setError } = useError();
+
   const fetchFlag = useCallback(() => {
-    getFlag(flag.key).then((flag) => {
-      setFlag(flag);
-    });
+    getFlag(flag.key)
+      .then((flag) => {
+        setFlag(flag);
+      })
+      .catch((err) => {
+        setError(err);
+      });
   }, [flagVersion]);
 
   const incrementFlagVersion = () => {

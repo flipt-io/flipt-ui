@@ -2,6 +2,7 @@ import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/forms/Button";
 import { deleteFlag } from "~/data/api";
+import useError from "~/data/hooks/errors";
 
 type DeleteFlagPanelProps = {
   setOpen: (open: boolean) => void;
@@ -11,6 +12,7 @@ type DeleteFlagPanelProps = {
 
 export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
   const { setOpen, flagKey, onSuccess } = props;
+  const { setError } = useError();
 
   const handleSubmit = () => {
     if (flagKey) {
@@ -48,9 +50,13 @@ export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
           primary
           type="button"
           onClick={() => {
-            handleSubmit()?.then(() => {
-              onSuccess();
-            });
+            handleSubmit()
+              ?.then(() => {
+                onSuccess();
+              })
+              .catch((err) => {
+                setError(err);
+              });
           }}
         >
           Delete

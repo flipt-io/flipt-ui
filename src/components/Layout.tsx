@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import ErrorNotification from "./ErrorNotification";
+import { ErrorProvider } from "./ErrorProvider";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
@@ -10,17 +12,20 @@ export default function Layout() {
 
   return (
     <>
-      <Sidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
-      <div className="flex min-h-screen flex-col md:pl-64">
-        <Header setSidebarOpen={setSidebarOpen} />
+      <ErrorProvider>
+        <Sidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+        <div className="flex min-h-screen flex-col md:pl-64">
+          <Header setSidebarOpen={setSidebarOpen} />
 
-        <main className="flex px-6 py-10">
-          <div className="w-full overflow-x-auto px-4 sm:px-6 lg:px-8">
-            <Outlet />
-          </div>
-        </main>
-        {/* <Footer /> */}
-      </div>
+          <main className="flex px-6 py-10">
+            <div className="w-full overflow-x-auto px-4 sm:px-6 lg:px-8">
+              <Outlet />
+            </div>
+          </main>
+          {/* <Footer /> */}
+        </div>
+        <ErrorNotification />
+      </ErrorProvider>
     </>
   );
 }

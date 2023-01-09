@@ -2,6 +2,7 @@ import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/forms/Button";
 import { deleteConstraint } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { IConstraint } from "~/types/Constraint";
 
 type DeleteConstraintPanelProps = {
@@ -15,6 +16,7 @@ export default function DeleteConstraintPanel(
   props: DeleteConstraintPanelProps
 ) {
   const { setOpen, segmentKey, constraint, onSuccess } = props;
+  const { setError } = useError();
 
   const handleSubmit = () => {
     if (constraint) {
@@ -54,9 +56,13 @@ export default function DeleteConstraintPanel(
           primary
           type="button"
           onClick={() => {
-            handleSubmit()?.then(() => {
-              onSuccess();
-            });
+            handleSubmit()
+              ?.then(() => {
+                onSuccess();
+              })
+              .catch((err) => {
+                setError(err);
+              });
           }}
         >
           Delete

@@ -5,8 +5,8 @@ import {
   VariableIcon,
 } from "@heroicons/react/24/outline";
 import { forwardRef, Ref } from "react";
+import { Link } from "react-router-dom";
 import { IEvaluatable } from "~/types/Evaluatable";
-// import Link from "next/link";
 
 type RuleProps = {
   rule: IEvaluatable;
@@ -42,12 +42,12 @@ const Rule = forwardRef(
                 <span className="text-gray-900">IF</span> Match Segment
               </p>
               <p className="mt-1 truncate text-sm text-gray-500">
-                {/* <Link
-                  href={`/segments/${rule.segment.key}`}
+                <Link
+                  to={`/segments/${rule.segment.key}`}
                   className="text-violet-500"
-                > */}
-                {rule.segment.name}
-                {/* </Link> */}
+                >
+                  {rule.segment.name}
+                </Link>
               </p>
             </div>
           </div>

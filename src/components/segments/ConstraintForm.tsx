@@ -8,6 +8,7 @@ import Input from "~/components/forms/Input";
 import Select from "~/components/forms/Select";
 import MoreInfo from "~/components/MoreInfo";
 import { createConstraint, updateConstraint } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { requiredValidation } from "~/data/validations";
 import {
   ComparisonType,
@@ -28,6 +29,7 @@ type ConstraintFormProps = {
 
 export default function ConstraintForm(props: ConstraintFormProps) {
   const { setOpen, segmentKey, constraint, onSuccess } = props;
+  const { setError } = useError();
 
   const isNew = constraint === undefined;
   const title = isNew ? "New Constraint" : "Edit Constraint";
@@ -51,9 +53,13 @@ export default function ConstraintForm(props: ConstraintFormProps) {
     <Formik
       initialValues={initialValues}
       onSubmit={(values) => {
-        handleSubmit(values).then(() => {
-          onSuccess();
-        });
+        handleSubmit(values)
+          .then(() => {
+            onSuccess();
+          })
+          .catch((err) => {
+            setError(err);
+          });
       }}
       validationSchema={Yup.object({
         property: requiredValidation,

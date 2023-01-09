@@ -1,15 +1,24 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import EmptyState from "~/components/EmptyState";
 import Button from "~/components/forms/Button";
 import SegmentTable from "~/components/segments/SegmentTable";
+import useError from "~/data/hooks/errors";
 import { ISegmentList } from "~/types/Segment";
 
 export default function Segments() {
-  const { data } = useSWR<ISegmentList>("/segments");
+  const { data, error } = useSWR<ISegmentList>("/segments");
   const segments = data?.segments;
   const navigate = useNavigate();
+  const { setError } = useError();
+
+  useEffect(() => {
+    if (error) {
+      setError(error);
+    }
+  }, error);
 
   return (
     <>

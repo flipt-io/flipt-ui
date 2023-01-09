@@ -2,6 +2,7 @@ import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/forms/Button";
 import { deleteVariant } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { IVariant } from "~/types/Variant";
 
 type DeleteVariantPanelProps = {
@@ -13,6 +14,7 @@ type DeleteVariantPanelProps = {
 
 export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
   const { setOpen, flagKey, variant, onSuccess } = props;
+  const { setError } = useError();
 
   const handleSubmit = () => {
     if (variant) {
@@ -52,9 +54,13 @@ export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
           primary
           type="button"
           onClick={() => {
-            handleSubmit()?.then(() => {
-              onSuccess();
-            });
+            handleSubmit()
+              ?.then(() => {
+                onSuccess();
+              })
+              .catch((err) => {
+                setError(err);
+              });
           }}
         >
           Delete

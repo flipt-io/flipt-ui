@@ -1,3 +1,4 @@
+import  useError from '~/data/hooks/errors';
 import { IConstraintBase } from "types/Constraint";
 import { IDistributionBase } from "types/Distribution";
 import { IFlagBase } from "types/Flag";

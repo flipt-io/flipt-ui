@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import Button from "~/components/forms/Button";
 import Input from "~/components/forms/Input";
 import { createSegment, updateSegment } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { keyValidation, requiredValidation } from "~/data/validations";
 import { ISegment, ISegmentBase, SegmentMatchType } from "~/types/Segment";
 import { stringAsKey } from "~/utils/helpers";
@@ -31,6 +32,7 @@ export default function SegmentForm(props: SegmentFormProps) {
   const { segment, segmentChanged } = props;
   const isNew = segment === undefined;
   const navigate = useNavigate();
+  const { setError } = useError();
 
   const [selectedMatchType, setSelectedMatchType] = useState(
     segment?.matchType || ("ALL_MATCH_TYPE" as SegmentMatchType)
@@ -57,14 +59,18 @@ export default function SegmentForm(props: SegmentFormProps) {
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(values) => {
-          handleSubmit(values).then(() => {
-            if (isNew) {
-              navigate("/segments/" + values.key);
-              return;
-            }
+          handleSubmit(values)
+            .then(() => {
+              if (isNew) {
+                navigate("/segments/" + values.key);
+                return;
+              }
 
-            segmentChanged && segmentChanged();
-          });
+              segmentChanged && segmentChanged();
+            })
+            .catch((err) => {
+              setError(err);
+            });
         }}
         validationSchema={Yup.object({
           key: keyValidation,

@@ -12,6 +12,7 @@ import DeleteSegmentPanel from "~/components/segments/DeleteSegmentPanel";
 import SegmentForm from "~/components/segments/SegmentForm";
 import Slideover from "~/components/Slideover";
 import { getSegment } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import {
   ComparisonType,
   ConstraintOperators,
@@ -39,10 +40,16 @@ export default function Segment() {
   const [showDeleteSegmentModal, setShowDeleteSegmentModal] =
     useState<boolean>(false);
 
+  const { setError } = useError();
+
   const fetchSegment = useCallback(() => {
-    getSegment(segment.key).then((segment) => {
-      setSegment(segment);
-    });
+    getSegment(segment.key)
+      .then((segment) => {
+        setSegment(segment);
+      })
+      .catch((err) => {
+        setError(err);
+      });
   }, [segmentVerison]);
 
   const incrementSegmentVersion = () => {

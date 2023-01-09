@@ -2,6 +2,7 @@ import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/forms/Button";
 import { deleteRule } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { IEvaluatable } from "~/types/Evaluatable";
 
 type DeleteRulePanelProps = {
@@ -13,6 +14,7 @@ type DeleteRulePanelProps = {
 
 export default function DeleteRulePanel(props: DeleteRulePanelProps) {
   const { setOpen, flagKey, rule, onSuccess } = props;
+  const { setError } = useError();
 
   const handleSubmit = () => {
     if (rule) {
@@ -53,9 +55,13 @@ export default function DeleteRulePanel(props: DeleteRulePanelProps) {
           primary
           type="button"
           onClick={() => {
-            handleSubmit()?.then(() => {
-              onSuccess();
-            });
+            handleSubmit()
+              ?.then(() => {
+                onSuccess();
+              })
+              .catch((err) => {
+                setError(err);
+              });
           }}
         >
           Delete

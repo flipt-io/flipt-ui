@@ -2,6 +2,7 @@ import { Dialog } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import Button from "~/components/forms/Button";
 import { deleteSegment } from "~/data/api";
+import useError from "~/data/hooks/errors";
 
 type DeleteSegmentPanelProps = {
   setOpen: (open: boolean) => void;
@@ -11,6 +12,7 @@ type DeleteSegmentPanelProps = {
 
 export default function DeleteSegmentPanel(props: DeleteSegmentPanelProps) {
   const { setOpen, segmentKey, onSuccess } = props;
+  const { setError } = useError();
 
   const handleSubmit = () => {
     if (segmentKey) {
@@ -48,9 +50,13 @@ export default function DeleteSegmentPanel(props: DeleteSegmentPanelProps) {
           primary
           type="button"
           onClick={() => {
-            handleSubmit()?.then(() => {
-              onSuccess();
-            });
+            handleSubmit()
+              ?.then(() => {
+                onSuccess();
+              })
+              .catch((err) => {
+                setError(err);
+              });
           }}
         >
           Delete

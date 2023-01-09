@@ -7,6 +7,7 @@ import Input from "~/components/forms/Input";
 import TextArea from "~/components/forms/TextArea";
 import MoreInfo from "~/components/MoreInfo";
 import { createVariant, updateVariant } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { jsonValidation, keyValidation } from "~/data/validations";
 import { IVariant, IVariantBase } from "~/types/Variant";
 
@@ -21,6 +22,7 @@ export default function VariantForm(props: VariantFormProps) {
   const { setOpen, flagKey, variant, onSuccess } = props;
   const isNew = variant === undefined;
   const title = isNew ? "New Variant" : "Edit Variant";
+  const { setError } = useError();
 
   const handleSubmit = async (values: IVariantBase) => {
     if (isNew) {
@@ -39,9 +41,13 @@ export default function VariantForm(props: VariantFormProps) {
         attachment: variant?.attachment || "",
       }}
       onSubmit={(values) => {
-        handleSubmit(values).then(() => {
-          onSuccess();
-        });
+        handleSubmit(values)
+          .then(() => {
+            onSuccess();
+          })
+          .catch((err) => {
+            setError(err);
+          });
       }}
       validationSchema={Yup.object({
         key: keyValidation,

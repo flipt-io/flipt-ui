@@ -7,6 +7,7 @@ import Button from "~/components/forms/Button";
 import Combobox, { ISelectable } from "~/components/forms/Combobox";
 import MoreInfo from "~/components/MoreInfo";
 import { updateDistribution } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { IEvaluatable } from "~/types/Evaluatable";
 import { ISegment } from "~/types/Segment";
 import { IVariant } from "~/types/Variant";
@@ -36,6 +37,7 @@ type SelectableVariant = IVariant & ISelectable;
 
 export default function EditRuleForm(props: RuleFormProps) {
   const { setOpen, rule, onSuccess } = props;
+  const { setError } = useError();
 
   const [editingRule, setEditingRule] = useState<IEvaluatable>(cloneDeep(rule));
 
@@ -75,9 +77,13 @@ export default function EditRuleForm(props: RuleFormProps) {
         segmentKey: rule.segment.key || "",
       }}
       onSubmit={() => {
-        handleSubmit()?.then(() => {
-          onSuccess();
-        });
+        handleSubmit()
+          ?.then(() => {
+            onSuccess();
+          })
+          .catch((err) => {
+            setError(err);
+          });
       }}
     >
       <Form className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">

@@ -1,13 +1,12 @@
 import { Transition } from "@headlessui/react";
 import { XCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import useError from "~/data/hooks/errors";
 
-export default function ErrorNotification(props: { error: Error | null }) {
-  const { error } = props;
-  const [open, setOpen] = useState(error !== null);
+export default function ErrorNotification() {
+  const { error, clearError } = useError();
 
   return (
-    <Transition show={open}>
+    <Transition show={error !== null}>
       <div className="max-w-s absolute bottom-0 right-0 z-10 m-4">
         <div className={`rounded-md bg-red-50 p-4 shadow-sm`} role="alert">
           <div className="flex">
@@ -19,7 +18,7 @@ export default function ErrorNotification(props: { error: Error | null }) {
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-800">Error</h3>
-              {error && (
+              {error && error.message && (
                 <div className="mt-2 text-sm text-red-700">{error.message}</div>
               )}
             </div>
@@ -27,7 +26,9 @@ export default function ErrorNotification(props: { error: Error | null }) {
               <div className="-mx-1 -my-1">
                 <button
                   type="button"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    clearError();
+                  }}
                   className="inline-flex rounded-md bg-red-50 p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2 focus:ring-offset-green-50"
                 >
                   <span className="sr-only">Dismiss</span>

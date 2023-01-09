@@ -5,6 +5,7 @@ import Button from "~/components/forms/Button";
 import Input from "~/components/forms/Input";
 import Toggle from "~/components/forms/Toggle";
 import { createFlag, updateFlag } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { keyValidation, requiredValidation } from "~/data/validations";
 import { IFlag, IFlagBase } from "~/types/Flag";
 import { stringAsKey } from "~/utils/helpers";
@@ -18,6 +19,7 @@ export default function FlagForm(props: FlagFormProps) {
   const { flag, flagChanged } = props;
   const isNew = flag === undefined;
   const navigate = useNavigate();
+  const { setError } = useError();
 
   const handleSubmit = (values: IFlagBase) => {
     if (isNew) {
@@ -39,14 +41,18 @@ export default function FlagForm(props: FlagFormProps) {
         enableReinitialize
         initialValues={initialValues}
         onSubmit={(values) => {
-          handleSubmit(values).then(() => {
-            if (isNew) {
-              navigate("/flags/" + values.key);
-              return;
-            }
+          handleSubmit(values)
+            .then(() => {
+              if (isNew) {
+                navigate("/flags/" + values.key);
+                return;
+              }
 
-            flagChanged && flagChanged();
-          });
+              flagChanged && flagChanged();
+            })
+            .catch((err) => {
+              setError(err);
+            });
         }}
         validationSchema={Yup.object({
           key: keyValidation,

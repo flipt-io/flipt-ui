@@ -6,6 +6,7 @@ import Button from "~/components/forms/Button";
 import Combobox, { ISelectable } from "~/components/forms/Combobox";
 import MoreInfo from "~/components/MoreInfo";
 import { createDistribution, createRule } from "~/data/api";
+import useError from "~/data/hooks/errors";
 import { IFlag } from "~/types/Flag";
 import { ISegment } from "~/types/Segment";
 import { IVariant } from "~/types/Variant";
@@ -43,6 +44,7 @@ type SelectableVariant = IVariant & ISelectable;
 
 export default function RuleForm(props: RuleFormProps) {
   const { setOpen, rulesChanged, flag, rank, segments } = props;
+  const { setError } = useError();
 
   const [ruleType, setRuleType] = useState("single");
 
@@ -97,7 +99,11 @@ export default function RuleForm(props: RuleFormProps) {
       initialValues={{
         segmentKey: selectedSegment?.key || "",
       }}
-      onSubmit={handleSubmit}
+      onSubmit={() => {
+        handleSubmit().catch((err) => {
+          setError(err);
+        });
+      }}
     >
       <Form className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
         <div className="flex-1">

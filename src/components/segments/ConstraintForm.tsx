@@ -37,7 +37,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
 
   const initialValues: IConstraintBase = {
     property: constraint?.property || "",
-    type: constraint?.type || ComparisonType.STRING_COMPARISON_TYPE,
+    type: constraint?.type || ("STRING_COMPARISON_TYPE" as ComparisonType),
     operator: constraint?.operator || "eq",
     value: constraint?.value || "",
   };

@@ -212,15 +212,17 @@ export default function SegmentTable(props: SegmentTableProps) {
           ))}
         </tbody>
       </table>
-      <Pagination
-        className="mt-4"
-        currentPage={table.getState().pagination.pageIndex + 1}
-        totalCount={table.getFilteredRowModel().rows.length}
-        pageSize={pageSize}
-        onPageChange={(page: number) => {
-          table.setPageIndex(page - 1);
-        }}
-      />
+      {table.getPageCount() > 1 && (
+        <Pagination
+          className="mt-4"
+          currentPage={table.getState().pagination.pageIndex + 1}
+          totalCount={table.getFilteredRowModel().rows.length}
+          pageSize={pageSize}
+          onPageChange={(page: number) => {
+            table.setPageIndex(page - 1);
+          }}
+        />
+      )}
     </>
   );
 }

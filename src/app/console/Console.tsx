@@ -24,7 +24,7 @@ hljs.registerLanguage("json", javascript);
 
 type SelectableFlag = IFlag & ISelectable;
 
-export async function flagsLoader({ params }): Promise<IFlagList> {
+export async function flagsLoader(): Promise<IFlagList> {
   return listFlags();
 }
 

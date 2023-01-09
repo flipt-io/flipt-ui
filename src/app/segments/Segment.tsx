@@ -20,7 +20,15 @@ import {
 } from "~/types/Constraint";
 import { ISegment } from "~/types/Segment";
 
-export async function segmentLoader({ params }): Promise<ISegment> {
+interface segmentLoaderParams {
+  params: {
+    segmentKey: string;
+  };
+}
+
+export async function segmentLoader({
+  params,
+}: segmentLoaderParams): Promise<ISegment> {
   return getSegment(params.segmentKey);
 }
 

@@ -9,7 +9,12 @@ import useError from "~/data/hooks/errors";
 import { IFlag } from "~/types/Flag";
 import { classNames } from "~/utils/helpers";
 
-export async function flagLoader({ params }): Promise<IFlag> {
+interface flagLoaderParams {
+  params: {
+    flagKey: string;
+  };
+}
+export async function flagLoader({ params }: flagLoaderParams): Promise<IFlag> {
   return getFlag(params.flagKey);
 }
 

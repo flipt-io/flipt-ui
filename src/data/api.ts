@@ -1,21 +1,21 @@
-import  useError from '~/data/hooks/errors';
-import { IConstraintBase } from "types/Constraint";
-import { IDistributionBase } from "types/Distribution";
-import { IFlagBase } from "types/Flag";
-import { IRuleBase } from "types/Rule";
-import { ISegmentBase } from "types/Segment";
-import { IVariantBase } from "types/Variant";
+import { IConstraintBase } from 'types/Constraint';
+import { IDistributionBase } from 'types/Distribution';
+import { IFlagBase } from 'types/Flag';
+import { IRuleBase } from 'types/Rule';
+import { ISegmentBase } from 'types/Segment';
+import { IVariantBase } from 'types/Variant';
+import useError from '~/data/hooks/errors';
 
-const apiURL = (import.meta.env.FLIPT_BASE_URL ?? "") + "/api/v1";
-const metaURL = (import.meta.env.FLIPT_BASE_URL ?? "") + "/meta";
+const apiURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/api/v1`;
+const metaURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/meta`;
 
 //
 // base methods
 async function get(uri: string) {
   const res = await fetch(apiURL + uri, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      Accept: "application/json",
+      Accept: 'application/json',
     },
   });
   if (!res.ok) {
@@ -27,10 +27,10 @@ async function get(uri: string) {
 
 async function post<T>(uri: string, values: T) {
   const res = await fetch(apiURL + uri, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify(values),
   });
@@ -43,10 +43,10 @@ async function post<T>(uri: string, values: T) {
 
 async function put<T>(uri: string, values: T) {
   const res = await fetch(apiURL + uri, {
-    method: "PUT",
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify(values),
   });
@@ -60,7 +60,7 @@ async function put<T>(uri: string, values: T) {
 //
 // flags
 export async function listFlags() {
-  return await get("/flags");
+  return await get('/flags');
 }
 
 export async function getFlag(key: string) {
@@ -68,7 +68,7 @@ export async function getFlag(key: string) {
 }
 
 export async function createFlag(values: IFlagBase) {
-  return await post(`/flags`, values);
+  return await post('/flags', values);
 }
 
 export async function updateFlag(key: string, values: IFlagBase) {
@@ -76,8 +76,8 @@ export async function updateFlag(key: string, values: IFlagBase) {
 }
 
 export async function deleteFlag(key: string) {
-  const res = await fetch(apiURL + `/flags/${key}`, {
-    method: "DELETE",
+  const res = await fetch(`${apiURL}/flags/${key}`, {
+    method: 'DELETE',
   });
   return res.ok;
 }
@@ -93,20 +93,20 @@ export async function createRule(flagKey: string, values: IRuleBase) {
 }
 
 export async function deleteRule(flagKey: string, ruleId: string) {
-  const res = await fetch(apiURL + `/flags/${flagKey}/rules/${ruleId}`, {
-    method: "DELETE",
+  const res = await fetch(`${apiURL}/flags/${flagKey}/rules/${ruleId}`, {
+    method: 'DELETE',
   });
   return res.ok;
 }
 
 export async function orderRules(flagKey: string, ruleIds: string[]) {
-  const res = await fetch(apiURL + `/flags/${flagKey}/rules/order`, {
-    method: "PUT",
+  const res = await fetch(`${apiURL}/flags/${flagKey}/rules/order`, {
+    method: 'PUT',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      ruleIds: ruleIds,
+      ruleIds,
     }),
   });
   if (!res.ok) {
@@ -119,7 +119,7 @@ export async function orderRules(flagKey: string, ruleIds: string[]) {
 export async function createDistribution(
   flagKey: string,
   ruleId: string,
-  values: IDistributionBase
+  values: IDistributionBase,
 ) {
   return await post(`/flags/${flagKey}/rules/${ruleId}/distributions`, values);
 }
@@ -128,11 +128,11 @@ export async function updateDistribution(
   flagKey: string,
   ruleId: string,
   distributionId: string,
-  values: IDistributionBase
+  values: IDistributionBase,
 ) {
   return await put(
     `/flags/${flagKey}/rules/${ruleId}/distributions/${distributionId}`,
-    values
+    values,
   );
 }
 
@@ -145,14 +145,14 @@ export async function createVariant(flagKey: string, values: IVariantBase) {
 export async function updateVariant(
   flagKey: string,
   variantId: string,
-  values: IVariantBase
+  values: IVariantBase,
 ) {
   return await put(`/flags/${flagKey}/variants/${variantId}`, values);
 }
 
 export async function deleteVariant(flagKey: string, variantId: string) {
-  const res = await fetch(apiURL + `/flags/${flagKey}/variants/${variantId}`, {
-    method: "DELETE",
+  const res = await fetch(`${apiURL}/flags/${flagKey}/variants/${variantId}`, {
+    method: 'DELETE',
   });
   return res.ok;
 }
@@ -160,7 +160,7 @@ export async function deleteVariant(flagKey: string, variantId: string) {
 //
 // segments
 export async function listSegments() {
-  return await get("/segments");
+  return await get('/segments');
 }
 
 export async function getSegment(key: string) {
@@ -168,7 +168,7 @@ export async function getSegment(key: string) {
 }
 
 export async function createSegment(values: ISegmentBase) {
-  return await post(`/segments`, values);
+  return await post('/segments', values);
 }
 
 export async function updateSegment(key: string, values: ISegmentBase) {
@@ -176,8 +176,8 @@ export async function updateSegment(key: string, values: ISegmentBase) {
 }
 
 export async function deleteSegment(key: string) {
-  const res = await fetch(apiURL + `/segments/${key}`, {
-    method: "DELETE",
+  const res = await fetch(`${apiURL}/segments/${key}`, {
+    method: 'DELETE',
   });
   return res.ok;
 }
@@ -186,7 +186,7 @@ export async function deleteSegment(key: string) {
 // constraints
 export async function createConstraint(
   segmentKey: string,
-  values: IConstraintBase
+  values: IConstraintBase,
 ) {
   return await post(`/segments/${segmentKey}/constraints`, values);
 }
@@ -194,37 +194,37 @@ export async function createConstraint(
 export async function updateConstraint(
   segmentKey: string,
   constraintId: string,
-  values: IConstraintBase
+  values: IConstraintBase,
 ) {
   return await put(
     `/segments/${segmentKey}/constraints/${constraintId}`,
-    values
+    values,
   );
 }
 
 export async function deleteConstraint(
   segmentKey: string,
-  constraintId: string
+  constraintId: string,
 ) {
   const res = await fetch(
-    apiURL + `/segments/${segmentKey}/constraints/${constraintId}`,
+    `${apiURL}/segments/${segmentKey}/constraints/${constraintId}`,
     {
-      method: "DELETE",
-    }
+      method: 'DELETE',
+    },
   );
   return res.ok;
 }
 
 // evaluate
 export async function evaluate(flagKey: string, values: any) {
-  const res = await fetch(apiURL + `/evaluate`, {
-    method: "POST",
+  const res = await fetch(`${apiURL}/evaluate`, {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
     body: JSON.stringify({
-      flagKey: flagKey,
+      flagKey,
       ...values,
     }),
   });
@@ -238,6 +238,6 @@ export async function evaluate(flagKey: string, values: any) {
 //
 // meta
 export async function getInfo() {
-  const res = await fetch(metaURL + "/info");
+  const res = await fetch(`${metaURL}/info`);
   return await res.json();
 }

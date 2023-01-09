@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 
 const range = (start: number, end: number) => {
   const length = end - start + 1;
@@ -16,10 +16,12 @@ type usePaginationProps = {
     currentPage : number
 }
 
-const DOTS = "...";
+const DOTS = '...';
 
 export const usePagination = (props: usePaginationProps) : (number|string)[] => {
-  const {totalCount, pageSize, siblingCount, currentPage} = props;
+  const {
+    totalCount, pageSize, siblingCount, currentPage,
+  } = props;
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize);
 
@@ -41,7 +43,7 @@ export const usePagination = (props: usePaginationProps) : (number|string)[] => 
     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
     const rightSiblingIndex = Math.min(
       currentPage + siblingCount,
-      totalPageCount
+      totalPageCount,
     );
 
     /*
@@ -70,7 +72,7 @@ export const usePagination = (props: usePaginationProps) : (number|string)[] => 
       const rightItemCount = 3 + 2 * siblingCount;
       const rightRange = range(
         totalPageCount - rightItemCount + 1,
-        totalPageCount
+        totalPageCount,
       );
       return [firstPageIndex, DOTS, ...rightRange];
     }
@@ -78,8 +80,8 @@ export const usePagination = (props: usePaginationProps) : (number|string)[] => 
     /*
           Case 4: Both left and right dots to be shown
       */
-      const middleRange = range(leftSiblingIndex, rightSiblingIndex);
-      return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
+    const middleRange = range(leftSiblingIndex, rightSiblingIndex);
+    return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
   }, [totalCount, pageSize, siblingCount, currentPage]);
 
   return paginationRange;

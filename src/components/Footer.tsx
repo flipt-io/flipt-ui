@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Info } from "types/Meta";
-import { getInfo } from "data/api";
+import { getInfo } from "~/data/api";
+import { Info } from "~/types/Meta";
 
 export default function Footer() {
   const [info, setInfo] = useState<Info | null>(null);

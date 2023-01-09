@@ -1,5 +1,6 @@
 import {
   ArrowTopRightOnSquareIcon,
+  CodeBracketIcon,
   FlagIcon,
   QuestionMarkCircleIcon,
   UsersIcon,
@@ -27,11 +28,11 @@ export default function Nav(props: NavProps) {
       to: "segments",
       Icon: UsersIcon,
     },
-    // {
-    //   name: "Console",
-    //   to: "console",
-    //   Icon: CodeBracketIcon,
-    // },
+    {
+      name: "Console",
+      to: "console",
+      Icon: CodeBracketIcon,
+    },
   ];
 
   const secondaryNavigation = [

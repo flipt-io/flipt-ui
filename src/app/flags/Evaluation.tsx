@@ -224,7 +224,6 @@ export default function Evaluation() {
           {rules && rules.length > 0 ? (
             <div className="flex lg:space-x-5">
               <div className="hidden w-1/4 flex-col space-y-7 pr-3 lg:flex">
-                {/* TODO: make responsive and move above/vertical on small screens*/}
                 <p className="text-sm text-gray-500">
                   Rules are evaluated in order from{" "}
                   <span className="font-semibold">top to bottom</span>. The

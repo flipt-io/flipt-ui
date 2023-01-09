@@ -7,8 +7,8 @@ export default function ErrorNotification() {
 
   return (
     <Transition show={error !== null}>
-      <div className="max-w-s absolute bottom-0 right-0 z-10 m-4">
-        <div className={`rounded-md bg-red-50 p-4 shadow-sm`} role="alert">
+      <div className="max-w-s fixed bottom-0 right-2 z-10 m-4">
+        <div className="rounded-md border border-red-100 bg-red-50 p-4 shadow" role="alert">
           <div className="flex">
             <div className="flex-shrink-0">
               <XCircleIcon

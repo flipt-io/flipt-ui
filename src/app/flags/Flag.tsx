@@ -30,6 +30,10 @@ export default function Flag() {
   const [flagVersion, setFlagVersion] = useState(0);
 
   const { setError } = useError();
+  const navigate = useNavigate();
+
+  const [showDeleteFlagModal, setShowDeleteFlagModal] =
+    useState<boolean>(false);
 
   const fetchFlag = useCallback(() => {
     getFlag(flag.key)
@@ -48,25 +52,6 @@ export default function Flag() {
   useEffect(() => {
     fetchFlag();
   }, [flagVersion, fetchFlag]);
-
-  return (
-    <>
-      <FlagHeader flag={flag} />
-      <Outlet context={{ flag, onFlagChange: incrementFlagVersion }} />
-    </>
-  );
-}
-
-type FlagHeaderProps = {
-  flag: IFlag;
-};
-
-function FlagHeader(props: FlagHeaderProps) {
-  const { flag } = props;
-  const navigate = useNavigate();
-
-  const [showDeleteFlagModal, setShowDeleteFlagModal] =
-    useState<boolean>(false);
 
   return (
     <>
@@ -116,7 +101,7 @@ function FlagHeader(props: FlagHeaderProps) {
           <nav className="-mb-px flex space-x-8">
             <NavLink
               key="details"
-              to=""
+              to={`/flags/${flag.key}`}
               className={({ isActive }) => {
                 return classNames(
                   isActive
@@ -130,7 +115,7 @@ function FlagHeader(props: FlagHeaderProps) {
             </NavLink>
             <NavLink
               key="evaluation"
-              to="evaluation"
+              to={`/flags/${flag.key}/evaluation`}
               className={({ isActive }) => {
                 return classNames(
                   isActive
@@ -145,6 +130,7 @@ function FlagHeader(props: FlagHeaderProps) {
           </nav>
         </div>
       </div>
+      <Outlet context={{ flag, onFlagChange: incrementFlagVersion }} />
     </>
   );
 }

@@ -242,7 +242,7 @@ export default function Segment() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {segment.constraints.map((constraint) => (
-                      <tr key={constraint.property}>
+                      <tr key={constraint.id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-600 sm:pl-6">
                           {constraint.property}
                         </td>

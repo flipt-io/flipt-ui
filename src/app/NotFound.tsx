@@ -11,7 +11,7 @@ import logoFlag from '~/assets/logo-flag.png';
 const links = [
   {
     title: 'Documentation',
-    description: 'Learn how to integrate our tools with your app',
+    description: 'Learn how to integrate Flipt with your app',
     href: 'https://www.flipt.io/docs',
     icon: BookOpenIcon
   },

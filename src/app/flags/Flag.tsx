@@ -1,25 +1,25 @@
-import { CalendarIcon } from "@heroicons/react/24/outline";
-import { formatDistanceToNowStrict, parseISO } from "date-fns";
-import { useCallback, useEffect, useState } from "react";
+import { CalendarIcon } from '@heroicons/react/24/outline';
+import { formatDistanceToNowStrict, parseISO } from 'date-fns';
+import { useCallback, useEffect, useState } from 'react';
 import {
   LoaderFunctionArgs,
   Outlet,
   useLoaderData,
-  useNavigate,
-} from "react-router-dom";
-import DeleteFlagPanel from "~/components/flags/DeleteFlagPanel";
-import Modal from "~/components/Modal";
-import { getFlag } from "~/data/api";
-import useError from "~/data/hooks/errors";
-import { IFlag } from "~/types/Flag";
+  useNavigate
+} from 'react-router-dom';
+import DeleteFlagPanel from '~/components/flags/DeleteFlagPanel';
+import Modal from '~/components/Modal';
+import { getFlag } from '~/data/api';
+import useError from '~/data/hooks/errors';
+import { IFlag } from '~/types/Flag';
 
 export async function flagLoader({
-  params,
+  params
 }: LoaderFunctionArgs): Promise<IFlag> {
   if (params.flagKey) {
     return getFlag(params.flagKey);
   }
-  return Promise.reject(new Error("No flag key provided"));
+  return Promise.reject(new Error('No flag key provided'));
 }
 
 export default function Flag() {
@@ -61,7 +61,7 @@ export default function Flag() {
           setOpen={setShowDeleteFlagModal}
           onSuccess={() => {
             setShowDeleteFlagModal(false);
-            navigate("/");
+            navigate('/');
           }}
         />
       </Modal>
@@ -78,9 +78,9 @@ export default function Flag() {
                 className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              Created{" "}
+              Created{' '}
               {formatDistanceToNowStrict(parseISO(flag.createdAt), {
-                addSuffix: true,
+                addSuffix: true
               })}
             </div>
           </div>

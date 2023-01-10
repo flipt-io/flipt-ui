@@ -1,26 +1,27 @@
-import { Form, Formik } from "formik";
-import hljs from "highlight.js";
-import javascript from "highlight.js/lib/languages/json";
-import "highlight.js/styles/tokyo-night-dark.css";
-import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-import * as Yup from "yup";
-import EmptyState from "~/components/EmptyState";
-import Button from "~/components/forms/Button";
-import Combobox, { ISelectable } from "~/components/forms/Combobox";
-import Input from "~/components/forms/Input";
-import TextArea from "~/components/forms/TextArea";
-import { evaluate, listFlags } from "~/data/api";
-import useError from "~/data/hooks/errors";
+import { Form, Formik } from 'formik';
+import hljs from 'highlight.js';
+import javascript from 'highlight.js/lib/languages/json';
+import 'highlight.js/styles/tokyo-night-dark.css';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import * as Yup from 'yup';
+import EmptyState from '~/components/EmptyState';
+import Button from '~/components/forms/Button';
+import Combobox, { ISelectable } from '~/components/forms/Combobox';
+import Input from '~/components/forms/Input';
+import TextArea from '~/components/forms/TextArea';
+import { evaluate, listFlags } from '~/data/api';
+import useError from '~/data/hooks/errors';
 import {
   jsonValidation,
   keyValidation,
-  requiredValidation,
-} from "~/data/validations";
-import { IConsole } from "~/types/Console";
-import { IFlag, IFlagList } from "~/types/Flag";
-hljs.registerLanguage("json", javascript);
+  requiredValidation
+} from '~/data/validations';
+import { IConsole } from '~/types/Console';
+import { IFlag, IFlagList } from '~/types/Flag';
+
+hljs.registerLanguage('json', javascript);
 
 type SelectableFlag = IFlag & ISelectable;
 
@@ -34,17 +35,17 @@ export default function Console() {
   const loadData = useCallback(async () => {
     try {
       const initialFlagList = (await listFlags()) as IFlagList;
-      const flags = initialFlagList.flags;
+      const { flags } = initialFlagList;
 
       setFlags(
         flags.map((flag) => {
-          const status = flag.enabled ? "active" : "inactive";
+          const status = flag.enabled ? 'active' : 'inactive';
 
           return {
             ...flag,
             status,
             filterValue: flag.key,
-            displayValue: flag.name,
+            displayValue: flag.name
           };
         })
       );
@@ -60,8 +61,8 @@ export default function Console() {
     const parsed = context ? JSON.parse(context) : undefined;
 
     const rest = {
-      entityId: entityId,
-      context: parsed,
+      entityId,
+      context: parsed
     };
 
     evaluate(flagKey, rest)
@@ -82,9 +83,9 @@ export default function Console() {
   }, [loadData]);
 
   const initialvalues: IConsole = {
-    flagKey: selectedFlag?.key || "",
+    flagKey: selectedFlag?.key || '',
     entityId: uuidv4(),
-    context: undefined,
+    context: undefined
   };
 
   return (
@@ -106,7 +107,7 @@ export default function Console() {
                 validationSchema={Yup.object({
                   flagKey: keyValidation,
                   entityId: requiredValidation,
-                  context: jsonValidation,
+                  context: jsonValidation
                 })}
                 onSubmit={(values) => {
                   handleSubmit(values);
@@ -116,83 +117,81 @@ export default function Console() {
                   setSelectedFlag(null);
                 }}
               >
-                {(formik) => {
-                  return (
-                    <Form className="px-1 sm:overflow-hidden sm:rounded-md">
-                      <div className="space-y-6">
-                        <div className="grid grid-cols-3 gap-6">
-                          <div className="col-span-3">
-                            <label
-                              htmlFor="flagKey"
-                              className="block text-sm font-medium text-gray-700"
-                            >
-                              Flag Key
-                            </label>
-                            <Combobox<SelectableFlag>
-                              id="flagKey"
-                              name="flagKey"
-                              className="mt-1"
-                              placeholder="Select or search for a flag"
-                              values={flags}
-                              selected={selectedFlag}
-                              setSelected={setSelectedFlag}
-                            />
-                          </div>
-                          <div className="col-span-3">
-                            <label
-                              htmlFor="entityId"
-                              className="block text-sm font-medium text-gray-700"
-                            >
-                              Entity ID
-                            </label>
-                            <Input
-                              className="mt-1"
-                              name="entityId"
-                              id="entityId"
-                              type="text"
-                            />
-                          </div>
-                          <div className="col-span-3">
-                            <label
-                              htmlFor="context"
-                              className="block text-sm font-medium text-gray-700"
-                            >
-                              Request Context
-                            </label>
-                            <TextArea
-                              rows={10}
-                              name="context"
-                              id="context"
-                              className="mt-1"
-                              placeholder="{}"
-                            />
-                          </div>
+                {(formik) => (
+                  <Form className="px-1 sm:overflow-hidden sm:rounded-md">
+                    <div className="space-y-6">
+                      <div className="grid grid-cols-3 gap-6">
+                        <div className="col-span-3">
+                          <label
+                            htmlFor="flagKey"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            Flag Key
+                          </label>
+                          <Combobox<SelectableFlag>
+                            id="flagKey"
+                            name="flagKey"
+                            className="mt-1"
+                            placeholder="Select or search for a flag"
+                            values={flags}
+                            selected={selectedFlag}
+                            setSelected={setSelectedFlag}
+                          />
                         </div>
-                        <div className="flex justify-end">
-                          <Button
-                            type="reset"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              formik.resetForm();
-                              formik.setFieldValue("entityId", uuidv4());
-                              formik.setFieldValue("context", "");
-                            }}
+                        <div className="col-span-3">
+                          <label
+                            htmlFor="entityId"
+                            className="block text-sm font-medium text-gray-700"
                           >
-                            Reset
-                          </Button>
-                          <Button
-                            primary
-                            className="ml-3"
-                            type="submit"
-                            disabled={!(formik.dirty && formik.isValid)}
+                            Entity ID
+                          </label>
+                          <Input
+                            className="mt-1"
+                            name="entityId"
+                            id="entityId"
+                            type="text"
+                          />
+                        </div>
+                        <div className="col-span-3">
+                          <label
+                            htmlFor="context"
+                            className="block text-sm font-medium text-gray-700"
                           >
-                            Evaluate
-                          </Button>
+                            Request Context
+                          </label>
+                          <TextArea
+                            rows={10}
+                            name="context"
+                            id="context"
+                            className="mt-1"
+                            placeholder="{}"
+                          />
                         </div>
                       </div>
-                    </Form>
-                  );
-                }}
+                      <div className="flex justify-end">
+                        <Button
+                          type="reset"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            formik.resetForm();
+                            formik.setFieldValue('entityId', uuidv4());
+                            formik.setFieldValue('context', '');
+                          }}
+                        >
+                          Reset
+                        </Button>
+                        <Button
+                          primary
+                          className="ml-3"
+                          type="submit"
+                          disabled={!(formik.dirty && formik.isValid)}
+                        >
+                          Evaluate
+                        </Button>
+                      </div>
+                    </div>
+                  </Form>
+                )}
               </Formik>
             </div>
             <div className="mt-8 w-full overflow-hidden md:w-1/2 md:pl-4">
@@ -216,7 +215,7 @@ export default function Console() {
             <EmptyState
               text="Create Flag"
               secondaryText="At least one flag must exist to use the console"
-              onClick={() => navigate("/flags/new")}
+              onClick={() => navigate('/flags/new')}
             />
           </div>
         )}

@@ -1,5 +1,5 @@
-import { Switch } from "@headlessui/react";
-import { useField } from "formik";
+import { Switch } from '@headlessui/react';
+import { useField } from 'formik';
 
 type ToggleProps = {
   id: string;
@@ -38,13 +38,13 @@ export default function Toggle(props: ToggleProps) {
           handleChange && handleChange(e);
         }}
         className={`${
-          enabled ? "bg-green-400" : "bg-violet-200"
+          enabled ? 'bg-green-400' : 'bg-violet-200'
         } relative inline-flex h-6 w-11 items-center rounded-full`}
       >
         <span className="sr-only">Enable</span>
         <span
           className={`${
-            enabled ? "translate-x-6" : "translate-x-1"
+            enabled ? 'translate-x-6' : 'translate-x-1'
           } inline-block h-4 w-4 transform rounded-full bg-white transition`}
         />
       </Switch>

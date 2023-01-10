@@ -1,5 +1,5 @@
-import { IPageable } from "./Pageable";
-import { IVariant } from "./Variant";
+import { IPageable } from './Pageable';
+import { IVariant } from './Variant';
 
 export interface IFlagBase {
   key: string;

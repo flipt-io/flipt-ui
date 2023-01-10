@@ -19,7 +19,8 @@
   "plugins": ["react", "import"],
   "rules": {
     // turn on errors for missing imports
-    "import/no-unresolved": "error"
+    "import/no-unresolved": "error",
+    "react/require-default-props": "off"
   },
   "settings": {
     "import/parsers": {

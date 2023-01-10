@@ -1,9 +1,9 @@
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { SWRConfig } from 'swr';
-import Flag, { flagLoader } from '~/app/flags/Flag';
 import Console from './app/console/Console';
 import EditFlag from './app/flags/EditFlag';
 import Evaluation from './app/flags/Evaluation';
+import Flag, { flagLoader } from './app/flags/Flag';
 import Flags from './app/flags/Flags';
 import NewFlag from './app/flags/NewFlag';
 import NewSegment from './app/segments/NewSegment';

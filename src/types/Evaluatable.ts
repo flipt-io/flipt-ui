@@ -1,7 +1,7 @@
-import { IDistribution } from "./Distribution";
-import { IFlag } from "./Flag";
-import { ISegment } from "./Segment";
-import { IVariant } from "./Variant";
+import { IDistribution } from './Distribution';
+import { IFlag } from './Flag';
+import { ISegment } from './Segment';
+import { IVariant } from './Variant';
 
 export interface IRollout {
   variant: IVariant;

@@ -1,9 +1,9 @@
-import { Dialog } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import Button from "~/components/forms/Button";
-import { deleteConstraint } from "~/data/api";
-import useError from "~/data/hooks/errors";
-import { IConstraint } from "~/types/Constraint";
+import { Dialog } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import Button from '~/components/forms/Button';
+import { deleteConstraint } from '~/data/api';
+import useError from '~/data/hooks/errors';
+import { IConstraint } from '~/types/Constraint';
 
 type DeleteConstraintPanelProps = {
   setOpen: (open: boolean) => void;
@@ -42,7 +42,7 @@ export default function DeleteConstraintPanel(
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete the constraint for{" "}
+              Are you sure you want to delete the constraint for{' '}
               <span className="font-medium text-violet-500">
                 {constraint?.property}
               </span>

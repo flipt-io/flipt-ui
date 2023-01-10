@@ -1,5 +1,5 @@
-import { IConstraint } from "./Constraint";
-import { IPageable } from "./Pageable";
+import { IConstraint } from './Constraint';
+import { IPageable } from './Pageable';
 
 export interface ISegmentBase {
   key: string;
@@ -15,8 +15,8 @@ export interface ISegment extends ISegmentBase {
 }
 
 export enum SegmentMatchType {
-  ALL_MATCH_TYPE = "All",
-  ANY_MATCH_TYPE = "Any",
+  ALL_MATCH_TYPE = 'All',
+  ANY_MATCH_TYPE = 'Any'
 }
 
 export interface ISegmentList extends IPageable {

@@ -1,36 +1,36 @@
-import { CalendarIcon } from "@heroicons/react/20/solid";
-import { formatDistanceToNowStrict, parseISO } from "date-fns";
-import { useCallback, useEffect, useState } from "react";
+import { CalendarIcon } from '@heroicons/react/20/solid';
+import { formatDistanceToNowStrict, parseISO } from 'date-fns';
+import { useCallback, useEffect, useState } from 'react';
 import {
   LoaderFunctionArgs,
   useLoaderData,
-  useNavigate,
-} from "react-router-dom";
-import EmptyState from "~/components/EmptyState";
-import Button from "~/components/forms/Button";
-import Modal from "~/components/Modal";
-import MoreInfo from "~/components/MoreInfo";
-import ConstraintForm from "~/components/segments/ConstraintForm";
-import DeleteConstraintPanel from "~/components/segments/DeleteConstraintPanel";
-import DeleteSegmentPanel from "~/components/segments/DeleteSegmentPanel";
-import SegmentForm from "~/components/segments/SegmentForm";
-import Slideover from "~/components/Slideover";
-import { getSegment } from "~/data/api";
-import useError from "~/data/hooks/errors";
+  useNavigate
+} from 'react-router-dom';
+import EmptyState from '~/components/EmptyState';
+import Button from '~/components/forms/Button';
+import Modal from '~/components/Modal';
+import MoreInfo from '~/components/MoreInfo';
+import ConstraintForm from '~/components/segments/ConstraintForm';
+import DeleteConstraintPanel from '~/components/segments/DeleteConstraintPanel';
+import DeleteSegmentPanel from '~/components/segments/DeleteSegmentPanel';
+import SegmentForm from '~/components/segments/SegmentForm';
+import Slideover from '~/components/Slideover';
+import { getSegment } from '~/data/api';
+import useError from '~/data/hooks/errors';
 import {
   ComparisonType,
   ConstraintOperators,
-  IConstraint,
-} from "~/types/Constraint";
-import { ISegment } from "~/types/Segment";
+  IConstraint
+} from '~/types/Constraint';
+import { ISegment } from '~/types/Segment';
 
 export async function segmentLoader({
-  params,
+  params
 }: LoaderFunctionArgs): Promise<ISegment> {
   if (params.segmentKey) {
     return getSegment(params.segmentKey);
   }
-  return Promise.reject(new Error("No segment key provided"));
+  return Promise.reject(new Error('No segment key provided'));
 }
 
 export default function Segment() {
@@ -70,13 +70,10 @@ export default function Segment() {
     fetchSegment();
   }, [segmentVerison, fetchSegment]);
 
-  const constraintTypeToLabel = (t: string) => {
-    return ComparisonType[t as keyof typeof ComparisonType];
-  };
+  const constraintTypeToLabel = (t: string) =>
+    ComparisonType[t as keyof typeof ComparisonType];
 
-  const constraintOperatorToLabel = (o: string) => {
-    return ConstraintOperators[o as keyof typeof ConstraintOperators].label;
-  };
+  const constraintOperatorToLabel = (o: string) => ConstraintOperators[o].label;
 
   return (
     <>
@@ -115,7 +112,7 @@ export default function Segment() {
           segmentKey={segment.key}
           setOpen={setShowDeleteSegmentModal}
           onSuccess={() => {
-            navigate("/segments");
+            navigate('/segments');
           }}
         />
       </Modal>
@@ -132,9 +129,9 @@ export default function Segment() {
                 className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              Created{" "}
+              Created{' '}
               {formatDistanceToNowStrict(parseISO(segment.createdAt), {
-                addSuffix: true,
+                addSuffix: true
               })}
             </div>
           </div>

@@ -1,9 +1,9 @@
-import { Dialog } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import Button from "~/components/forms/Button";
-import { deleteRule } from "~/data/api";
-import useError from "~/data/hooks/errors";
-import { IEvaluatable } from "~/types/Evaluatable";
+import { Dialog } from '@headlessui/react';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import Button from '~/components/forms/Button';
+import { deleteRule } from '~/data/api';
+import useError from '~/data/hooks/errors';
+import { IEvaluatable } from '~/types/Evaluatable';
 
 type DeleteRulePanelProps = {
   setOpen: (open: boolean) => void;
@@ -42,8 +42,8 @@ export default function DeleteRulePanel(props: DeleteRulePanelProps) {
             <p className="text-sm text-gray-500">
               Are you sure you want to delete this rule at
               <span className="font-medium text-violet-500">
-                {" "}
-                position {rule?.rank}{" "}
+                {' '}
+                position {rule?.rank}{' '}
               </span>
               ? This action cannot be undone.
             </p>

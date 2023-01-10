@@ -1,4 +1,4 @@
-import { QuestionMarkCircleIcon } from "@heroicons/react/20/solid";
+import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 
 type MoreInfoProps = {
   className?: string;

@@ -20,6 +20,7 @@
       }
     ],
     "@typescript-eslint/comma-dangle": ["error", "never"],
+    "@typescript-eslint/no-shadow": "off",
     "import/no-unresolved": "error",
     "max-len": "off"
   },

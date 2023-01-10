@@ -156,7 +156,7 @@ export default function SegmentTable(props: SegmentTableProps) {
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
-                        )}
+                          )}
                       <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                         {{
                           asc: (
@@ -186,7 +186,7 @@ export default function SegmentTable(props: SegmentTableProps) {
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
-                      )}
+                        )}
                   </th>
                 )
               )}

@@ -163,7 +163,7 @@ export default function FlagTable(props: FlagTableProps) {
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
-                        )}
+                          )}
                       <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                         {{
                           asc: (
@@ -193,7 +193,7 @@ export default function FlagTable(props: FlagTableProps) {
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
-                      )}
+                        )}
                   </th>
                 )
               )}

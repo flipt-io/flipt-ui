@@ -3,7 +3,7 @@ import {
   CodeBracketIcon,
   FlagIcon,
   QuestionMarkCircleIcon,
-  UsersIcon,
+  UsersIcon
 } from '@heroicons/react/24/outline';
 import { NavLink } from 'react-router-dom';
 import { classNames } from '../utils/helpers';
@@ -21,18 +21,18 @@ export default function Nav(props: NavProps) {
     {
       name: 'Flags',
       to: '/',
-      Icon: FlagIcon,
+      Icon: FlagIcon
     },
     {
       name: 'Segments',
       to: 'segments',
-      Icon: UsersIcon,
+      Icon: UsersIcon
     },
     {
       name: 'Console',
       to: 'console',
-      Icon: CodeBracketIcon,
-    },
+      Icon: CodeBracketIcon
+    }
   ];
 
   const secondaryNavigation = [
@@ -45,8 +45,8 @@ export default function Nav(props: NavProps) {
       name: 'Documentation',
       to: 'https://flipt.io/docs?utm_source=app',
       Icon: QuestionMarkCircleIcon,
-      external: true,
-    },
+      external: true
+    }
   ];
 
   return (

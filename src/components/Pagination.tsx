@@ -1,6 +1,6 @@
 import {
   ArrowLongLeftIcon,
-  ArrowLongRightIcon,
+  ArrowLongRightIcon
 } from '@heroicons/react/20/solid';
 import { usePagination } from '~/data/hooks/pagination';
 import { classNames } from '~/utils/helpers';
@@ -19,14 +19,14 @@ export default function Pagination(props: PaginationProps) {
     currentPage,
     totalCount,
     pageSize,
-    onPageChange,
+    onPageChange
   } = props;
 
   const paginationRange = usePagination({
     currentPage,
     totalCount,
     siblingCount: 2,
-    pageSize,
+    pageSize
   });
 
   const onNextPage = () => {

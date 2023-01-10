@@ -19,6 +19,7 @@
         "semi": true
       }
     ],
+    "@typescript-eslint/comma-dangle": ["error", "never"],
     "import/no-unresolved": "error",
     "max-len": "off"
   },

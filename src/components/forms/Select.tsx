@@ -17,7 +17,7 @@ export default function Select(props: SelectProps) {
 
   const [field] = useField({
     name,
-    type: 'select',
+    type: 'select'
   });
 
   return (

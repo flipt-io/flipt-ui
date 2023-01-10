@@ -14,13 +14,13 @@ export default function FlagMenu(props: FlagMenuProps) {
     {
       name: 'Details',
       to: `/flags/${flag.key}`,
-      current: selected === 'details',
+      current: selected === 'details'
     },
     {
       name: 'Evaluation',
       to: `/flags/${flag.key}/evaluation`,
-      current: selected === 'evaluation',
-    },
+      current: selected === 'evaluation'
+    }
   ];
 
   return (

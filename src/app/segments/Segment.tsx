@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import {
   LoaderFunctionArgs,
   useLoaderData,
-  useNavigate,
+  useNavigate
 } from 'react-router-dom';
 import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
@@ -20,12 +20,12 @@ import useError from '~/data/hooks/errors';
 import {
   ComparisonType,
   ConstraintOperators,
-  IConstraint,
+  IConstraint
 } from '~/types/Constraint';
 import { ISegment } from '~/types/Segment';
 
 export async function segmentLoader({
-  params,
+  params
 }: LoaderFunctionArgs): Promise<ISegment> {
   if (params.segmentKey) {
     return getSegment(params.segmentKey);
@@ -131,7 +131,7 @@ export default function Segment() {
               />
               Created{' '}
               {formatDistanceToNowStrict(parseISO(segment.createdAt), {
-                addSuffix: true,
+                addSuffix: true
               })}
             </div>
           </div>

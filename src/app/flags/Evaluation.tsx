@@ -5,13 +5,13 @@ import {
   KeyboardSensor,
   PointerSensor,
   useSensor,
-  useSensors,
+  useSensors
 } from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
+  verticalListSortingStrategy
 } from '@dnd-kit/sortable';
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import { useCallback, useEffect, useState } from 'react';
@@ -78,7 +78,7 @@ export default function Evaluation() {
 
           return {
             variant,
-            distribution,
+            distribution
           };
         }
       );
@@ -97,7 +97,7 @@ export default function Evaluation() {
         rank: rule.rank,
         rollouts,
         createdAt: rule.createdAt,
-        updatedAt: rule.updatedAt,
+        updatedAt: rule.updatedAt
       };
     });
 
@@ -111,7 +111,7 @@ export default function Evaluation() {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+      coordinateGetter: sortableKeyboardCoordinates
     })
   );
 

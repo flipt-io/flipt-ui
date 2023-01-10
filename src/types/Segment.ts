@@ -16,7 +16,7 @@ export interface ISegment extends ISegmentBase {
 
 export enum SegmentMatchType {
   ALL_MATCH_TYPE = 'All',
-  ANY_MATCH_TYPE = 'Any',
+  ANY_MATCH_TYPE = 'Any'
 }
 
 export interface ISegmentList extends IPageable {

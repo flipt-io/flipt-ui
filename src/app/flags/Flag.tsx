@@ -5,7 +5,7 @@ import {
   LoaderFunctionArgs,
   Outlet,
   useLoaderData,
-  useNavigate,
+  useNavigate
 } from 'react-router-dom';
 import DeleteFlagPanel from '~/components/flags/DeleteFlagPanel';
 import Modal from '~/components/Modal';
@@ -14,7 +14,7 @@ import useError from '~/data/hooks/errors';
 import { IFlag } from '~/types/Flag';
 
 export async function flagLoader({
-  params,
+  params
 }: LoaderFunctionArgs): Promise<IFlag> {
   if (params.flagKey) {
     return getFlag(params.flagKey);
@@ -80,7 +80,7 @@ export default function Flag() {
               />
               Created{' '}
               {formatDistanceToNowStrict(parseISO(flag.createdAt), {
-                addSuffix: true,
+                addSuffix: true
               })}
             </div>
           </div>

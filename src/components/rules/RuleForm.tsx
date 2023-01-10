@@ -29,13 +29,13 @@ const distTypes = [
   {
     id: 'single',
     name: 'Single Variant',
-    description: 'Always returns the same variant',
+    description: 'Always returns the same variant'
   },
   {
     id: 'multi',
     name: 'Multi-Variant',
-    description: 'Returns different variants based on percentages',
-  },
+    description: 'Returns different variants based on percentages'
+  }
 ];
 
 type SelectableSegment = ISegment & ISelectable;
@@ -59,7 +59,7 @@ export default function RuleForm(props: RuleFormProps) {
     return flag.variants?.map((variant, i) => ({
       variantId: variant.id,
       variantKey: variant.key,
-      rollout: percentages[i],
+      rollout: percentages[i]
     }));
   });
 
@@ -68,14 +68,14 @@ export default function RuleForm(props: RuleFormProps) {
     const rule = await createRule(flag.key, {
       flagKey: flag.key,
       segmentKey: selectedSegment.key,
-      rank,
+      rank
     });
 
     if (ruleType === 'multi') {
       const distPromises = distributions?.map((dist: distribution) =>
         createDistribution(flag.key, rule.id, {
           variantId: dist.variantId,
-          rollout: dist.rollout,
+          rollout: dist.rollout
         })
       );
       if (distPromises) await Promise.all(distPromises);
@@ -84,7 +84,7 @@ export default function RuleForm(props: RuleFormProps) {
 
       await createDistribution(flag.key, rule.id, {
         variantId: selectedVariant.id,
-        rollout: 100,
+        rollout: 100
       });
     }
 
@@ -96,7 +96,7 @@ export default function RuleForm(props: RuleFormProps) {
   return (
     <Formik
       initialValues={{
-        segmentKey: selectedSegment?.key || '',
+        segmentKey: selectedSegment?.key || ''
       }}
       onSubmit={() => {
         handleSubmit().catch((err) => {
@@ -146,7 +146,7 @@ export default function RuleForm(props: RuleFormProps) {
                   values={segments.map((s) => ({
                     ...s,
                     filterValue: s.key,
-                    displayValue: s.name,
+                    displayValue: s.name
                   }))}
                   selected={selectedSegment}
                   setSelected={setSelectedSegment}
@@ -222,7 +222,7 @@ export default function RuleForm(props: RuleFormProps) {
                       flag?.variants?.map((v) => ({
                         ...v,
                         filterValue: v.key,
-                        displayValue: v.name,
+                        displayValue: v.name
                       })) || []
                     }
                     selected={selectedVariant}

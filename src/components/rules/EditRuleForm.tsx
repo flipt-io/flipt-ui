@@ -22,13 +22,13 @@ const distTypes = [
   {
     id: 'single',
     name: 'Single Variant',
-    description: 'Always returns the same variant',
+    description: 'Always returns the same variant'
   },
   {
     id: 'multi',
     name: 'Multi-Variant',
-    description: 'Returns different variants based on percentages',
-  },
+    description: 'Returns different variants based on percentages'
+  }
 ];
 
 type SelectableSegment = ISegment & ISelectable;
@@ -62,7 +62,7 @@ export default function EditRuleForm(props: RuleFormProps) {
             rollout.distribution.id,
             {
               variantId: rollout.distribution.variantId,
-              rollout: rollout.distribution.rollout,
+              rollout: rollout.distribution.rollout
             }
           );
         }
@@ -72,7 +72,7 @@ export default function EditRuleForm(props: RuleFormProps) {
   return (
     <Formik
       initialValues={{
-        segmentKey: rule.segment.key || '',
+        segmentKey: rule.segment.key || ''
       }}
       onSubmit={() => {
         handleSubmit()
@@ -127,7 +127,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                   selected={{
                     filterValue: rule.segment.key,
                     displayValue: rule.segment.key,
-                    ...rule.segment,
+                    ...rule.segment
                   }}
                 />
               </div>
@@ -200,7 +200,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                     selected={{
                       filterValue: editingRule.rollouts[0].variant.key,
                       displayValue: editingRule.rollouts[0].variant.key,
-                      ...editingRule.rollouts[0].variant,
+                      ...editingRule.rollouts[0].variant
                     }}
                   />
                 </div>
@@ -249,7 +249,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                           );
                           setEditingRule({
                             ...editingRule,
-                            rollouts: newRollouts,
+                            rollouts: newRollouts
                           });
                         }}
                       />

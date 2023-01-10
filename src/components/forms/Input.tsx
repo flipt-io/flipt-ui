@@ -18,7 +18,7 @@ export default function Input(props: InputProps) {
     className,
     handleChange,
     autocomplete = false,
-    disabled = false,
+    disabled = false
   } = props;
 
   const [field, meta] = useField(props);

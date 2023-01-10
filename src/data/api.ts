@@ -14,8 +14,8 @@ async function get(uri: string) {
   const res = await fetch(apiURL + uri, {
     method: 'GET',
     headers: {
-      Accept: 'application/json',
-    },
+      Accept: 'application/json'
+    }
   });
   if (!res.ok) {
     const err = await res.json();
@@ -29,9 +29,9 @@ async function post<T>(uri: string, values: T) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json',
+      Accept: 'application/json'
     },
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   });
   if (!res.ok) {
     const err = await res.json();
@@ -45,9 +45,9 @@ async function put<T>(uri: string, values: T) {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json',
+      Accept: 'application/json'
     },
-    body: JSON.stringify(values),
+    body: JSON.stringify(values)
   });
   if (!res.ok) {
     const err = await res.json();
@@ -76,7 +76,7 @@ export async function updateFlag(key: string, values: IFlagBase) {
 
 export async function deleteFlag(key: string) {
   const res = await fetch(`${apiURL}/flags/${key}`, {
-    method: 'DELETE',
+    method: 'DELETE'
   });
   return res.ok;
 }
@@ -93,7 +93,7 @@ export async function createRule(flagKey: string, values: IRuleBase) {
 
 export async function deleteRule(flagKey: string, ruleId: string) {
   const res = await fetch(`${apiURL}/flags/${flagKey}/rules/${ruleId}`, {
-    method: 'DELETE',
+    method: 'DELETE'
   });
   return res.ok;
 }
@@ -102,11 +102,11 @@ export async function orderRules(flagKey: string, ruleIds: string[]) {
   const res = await fetch(`${apiURL}/flags/${flagKey}/rules/order`, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      ruleIds,
-    }),
+      ruleIds
+    })
   });
   if (!res.ok) {
     const err = await res.json();
@@ -151,7 +151,7 @@ export async function updateVariant(
 
 export async function deleteVariant(flagKey: string, variantId: string) {
   const res = await fetch(`${apiURL}/flags/${flagKey}/variants/${variantId}`, {
-    method: 'DELETE',
+    method: 'DELETE'
   });
   return res.ok;
 }
@@ -176,7 +176,7 @@ export async function updateSegment(key: string, values: ISegmentBase) {
 
 export async function deleteSegment(key: string) {
   const res = await fetch(`${apiURL}/segments/${key}`, {
-    method: 'DELETE',
+    method: 'DELETE'
   });
   return res.ok;
 }
@@ -205,7 +205,7 @@ export async function deleteConstraint(
   const res = await fetch(
     `${apiURL}/segments/${segmentKey}/constraints/${constraintId}`,
     {
-      method: 'DELETE',
+      method: 'DELETE'
     }
   );
   return res.ok;
@@ -217,12 +217,12 @@ export async function evaluate(flagKey: string, values: any) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Accept: 'application/json',
+      Accept: 'application/json'
     },
     body: JSON.stringify({
       flagKey,
-      ...values,
-    }),
+      ...values
+    })
   });
   if (!res.ok) {
     const err = await res.json();

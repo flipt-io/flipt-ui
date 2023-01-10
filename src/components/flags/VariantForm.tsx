@@ -38,7 +38,7 @@ export default function VariantForm(props: VariantFormProps) {
         key: variant?.key || '',
         name: variant?.name || '',
         description: variant?.description || '',
-        attachment: variant?.attachment || '',
+        attachment: variant?.attachment || ''
       }}
       onSubmit={(values) => {
         handleSubmit(values)
@@ -52,7 +52,7 @@ export default function VariantForm(props: VariantFormProps) {
       }}
       validationSchema={Yup.object({
         key: keyValidation,
-        attachment: jsonValidation,
+        attachment: jsonValidation
       })}
     >
       {(formik) => (

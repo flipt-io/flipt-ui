@@ -16,7 +16,7 @@ import useError from '~/data/hooks/errors';
 import {
   jsonValidation,
   keyValidation,
-  requiredValidation,
+  requiredValidation
 } from '~/data/validations';
 import { IConsole } from '~/types/Console';
 import { IFlag, IFlagList } from '~/types/Flag';
@@ -45,7 +45,7 @@ export default function Console() {
             ...flag,
             status,
             filterValue: flag.key,
-            displayValue: flag.name,
+            displayValue: flag.name
           };
         })
       );
@@ -62,7 +62,7 @@ export default function Console() {
 
     const rest = {
       entityId,
-      context: parsed,
+      context: parsed
     };
 
     evaluate(flagKey, rest)
@@ -85,7 +85,7 @@ export default function Console() {
   const initialvalues: IConsole = {
     flagKey: selectedFlag?.key || '',
     entityId: uuidv4(),
-    context: undefined,
+    context: undefined
   };
 
   return (
@@ -107,7 +107,7 @@ export default function Console() {
                 validationSchema={Yup.object({
                   flagKey: keyValidation,
                   entityId: requiredValidation,
-                  context: jsonValidation,
+                  context: jsonValidation
                 })}
                 onSubmit={(values) => {
                   handleSubmit(values);

@@ -17,7 +17,7 @@ import {
   ConstraintStringOperators,
   IConstraint,
   IConstraintBase,
-  Operator,
+  Operator
 } from '~/types/Constraint';
 
 type ConstraintFormProps = {
@@ -39,7 +39,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
     property: constraint?.property || '',
     type: constraint?.type || ('STRING_COMPARISON_TYPE' as ComparisonType),
     operator: constraint?.operator || 'eq',
-    value: constraint?.value || '',
+    value: constraint?.value || ''
   };
 
   const handleSubmit = async (values: IConstraintBase) => {
@@ -64,7 +64,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
       }}
       validationSchema={Yup.object({
         property: requiredValidation,
-        value: hasValue ? requiredValidation : Yup.string().notRequired(),
+        value: hasValue ? requiredValidation : Yup.string().notRequired()
       })}
     >
       {(formik) => (
@@ -205,7 +205,7 @@ const constraintComparisonTypes = () =>
   (Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>).map(
     (t) => ({
       value: t,
-      label: ComparisonType[t],
+      label: ComparisonType[t]
     })
   );
 

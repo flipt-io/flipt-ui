@@ -32,7 +32,7 @@ export default function FlagForm(props: FlagFormProps) {
     key: flag?.key || '',
     name: flag?.name || '',
     description: flag?.description || '',
-    enabled: flag?.enabled || false,
+    enabled: flag?.enabled || false
   };
 
   return (
@@ -57,7 +57,7 @@ export default function FlagForm(props: FlagFormProps) {
       }}
       validationSchema={Yup.object({
         key: keyValidation,
-        name: requiredValidation,
+        name: requiredValidation
       })}
     >
       {(formik) => {

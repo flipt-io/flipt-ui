@@ -16,15 +16,15 @@ export default function SortableRule(props: SortableRuleProps) {
     listeners,
     setNodeRef,
     transform,
-    transition,
+    transition
   } = useSortable({
-    id: rule.id,
+    id: rule.id
   });
 
   const style = transform
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        transition,
+        transition
       }
     : undefined;
 

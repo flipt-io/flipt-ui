@@ -15,7 +15,7 @@ export default function EmptyState(props: EmptyStateProps) {
     secondaryText,
     className = '',
     Icon = PlusCircleIcon,
-    onClick,
+    onClick
   } = props;
 
   return (

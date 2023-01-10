@@ -18,11 +18,11 @@ const router = createBrowserRouter([
     children: [
       {
         element: <Flags />,
-        index: true,
+        index: true
       },
       {
         path: 'flags/new',
-        element: <NewFlag />,
+        element: <NewFlag />
       },
       {
         path: 'flags/:flagKey',
@@ -31,33 +31,33 @@ const router = createBrowserRouter([
         children: [
           {
             path: '',
-            element: <EditFlag />,
+            element: <EditFlag />
           },
           {
             path: 'evaluation',
-            element: <Evaluation />,
-          },
-        ],
+            element: <Evaluation />
+          }
+        ]
       },
       {
         path: 'segments',
-        element: <Segments />,
+        element: <Segments />
       },
       {
         path: 'segments/new',
-        element: <NewSegment />,
+        element: <NewSegment />
       },
       {
         path: 'segments/:segmentKey',
         element: <Segment />,
-        loader: segmentLoader,
+        loader: segmentLoader
       },
       {
         path: 'console',
-        element: <Console />,
-      },
-    ],
-  },
+        element: <Console />
+      }
+    ]
+  }
 ]);
 
 const apiURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/api/v1`;
@@ -69,7 +69,7 @@ export default function App() {
     <SWRConfig
       value={{
         refreshInterval: 10000, // 10 seconds
-        fetcher,
+        fetcher
       }}
     >
       <RouterProvider router={router} />

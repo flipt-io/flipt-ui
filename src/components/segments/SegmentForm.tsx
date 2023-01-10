@@ -14,13 +14,13 @@ const segmentMatchTypes = [
   {
     id: 'ALL_MATCH_TYPE',
     name: SegmentMatchType.ALL_MATCH_TYPE,
-    description: 'All constraints must match',
+    description: 'All constraints must match'
   },
   {
     id: 'ANY_MATCH_TYPE',
     name: SegmentMatchType.ANY_MATCH_TYPE,
-    description: 'At least one constraints must match',
-  },
+    description: 'At least one constraints must match'
+  }
 ];
 
 type SegmentFormProps = {
@@ -50,7 +50,7 @@ export default function SegmentForm(props: SegmentFormProps) {
     key: segment?.key || '',
     name: segment?.name || '',
     description: segment?.description || '',
-    matchType: selectedMatchType,
+    matchType: selectedMatchType
   };
 
   return (
@@ -74,7 +74,7 @@ export default function SegmentForm(props: SegmentFormProps) {
       }}
       validationSchema={Yup.object({
         key: keyValidation,
-        name: requiredValidation,
+        name: requiredValidation
       })}
     >
       {(formik) => (

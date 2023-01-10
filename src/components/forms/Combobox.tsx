@@ -32,7 +32,7 @@ export default function Combobox<T extends ISelectable>(
     selected,
     setSelected,
     placeholder,
-    disabled,
+    disabled
   } = props;
 
   const [query, setQuery] = useState('');

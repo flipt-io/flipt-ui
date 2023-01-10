@@ -9,7 +9,7 @@ import {
   PaginationState,
   Row,
   SortingState,
-  useReactTable,
+  useReactTable
 } from '@tanstack/react-table';
 import { formatDistanceToNowStrict, parseISO } from 'date-fns';
 import { useState } from 'react';
@@ -29,7 +29,7 @@ export default function FlagTable(props: FlagTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize,
+    pageSize
   });
   const [filter, setFilter] = useState<string>('');
 
@@ -45,15 +45,15 @@ export default function FlagTable(props: FlagTableProps) {
       ),
       meta: {
         className:
-          'truncate whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900',
-      },
+          'truncate whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900'
+      }
     }),
     columnHelper.accessor('name', {
       header: 'Name',
       cell: (info) => info.getValue(),
       meta: {
-        className: 'truncate whitespace-nowrap py-4 px-3 text-sm text-gray-500',
-      },
+        className: 'truncate whitespace-nowrap py-4 px-3 text-sm text-gray-500'
+      }
     }),
     columnHelper.accessor('enabled', {
       header: 'Status',
@@ -69,15 +69,15 @@ export default function FlagTable(props: FlagTableProps) {
         </span>
       ),
       meta: {
-        className: 'whitespace-nowrap py-4 px-3 text-sm',
-      },
+        className: 'whitespace-nowrap py-4 px-3 text-sm'
+      }
     }),
     columnHelper.accessor('description', {
       header: 'Description',
       cell: (info) => info.getValue(),
       meta: {
-        className: 'truncate whitespace-nowrap py-4 px-3 text-sm text-gray-500',
-      },
+        className: 'truncate whitespace-nowrap py-4 px-3 text-sm text-gray-500'
+      }
     }),
     columnHelper.accessor(
       (row) => formatDistanceToNowStrict(parseISO(row.createdAt)),
@@ -85,7 +85,7 @@ export default function FlagTable(props: FlagTableProps) {
         header: 'Created',
         id: 'createdAt',
         meta: {
-          className: 'whitespace-nowrap py-4 px-3 text-sm text-gray-500',
+          className: 'whitespace-nowrap py-4 px-3 text-sm text-gray-500'
         },
         sortingFn: (
           rowA: Row<IFlag>,
@@ -95,7 +95,7 @@ export default function FlagTable(props: FlagTableProps) {
         ): number =>
           new Date(rowA.original.createdAt) < new Date(rowB.original.createdAt)
             ? 1
-            : -1,
+            : -1
       }
     ),
     columnHelper.accessor(
@@ -104,7 +104,7 @@ export default function FlagTable(props: FlagTableProps) {
         header: 'Updated',
         id: 'updatedAt',
         meta: {
-          className: 'whitespace-nowrap py-4 px-3 text-sm text-gray-500',
+          className: 'whitespace-nowrap py-4 px-3 text-sm text-gray-500'
         },
         sortingFn: (
           rowA: Row<IFlag>,
@@ -114,9 +114,9 @@ export default function FlagTable(props: FlagTableProps) {
         ): number =>
           new Date(rowA.original.updatedAt) < new Date(rowB.original.updatedAt)
             ? 1
-            : -1,
+            : -1
       }
-    ),
+    )
   ];
 
   const table = useReactTable({
@@ -125,7 +125,7 @@ export default function FlagTable(props: FlagTableProps) {
     state: {
       globalFilter: filter,
       sorting,
-      pagination,
+      pagination
     },
     globalFilterFn: 'includesString',
     onSortingChange: setSorting,
@@ -134,7 +134,7 @@ export default function FlagTable(props: FlagTableProps) {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    getFilteredRowModel: getFilteredRowModel()
   });
 
   return (
@@ -163,7 +163,7 @@ export default function FlagTable(props: FlagTableProps) {
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
-                          )}
+                        )}
                       <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
                         {{
                           asc: (
@@ -177,7 +177,7 @@ export default function FlagTable(props: FlagTableProps) {
                               className="h-5 w-5"
                               aria-hidden="true"
                             />
-                          ),
+                          )
                         }[header.column.getIsSorted() as string] ?? null}
                       </span>
                     </a>
@@ -193,7 +193,7 @@ export default function FlagTable(props: FlagTableProps) {
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
-                        )}
+                      )}
                   </th>
                 )
               )}

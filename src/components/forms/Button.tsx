@@ -16,7 +16,7 @@ export default function Button(props: ButtonProps) {
     children,
     type = 'button',
     primary = false,
-    disabled = false,
+    disabled = false
   } = props;
 
   return (

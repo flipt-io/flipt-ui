@@ -1,17 +1,17 @@
-import { Dialog } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Form, Formik } from "formik";
-import { useState } from "react";
-import Button from "~/components/forms/Button";
-import Combobox, { ISelectable } from "~/components/forms/Combobox";
-import MoreInfo from "~/components/MoreInfo";
-import { createDistribution, createRule } from "~/data/api";
-import useError from "~/data/hooks/errors";
-import { IFlag } from "~/types/Flag";
-import { ISegment } from "~/types/Segment";
-import { IVariant } from "~/types/Variant";
+import { Dialog } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Form, Formik } from 'formik';
+import { useState } from 'react';
+import Button from '~/components/forms/Button';
+import Combobox, { ISelectable } from '~/components/forms/Combobox';
+import MoreInfo from '~/components/MoreInfo';
+import { createDistribution, createRule } from '~/data/api';
+import useError from '~/data/hooks/errors';
+import { IFlag } from '~/types/Flag';
+import { ISegment } from '~/types/Segment';
+import { IVariant } from '~/types/Variant';
 
-interface distribution {
+interface Distribution {
   variantId: string;
   variantKey: string;
   rollout: number;
@@ -27,16 +27,32 @@ type RuleFormProps = {
 
 const distTypes = [
   {
-    id: "single",
-    name: "Single Variant",
-    description: "Always returns the same variant",
+    id: 'single',
+    name: 'Single Variant',
+    description: 'Always returns the same variant'
   },
   {
-    id: "multi",
-    name: "Multi-Variant",
-    description: "Returns different variants based on percentages",
-  },
+    id: 'multi',
+    name: 'Multi-Variant',
+    description: 'Returns different variants based on percentages'
+  }
 ];
+
+function computePercentages(n: number) {
+  const sum = 100 * 100;
+
+  const d = Math.floor(sum / n);
+  const remainder = sum - d * n;
+
+  const result = [];
+  let i = 0;
+
+  while (++i && i <= n) {
+    result.push((i <= remainder ? d + 1 : d) / 100);
+  }
+
+  return result;
+}
 
 type SelectableSegment = ISegment & ISelectable;
 
@@ -46,7 +62,7 @@ export default function RuleForm(props: RuleFormProps) {
   const { setOpen, rulesChanged, flag, rank, segments } = props;
   const { setError, clearError } = useError();
 
-  const [ruleType, setRuleType] = useState("single");
+  const [ruleType, setRuleType] = useState('single');
 
   const [selectedSegment, setSelectedSegment] =
     useState<SelectableSegment | null>(null);
@@ -56,37 +72,35 @@ export default function RuleForm(props: RuleFormProps) {
   const [distributions, setDistributions] = useState(() => {
     const percentages = computePercentages(flag.variants?.length || 0);
 
-    return flag.variants?.map((variant, i) => {
-      return {
-        variantId: variant.id,
-        variantKey: variant.key,
-        rollout: percentages[i],
-      };
-    });
+    return flag.variants?.map((variant, i) => ({
+      variantId: variant.id,
+      variantKey: variant.key,
+      rollout: percentages[i]
+    }));
   });
 
   const handleSubmit = async () => {
-    if (!selectedSegment) throw new Error("No segment selected");
+    if (!selectedSegment) throw new Error('No segment selected');
     const rule = await createRule(flag.key, {
       flagKey: flag.key,
       segmentKey: selectedSegment.key,
-      rank: rank,
+      rank
     });
 
-    if (ruleType === "multi") {
-      const distPromises = distributions?.map((dist: distribution) => {
-        return createDistribution(flag.key, rule.id, {
+    if (ruleType === 'multi') {
+      const distPromises = distributions?.map((dist: Distribution) =>
+        createDistribution(flag.key, rule.id, {
           variantId: dist.variantId,
-          rollout: dist.rollout,
-        });
-      });
+          rollout: dist.rollout
+        })
+      );
       if (distPromises) await Promise.all(distPromises);
     } else {
-      if (!selectedVariant) throw new Error("No variant selected");
+      if (!selectedVariant) throw new Error('No variant selected');
 
       await createDistribution(flag.key, rule.id, {
         variantId: selectedVariant.id,
-        rollout: 100,
+        rollout: 100
       });
     }
 
@@ -98,7 +112,7 @@ export default function RuleForm(props: RuleFormProps) {
   return (
     <Formik
       initialValues={{
-        segmentKey: selectedSegment?.key || "",
+        segmentKey: selectedSegment?.key || ''
       }}
       onSubmit={() => {
         handleSubmit().catch((err) => {
@@ -145,13 +159,11 @@ export default function RuleForm(props: RuleFormProps) {
                   id="segmentKey"
                   name="segmentKey"
                   placeholder="Select or search for a segment"
-                  values={segments.map((s) => {
-                    return {
-                      ...s,
-                      filterValue: s.key,
-                      displayValue: s.name,
-                    };
-                  })}
+                  values={segments.map((s) => ({
+                    ...s,
+                    filterValue: s.key,
+                    displayValue: s.name
+                  }))}
                   selected={selectedSegment}
                   setSelected={setSelectedSegment}
                 />
@@ -207,7 +219,7 @@ export default function RuleForm(props: RuleFormProps) {
               </div>
             </div>
 
-            {ruleType === "single" && (
+            {ruleType === 'single' && (
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                 <div>
                   <label
@@ -223,13 +235,11 @@ export default function RuleForm(props: RuleFormProps) {
                     name="variant"
                     placeholder="Select or search for a variant"
                     values={
-                      flag?.variants?.map((v) => {
-                        return {
-                          ...v,
-                          filterValue: v.key,
-                          displayValue: v.name,
-                        };
-                      }) || []
+                      flag?.variants?.map((v) => ({
+                        ...v,
+                        filterValue: v.key,
+                        displayValue: v.name
+                      })) || []
                     }
                     selected={selectedVariant}
                     setSelected={setSelectedVariant}
@@ -238,7 +248,7 @@ export default function RuleForm(props: RuleFormProps) {
               </div>
             )}
 
-            {ruleType === "multi" && (
+            {ruleType === 'multi' && (
               <div>
                 <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                   <div>
@@ -307,20 +317,4 @@ export default function RuleForm(props: RuleFormProps) {
       </Form>
     </Formik>
   );
-}
-
-function computePercentages(n: number) {
-  const sum = 100 * 100;
-
-  const d = Math.floor(sum / n);
-  const remainder = sum - d * n;
-
-  const result = [];
-  let i = 0;
-
-  while (++i && i <= n) {
-    result.push((i <= remainder ? d + 1 : d) / 100);
-  }
-
-  return result;
 }

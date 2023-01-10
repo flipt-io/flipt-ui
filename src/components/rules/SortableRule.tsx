@@ -1,6 +1,6 @@
-import { useSortable } from "@dnd-kit/sortable";
-import { IEvaluatable } from "~/types/Evaluatable";
-import Rule from "./Rule";
+import { useSortable } from '@dnd-kit/sortable';
+import { IEvaluatable } from '~/types/Evaluatable';
+import Rule from './Rule';
 
 type SortableRuleProps = {
   rule: IEvaluatable;
@@ -16,19 +16,19 @@ export default function SortableRule(props: SortableRuleProps) {
     listeners,
     setNodeRef,
     transform,
-    transition,
+    transition
   } = useSortable({
-    id: rule.id,
+    id: rule.id
   });
 
   const style = transform
     ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-        transition,
+        transition
       }
     : undefined;
 
-  const className = isDragging ? "border-violet-200" : "";
+  const className = isDragging ? 'border-violet-200' : '';
 
   return (
     <Rule

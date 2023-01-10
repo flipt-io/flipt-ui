@@ -1,5 +1,5 @@
-import { IDistribution } from "./Distribution";
-import { IPageable } from "./Pageable";
+import { IDistribution } from './Distribution';
+import { IPageable } from './Pageable';
 
 export interface IRuleBase {
   flagKey: string;

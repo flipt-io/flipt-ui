@@ -19,9 +19,7 @@ type VariantFormProps = {
 };
 
 export default function VariantForm(props: VariantFormProps) {
-  const {
-    setOpen, flagKey, variant, onSuccess,
-  } = props;
+  const { setOpen, flagKey, variant, onSuccess } = props;
   const isNew = variant === undefined;
   const title = isNew ? 'New Variant' : 'Edit Variant';
   const { setError, clearError } = useError();

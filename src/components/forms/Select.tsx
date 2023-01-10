@@ -12,9 +12,8 @@ type SelectProps = {
 };
 
 export default function Select(props: SelectProps) {
-  const {
-    id, name, options, children, className, defaultValue, handleChange,
-  } = props;
+  const { id, name, options, children, className, defaultValue, handleChange } =
+    props;
 
   const [field] = useField({
     name,
@@ -29,8 +28,8 @@ export default function Select(props: SelectProps) {
       {...field}
       onChange={handleChange || field.onChange}
     >
-      {options
-        && options.map((option) => (
+      {options &&
+        options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
           </option>

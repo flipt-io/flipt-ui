@@ -57,9 +57,10 @@ export default function SegmentTable(props: SegmentTableProps) {
     }),
     columnHelper.accessor('matchType', {
       header: 'Match Type',
-      cell: (info) => SegmentMatchType[
-        info.getValue() as unknown as keyof typeof SegmentMatchType
-      ],
+      cell: (info) =>
+        SegmentMatchType[
+          info.getValue() as unknown as keyof typeof SegmentMatchType
+        ],
       meta: {
         className: 'whitespace-nowrap py-4 px-3 text-sm',
       },
@@ -83,12 +84,12 @@ export default function SegmentTable(props: SegmentTableProps) {
           rowA: Row<ISegment>,
           rowB: Row<ISegment>,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          _columnId: string,
-        ): number => (new Date(rowA.original.createdAt)
-            < new Date(rowB.original.createdAt)
-          ? 1
-          : -1),
-      },
+          _columnId: string
+        ): number =>
+          new Date(rowA.original.createdAt) < new Date(rowB.original.createdAt)
+            ? 1
+            : -1,
+      }
     ),
     columnHelper.accessor(
       (row) => formatDistanceToNowStrict(parseISO(row.updatedAt)),
@@ -102,12 +103,12 @@ export default function SegmentTable(props: SegmentTableProps) {
           rowA: Row<ISegment>,
           rowB: Row<ISegment>,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          _columnId: string,
-        ): number => (new Date(rowA.original.updatedAt)
-            < new Date(rowB.original.updatedAt)
-          ? 1
-          : -1),
-      },
+          _columnId: string
+        ): number =>
+          new Date(rowA.original.updatedAt) < new Date(rowB.original.updatedAt)
+            ? 1
+            : -1,
+      }
     ),
   ];
 
@@ -138,55 +139,57 @@ export default function SegmentTable(props: SegmentTableProps) {
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (header.column.getCanSort() ? (
-                <th
-                  key={header.id}
-                  scope="col"
-                  className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
-                >
-                  <a
-                    href="#"
-                    className="group inline-flex"
-                    onClick={header.column.getToggleSortingHandler()}
+              {headerGroup.headers.map((header) =>
+                header.column.getCanSort() ? (
+                  <th
+                    key={header.id}
+                    scope="col"
+                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                  >
+                    <a
+                      href="#"
+                      className="group inline-flex"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                        {{
+                          asc: (
+                            <ChevronUpIcon
+                              className="h-5 w-5"
+                              aria-hidden="true"
+                            />
+                          ),
+                          desc: (
+                            <ChevronDownIcon
+                              className="h-5 w-5"
+                              aria-hidden="true"
+                            />
+                          ),
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </span>
+                    </a>
+                  </th>
+                ) : (
+                  <th
+                    key={header.id}
+                    scope="col"
+                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                    <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-                      {{
-                        asc: (
-                          <ChevronUpIcon
-                            className="h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        ),
-                        desc: (
-                          <ChevronDownIcon
-                            className="h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        ),
-                      }[header.column.getIsSorted() as string] ?? null}
-                    </span>
-                  </a>
-                </th>
-              ) : (
-                <th
-                  key={header.id}
-                  scope="col"
-                  className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
-                </th>
-              )))}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                )
+              )}
             </tr>
           ))}
         </thead>

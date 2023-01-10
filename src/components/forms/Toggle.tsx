@@ -11,9 +11,7 @@ type ToggleProps = {
 };
 
 export default function Toggle(props: ToggleProps) {
-  const {
-    id, label, description, enabled, handleChange,
-  } = props;
+  const { id, label, description, enabled, handleChange } = props;
   const [field] = useField(props);
 
   return (

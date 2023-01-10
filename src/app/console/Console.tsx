@@ -47,7 +47,7 @@ export default function Console() {
             filterValue: flag.key,
             displayValue: flag.name,
           };
-        }),
+        })
       );
       clearError();
     } catch (err) {

@@ -95,9 +95,7 @@ type NavItemProps = {
 };
 
 function NavItem(props: NavItemProps) {
-  const {
-    to, name, Icon, external, onClick,
-  } = props;
+  const { to, name, Icon, external, onClick } = props;
 
   return external ? (
     <a
@@ -121,12 +119,14 @@ function NavItem(props: NavItemProps) {
     <NavLink
       key={name}
       to={to}
-      className={({ isActive }) => classNames(
-        isActive
-          ? 'bg-violet-100 text-gray-600 md:bg-gray-50'
-          : 'text-white hover:bg-violet-400 md:text-gray-600 md:hover:bg-gray-50',
-        'group flex items-center rounded-md px-2 py-2 text-sm font-medium',
-      )}
+      className={({ isActive }) =>
+        classNames(
+          isActive
+            ? 'bg-violet-100 text-gray-600 md:bg-gray-50'
+            : 'text-white hover:bg-violet-400 md:text-gray-600 md:hover:bg-gray-50',
+          'group flex items-center rounded-md px-2 py-2 text-sm font-medium'
+        )
+      }
       onClick={onClick}
     >
       <Icon

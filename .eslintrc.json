@@ -12,6 +12,13 @@
   },
   "plugins": ["react", "import", "prettier"],
   "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "singleQuote": true,
+        "semi": true
+      }
+    ],
     "import/no-unresolved": "error",
     "max-len": "off"
   },

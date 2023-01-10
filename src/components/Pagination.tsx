@@ -105,9 +105,7 @@ function Page(props: PageProps) {
   if (typeof page === 'string') {
     return (
       <span className="border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-700">
-        &#8230;
-        {' '}
-        {/* ellipsis */}
+        &#8230; {/* ellipsis */}
       </span>
     );
   }
@@ -119,7 +117,7 @@ function Page(props: PageProps) {
         page === currentPage
           ? 'border-violet-500 text-violet-600'
           : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-        'inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium',
+        'inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium'
       )}
       aria-current={page === currentPage ? 'page' : undefined}
       onClick={(e) => {

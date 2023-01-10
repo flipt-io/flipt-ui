@@ -30,7 +30,8 @@ export default function Flag() {
   const { setError, clearError } = useError();
   const navigate = useNavigate();
 
-  const [showDeleteFlagModal, setShowDeleteFlagModal] = useState<boolean>(false);
+  const [showDeleteFlagModal, setShowDeleteFlagModal] =
+    useState<boolean>(false);
 
   const fetchFlag = useCallback(() => {
     getFlag(flag.key)
@@ -77,8 +78,7 @@ export default function Flag() {
                 className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              Created
-              {' '}
+              Created{' '}
               {formatDistanceToNowStrict(parseISO(flag.createdAt), {
                 addSuffix: true,
               })}

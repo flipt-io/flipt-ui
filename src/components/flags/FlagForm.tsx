@@ -95,12 +95,12 @@ export default function FlagForm(props: FlagFormProps) {
                       // check if the name and key are currently in sync
                       // we do this so we don't override a custom key value
                       if (
-                        formik.values.key === ''
-                          || formik.values.key === stringAsKey(previousName)
+                        formik.values.key === '' ||
+                        formik.values.key === stringAsKey(previousName)
                       ) {
                         formik.setFieldValue(
                           'key',
-                          stringAsKey(e.target.value),
+                          stringAsKey(e.target.value)
                         );
                       }
                       formik.handleChange(e);
@@ -140,11 +140,7 @@ export default function FlagForm(props: FlagFormProps) {
                       Optional
                     </span>
                   </div>
-                  <Input
-                    className="mt-1"
-                    name="description"
-                    id="description"
-                  />
+                  <Input className="mt-1" name="description" id="description" />
                 </div>
               </div>
               <div className="flex justify-end">

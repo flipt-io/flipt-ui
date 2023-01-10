@@ -42,7 +42,7 @@ export default function EditRuleForm(props: RuleFormProps) {
   const [editingRule, setEditingRule] = useState<IEvaluatable>(cloneDeep(rule));
 
   const [ruleType, setRuleType] = useState(
-    editingRule.rollouts.length > 1 ? 'multi' : 'single',
+    editingRule.rollouts.length > 1 ? 'multi' : 'single'
   );
 
   const handleSubmit = async () =>
@@ -50,11 +50,11 @@ export default function EditRuleForm(props: RuleFormProps) {
     Promise.all(
       editingRule.rollouts.map((rollout) => {
         const found = rule.rollouts.find(
-          (r) => r.distribution.id === rollout.distribution.id,
+          (r) => r.distribution.id === rollout.distribution.id
         );
         if (
-          found
-          && found.distribution.rollout !== rollout.distribution.rollout
+          found &&
+          found.distribution.rollout !== rollout.distribution.rollout
         ) {
           return updateDistribution(
             rule.flag.key,
@@ -63,11 +63,11 @@ export default function EditRuleForm(props: RuleFormProps) {
             {
               variantId: rollout.distribution.variantId,
               rollout: rollout.distribution.rollout,
-            },
+            }
           );
         }
         return Promise.resolve();
-      }),
+      })
     );
   return (
     <Formik
@@ -184,87 +184,87 @@ export default function EditRuleForm(props: RuleFormProps) {
             </div>
 
             {ruleType === 'single' && (
-            <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-              <div>
-                <label
-                  htmlFor="variantKey"
-                  className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                >
-                  Variant
-                </label>
-              </div>
-              <div className="sm:col-span-2">
-                <Combobox<SelectableVariant>
-                  id="variant"
-                  name="variant"
-                  selected={{
-                    filterValue: editingRule.rollouts[0].variant.key,
-                    displayValue: editingRule.rollouts[0].variant.key,
-                    ...editingRule.rollouts[0].variant,
-                  }}
-                />
-              </div>
-            </div>
-            )}
-
-            {ruleType === 'multi' && (
-            <div>
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                 <div>
                   <label
                     htmlFor="variantKey"
                     className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                   >
-                    Variants
+                    Variant
                   </label>
                 </div>
+                <div className="sm:col-span-2">
+                  <Combobox<SelectableVariant>
+                    id="variant"
+                    name="variant"
+                    selected={{
+                      filterValue: editingRule.rollouts[0].variant.key,
+                      displayValue: editingRule.rollouts[0].variant.key,
+                      ...editingRule.rollouts[0].variant,
+                    }}
+                  />
+                </div>
               </div>
-              {editingRule.rollouts?.map((dist, index) => (
-                <div
-                  className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-1"
-                  key={dist.variant.id}
-                >
+            )}
+
+            {ruleType === 'multi' && (
+              <div>
+                <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                   <div>
                     <label
-                      htmlFor={dist.variant.key}
-                      className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
+                      htmlFor="variantKey"
+                      className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                     >
-                      {dist.variant.key}
+                      Variants
                     </label>
                   </div>
-                  <div className="relative sm:col-span-1">
-                    <input
-                      type="number"
-                      className="block w-full rounded-md border-gray-300 pl-7 pr-12 shadow-sm focus:border-violet-300 focus:ring-violet-300 sm:text-sm"
-                      value={dist.distribution.rollout}
-                      name={dist.variant.key}
-                      typeof="number"
-                      step=".01"
-                      min="0"
-                      max="100"
-                      onChange={(e) => {
-                        const newRollouts = [...editingRule.rollouts];
-                        newRollouts[index].distribution.rollout = parseFloat(
-                          e.target.value,
-                        );
-                        setEditingRule({
-                          ...editingRule,
-                          rollouts: newRollouts,
-                        });
-                      }}
-                    />
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                      <span
-                        className="text-gray-500 sm:text-sm"
-                        id={`percentage-${dist.variant.key}`}
+                </div>
+                {editingRule.rollouts?.map((dist, index) => (
+                  <div
+                    className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-1"
+                    key={dist.variant.id}
+                  >
+                    <div>
+                      <label
+                        htmlFor={dist.variant.key}
+                        className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
                       >
-                        %
-                      </span>
+                        {dist.variant.key}
+                      </label>
+                    </div>
+                    <div className="relative sm:col-span-1">
+                      <input
+                        type="number"
+                        className="block w-full rounded-md border-gray-300 pl-7 pr-12 shadow-sm focus:border-violet-300 focus:ring-violet-300 sm:text-sm"
+                        value={dist.distribution.rollout}
+                        name={dist.variant.key}
+                        typeof="number"
+                        step=".01"
+                        min="0"
+                        max="100"
+                        onChange={(e) => {
+                          const newRollouts = [...editingRule.rollouts];
+                          newRollouts[index].distribution.rollout = parseFloat(
+                            e.target.value
+                          );
+                          setEditingRule({
+                            ...editingRule,
+                            rollouts: newRollouts,
+                          });
+                        }}
+                      />
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                        <span
+                          className="text-gray-500 sm:text-sm"
+                          id={`percentage-${dist.variant.key}`}
+                        >
+                          %
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
             )}
           </div>
         </div>

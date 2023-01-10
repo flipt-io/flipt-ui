@@ -28,9 +28,7 @@ type ConstraintFormProps = {
 };
 
 export default function ConstraintForm(props: ConstraintFormProps) {
-  const {
-    setOpen, segmentKey, constraint, onSuccess,
-  } = props;
+  const { setOpen, segmentKey, constraint, onSuccess } = props;
   const { setError, clearError } = useError();
 
   const isNew = constraint === undefined;
@@ -124,9 +122,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
                     className="mt-1"
                     value={formik.values.type}
                     options={constraintComparisonTypes()}
-                    handleChange={(
-                      e: React.ChangeEvent<HTMLSelectElement>,
-                    ) => {
+                    handleChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                       formik.handleChange(e);
                       const option = e.target.options[e.target.selectedIndex];
                       const show = option.value !== 'BOOLEAN_COMPARISON_TYPE';
@@ -154,12 +150,11 @@ export default function ConstraintForm(props: ConstraintFormProps) {
                     id="operator"
                     className="mt-1"
                     value={formik.values.operator}
-                    handleChange={(
-                      e: React.ChangeEvent<HTMLSelectElement>,
-                    ) => {
+                    handleChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                       formik.handleChange(e);
                       const option = e.target.options[e.target.selectedIndex];
-                      const show = option.getAttribute('data-has-value') === 'true';
+                      const show =
+                        option.getAttribute('data-has-value') === 'true';
                       setHasValue(show);
                     }}
                   >
@@ -172,19 +167,19 @@ export default function ConstraintForm(props: ConstraintFormProps) {
                 </div>
               </div>
               {hasValue && (
-              <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-                <div>
-                  <label
-                    htmlFor="value"
-                    className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                  >
-                    Value
-                  </label>
+                <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+                  <div>
+                    <label
+                      htmlFor="value"
+                      className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                    >
+                      Value
+                    </label>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <Input name="value" id="value" />
+                  </div>
                 </div>
-                <div className="sm:col-span-2">
-                  <Input name="value" id="value" />
-                </div>
-              </div>
               )}
             </div>
           </div>
@@ -206,12 +201,13 @@ export default function ConstraintForm(props: ConstraintFormProps) {
   );
 }
 
-const constraintComparisonTypes = () => (
-  Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>
-).map((t) => ({
-  value: t,
-  label: ComparisonType[t],
-}));
+const constraintComparisonTypes = () =>
+  (Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>).map(
+    (t) => ({
+      value: t,
+      label: ComparisonType[t],
+    })
+  );
 
 const constraintOperators = (c: string) => {
   let opts: Record<string, Operator> = {};

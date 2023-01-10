@@ -10,18 +10,18 @@ const range = (start: number, end: number) => {
 };
 
 type usePaginationProps = {
-  totalCount : number,
-  pageSize : number,
-  siblingCount: number,
-  currentPage : number
+  totalCount: number;
+  pageSize: number;
+  siblingCount: number;
+  currentPage: number;
 };
 
 const DOTS = '...';
 
-export const usePagination = (props: usePaginationProps) : (number | string)[] => {
-  const {
-    totalCount, pageSize, siblingCount, currentPage,
-  } = props;
+export const usePagination = (
+  props: usePaginationProps
+): (number | string)[] => {
+  const { totalCount, pageSize, siblingCount, currentPage } = props;
   const paginationRange = useMemo(() => {
     const totalPageCount = Math.ceil(totalCount / pageSize);
 
@@ -43,7 +43,7 @@ export const usePagination = (props: usePaginationProps) : (number | string)[] =
     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
     const rightSiblingIndex = Math.min(
       currentPage + siblingCount,
-      totalPageCount,
+      totalPageCount
     );
 
     /*
@@ -72,7 +72,7 @@ export const usePagination = (props: usePaginationProps) : (number | string)[] =
       const rightItemCount = 3 + 2 * siblingCount;
       const rightRange = range(
         totalPageCount - rightItemCount + 1,
-        totalPageCount,
+        totalPageCount
       );
       return [firstPageIndex, DOTS, ...rightRange];
     }

@@ -43,15 +43,15 @@ type SelectableSegment = ISegment & ISelectable;
 type SelectableVariant = IVariant & ISelectable;
 
 export default function RuleForm(props: RuleFormProps) {
-  const {
-    setOpen, rulesChanged, flag, rank, segments,
-  } = props;
+  const { setOpen, rulesChanged, flag, rank, segments } = props;
   const { setError, clearError } = useError();
 
   const [ruleType, setRuleType] = useState('single');
 
-  const [selectedSegment, setSelectedSegment] = useState<SelectableSegment | null>(null);
-  const [selectedVariant, setSelectedVariant] = useState<SelectableVariant | null>(null);
+  const [selectedSegment, setSelectedSegment] =
+    useState<SelectableSegment | null>(null);
+  const [selectedVariant, setSelectedVariant] =
+    useState<SelectableVariant | null>(null);
 
   const [distributions, setDistributions] = useState(() => {
     const percentages = computePercentages(flag.variants?.length || 0);
@@ -72,10 +72,12 @@ export default function RuleForm(props: RuleFormProps) {
     });
 
     if (ruleType === 'multi') {
-      const distPromises = distributions?.map((dist: distribution) => createDistribution(flag.key, rule.id, {
-        variantId: dist.variantId,
-        rollout: dist.rollout,
-      }));
+      const distPromises = distributions?.map((dist: distribution) =>
+        createDistribution(flag.key, rule.id, {
+          variantId: dist.variantId,
+          rollout: dist.rollout,
+        })
+      );
       if (distPromises) await Promise.all(distPromises);
     } else {
       if (!selectedVariant) throw new Error('No variant selected');
@@ -268,7 +270,7 @@ export default function RuleForm(props: RuleFormProps) {
                         onChange={(e) => {
                           const newDistributions = [...distributions];
                           newDistributions[index].rollout = parseFloat(
-                            e.target.value,
+                            e.target.value
                           );
                           setDistributions(newDistributions);
                         }}

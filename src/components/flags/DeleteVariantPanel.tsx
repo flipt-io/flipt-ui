@@ -13,9 +13,7 @@ type DeleteVariantPanelProps = {
 };
 
 export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
-  const {
-    setOpen, flagKey, variant, onSuccess,
-  } = props;
+  const { setOpen, flagKey, variant, onSuccess } = props;
   const { setError, clearError } = useError();
 
   const handleSubmit = () => {
@@ -42,8 +40,7 @@ export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete the variant
-              {' '}
+              Are you sure you want to delete the variant{' '}
               <span className="font-medium text-violet-500">
                 {variant?.key}
               </span>

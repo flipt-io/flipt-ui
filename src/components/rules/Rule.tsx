@@ -18,10 +18,8 @@ type RuleProps = {
 
 const Rule = forwardRef(
   (
-    {
-      rule, onEdit, onDelete, style, className, ...rest
-    }: RuleProps,
-    ref: Ref<HTMLLIElement>,
+    { rule, onEdit, onDelete, style, className, ...rest }: RuleProps,
+    ref: Ref<HTMLLIElement>
   ) => (
     <li
       key={rule.id}
@@ -40,9 +38,7 @@ const Rule = forwardRef(
         <div className="flex">
           <div>
             <p className="text-sm leading-tight text-gray-500">
-              <span className="text-gray-900">IF</span>
-              {' '}
-              Match Segment
+              <span className="text-gray-900">IF</span> Match Segment
             </p>
             <p className="mt-1 truncate text-sm text-gray-500">
               <Link
@@ -60,19 +56,17 @@ const Rule = forwardRef(
         <div className="flex">
           <div>
             <p className="text-sm leading-tight text-gray-500">
-              <span className="text-gray-900">THEN</span>
-              {' '}
-              Return
+              <span className="text-gray-900">THEN</span> Return
             </p>
             <p className="mt-1 truncate text-sm text-gray-500">Variant(s)</p>
           </div>
         </div>
 
         {rule.rollouts.length == 1 && (
-        <Bars2Icon className="hidden h-6 w-6 text-violet-300 lg:flex" />
+          <Bars2Icon className="hidden h-6 w-6 text-violet-300 lg:flex" />
         )}
         {rule.rollouts.length > 1 && (
-        <VariableIcon className="hidden h-6 w-6 text-violet-300 lg:flex" />
+          <VariableIcon className="hidden h-6 w-6 text-violet-300 lg:flex" />
         )}
 
         <div className="flex flex-col lg:flex-row">
@@ -86,9 +80,7 @@ const Rule = forwardRef(
                   {rollout.variant.key}
                 </div>
                 <div className="m-auto whitespace-nowrap text-xs text-gray-500">
-                  {rollout.distribution.rollout}
-                  {' '}
-                  %
+                  {rollout.distribution.rollout} %
                 </div>
               </div>
             ))}
@@ -97,13 +89,13 @@ const Rule = forwardRef(
       </div>
       <div className="flex items-center justify-end text-center">
         {rule.rollouts.length > 1 && (
-        <a
-          href="#"
-          onClick={onEdit}
-          className="text-xs text-violet-600 hover:text-violet-900"
-        >
-          Edit&nbsp;|&nbsp;
-        </a>
+          <a
+            href="#"
+            onClick={onEdit}
+            className="text-xs text-violet-600 hover:text-violet-900"
+          >
+            Edit&nbsp;|&nbsp;
+          </a>
         )}
         <a
           href="#"
@@ -114,7 +106,7 @@ const Rule = forwardRef(
         </a>
       </div>
     </li>
-  ),
+  )
 );
 
 Rule.displayName = 'Rule';

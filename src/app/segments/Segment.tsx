@@ -40,10 +40,14 @@ export default function Segment() {
   const [segmentVerison, setSegmentVersion] = useState(0);
 
   const [showConstraintForm, setShowConstraintForm] = useState<boolean>(false);
-  const [editingConstraint, setEditingConstraint] = useState<IConstraint | null>(null);
-  const [showDeleteConstraintModal, setShowDeleteConstraintModal] = useState<boolean>(false);
-  const [deletingConstraint, setDeletingConstraint] = useState<IConstraint | null>(null);
-  const [showDeleteSegmentModal, setShowDeleteSegmentModal] = useState<boolean>(false);
+  const [editingConstraint, setEditingConstraint] =
+    useState<IConstraint | null>(null);
+  const [showDeleteConstraintModal, setShowDeleteConstraintModal] =
+    useState<boolean>(false);
+  const [deletingConstraint, setDeletingConstraint] =
+    useState<IConstraint | null>(null);
+  const [showDeleteSegmentModal, setShowDeleteSegmentModal] =
+    useState<boolean>(false);
 
   const { setError, clearError } = useError();
 
@@ -66,7 +70,8 @@ export default function Segment() {
     fetchSegment();
   }, [segmentVerison, fetchSegment]);
 
-  const constraintTypeToLabel = (t: string) => ComparisonType[t as keyof typeof ComparisonType];
+  const constraintTypeToLabel = (t: string) =>
+    ComparisonType[t as keyof typeof ComparisonType];
 
   const constraintOperatorToLabel = (o: string) => ConstraintOperators[o].label;
 
@@ -124,8 +129,7 @@ export default function Segment() {
                 className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              Created
-              {' '}
+              Created{' '}
               {formatDistanceToNowStrict(parseISO(segment.createdAt), {
                 addSuffix: true,
               })}
@@ -260,9 +264,7 @@ export default function Segment() {
                           >
                             Edit
                             <span className="sr-only">
-                              ,
-                              {' '}
-                              {constraint.property}
+                              , {constraint.property}
                             </span>
                           </a>
                           |
@@ -276,9 +278,7 @@ export default function Segment() {
                           >
                             Delete
                             <span className="sr-only">
-                              ,
-                              {' '}
-                              {constraint.property}
+                              , {constraint.property}
                             </span>
                           </a>
                         </td>

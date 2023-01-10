@@ -23,7 +23,8 @@ export default function EditFlag() {
 
   const [showVariantForm, setShowVariantForm] = useState<boolean>(false);
   const [editingVariant, setEditingVariant] = useState<IVariant | null>(null);
-  const [showDeleteVariantModal, setShowDeleteVariantModal] = useState<boolean>(false);
+  const [showDeleteVariantModal, setShowDeleteVariantModal] =
+    useState<boolean>(false);
   const [deletingVariant, setDeletingVariant] = useState<IVariant | null>(null);
 
   return (
@@ -161,10 +162,7 @@ export default function EditFlag() {
                           }}
                         >
                           Edit
-                          <span className="sr-only">
-                            ,
-                            {variant.key}
-                          </span>
+                          <span className="sr-only">,{variant.key}</span>
                         </a>
                         |
                         <a
@@ -176,10 +174,7 @@ export default function EditFlag() {
                           }}
                         >
                           Delete
-                          <span className="sr-only">
-                            ,
-                            {variant.key}
-                          </span>
+                          <span className="sr-only">,{variant.key}</span>
                         </a>
                       </td>
                     </tr>

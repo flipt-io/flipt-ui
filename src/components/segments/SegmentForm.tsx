@@ -35,7 +35,7 @@ export default function SegmentForm(props: SegmentFormProps) {
   const { setError, clearError } = useError();
 
   const [selectedMatchType, setSelectedMatchType] = useState(
-    segment?.matchType || ('ALL_MATCH_TYPE' as SegmentMatchType),
+    segment?.matchType || ('ALL_MATCH_TYPE' as SegmentMatchType)
   );
 
   const handleSubmit = (values: ISegmentBase) => {
@@ -99,13 +99,10 @@ export default function SegmentForm(props: SegmentFormProps) {
                     // check if the name and key are currently in sync
                     // we do this so we don't override a custom key value
                     if (
-                      formik.values.key === ''
-                          || formik.values.key === stringAsKey(previousName)
+                      formik.values.key === '' ||
+                      formik.values.key === stringAsKey(previousName)
                     ) {
-                      formik.setFieldValue(
-                        'key',
-                        stringAsKey(e.target.value),
-                      );
+                      formik.setFieldValue('key', stringAsKey(e.target.value));
                     }
                     formik.handleChange(e);
                   }}
@@ -154,7 +151,7 @@ export default function SegmentForm(props: SegmentFormProps) {
                             onChange={(e) => {
                               formik.handleChange(e);
                               setSelectedMatchType(
-                                matchType.id as SegmentMatchType,
+                                matchType.id as SegmentMatchType
                               );
                             }}
                             checked={matchType.id === selectedMatchType}
@@ -195,11 +192,7 @@ export default function SegmentForm(props: SegmentFormProps) {
                     Optional
                   </span>
                 </div>
-                <Input
-                  className="mt-1"
-                  name="description"
-                  id="description"
-                />
+                <Input className="mt-1" name="description" id="description" />
               </div>
             </div>
             <div className="flex justify-end">

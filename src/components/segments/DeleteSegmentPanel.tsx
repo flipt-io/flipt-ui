@@ -38,10 +38,8 @@ export default function DeleteSegmentPanel(props: DeleteSegmentPanelProps) {
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete the segment
-              {' '}
-              <span className="font-medium text-violet-500">{segmentKey}</span>
-              ?
+              Are you sure you want to delete the segment{' '}
+              <span className="font-medium text-violet-500">{segmentKey}</span>?
               This action cannot be undone.
             </p>
           </div>

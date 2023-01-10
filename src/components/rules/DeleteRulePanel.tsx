@@ -13,9 +13,7 @@ type DeleteRulePanelProps = {
 };
 
 export default function DeleteRulePanel(props: DeleteRulePanelProps) {
-  const {
-    setOpen, flagKey, rule, onSuccess,
-  } = props;
+  const { setOpen, flagKey, rule, onSuccess } = props;
   const { setError, clearError } = useError();
 
   const handleSubmit = () => {
@@ -45,10 +43,7 @@ export default function DeleteRulePanel(props: DeleteRulePanelProps) {
               Are you sure you want to delete this rule at
               <span className="font-medium text-violet-500">
                 {' '}
-                position
-                {' '}
-                {rule?.rank}
-                {' '}
+                position {rule?.rank}{' '}
               </span>
               ? This action cannot be undone.
             </p>

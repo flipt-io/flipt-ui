@@ -18,7 +18,8 @@ export default function Footer() {
   const ref = () => {
     if (info?.isRelease && info?.version) {
       return `v${info.version}`;
-    } if (info?.commit) {
+    }
+    if (info?.commit) {
       return info.commit.substring(0, 7);
     }
     return '';
@@ -27,7 +28,8 @@ export default function Footer() {
   const refURL = () => {
     if (info?.isRelease && info?.version) {
       return `https://github.com/flipt-io/flipt/releases/tag/${info.version}`;
-    } if (info?.commit) {
+    }
+    if (info?.commit) {
       return `https://github.com/flipt-io/flipt/commit/${info?.commit}`;
     }
     return 'https://github.com/flipt-io/flipt';
@@ -86,11 +88,7 @@ export default function Footer() {
               &nbsp;|&nbsp;
             </>
           )}
-          &copy;
-          {' '}
-          {new Date().getFullYear()}
-          {' '}
-          Flipt Software Inc. All rights
+          &copy; {new Date().getFullYear()} Flipt Software Inc. All rights
           reserved.
         </p>
         <span className="mt-4 inline-flex justify-center space-x-5 sm:ml-auto sm:mt-0 sm:justify-start">

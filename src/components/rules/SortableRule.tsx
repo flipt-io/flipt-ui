@@ -23,9 +23,9 @@ export default function SortableRule(props: SortableRuleProps) {
 
   const style = transform
     ? {
-      transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-      transition,
-    }
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+        transition,
+      }
     : undefined;
 
   const className = isDragging ? 'border-violet-200' : '';

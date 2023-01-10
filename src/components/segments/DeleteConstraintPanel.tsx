@@ -13,11 +13,9 @@ type DeleteConstraintPanelProps = {
 };
 
 export default function DeleteConstraintPanel(
-  props: DeleteConstraintPanelProps,
+  props: DeleteConstraintPanelProps
 ) {
-  const {
-    setOpen, segmentKey, constraint, onSuccess,
-  } = props;
+  const { setOpen, segmentKey, constraint, onSuccess } = props;
   const { setError, clearError } = useError();
 
   const handleSubmit = () => {
@@ -44,8 +42,7 @@ export default function DeleteConstraintPanel(
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete the constraint for
-              {' '}
+              Are you sure you want to delete the constraint for{' '}
               <span className="font-medium text-violet-500">
                 {constraint?.property}
               </span>

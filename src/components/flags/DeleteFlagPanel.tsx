@@ -38,10 +38,8 @@ export default function DeleteFlagPanel(props: DeleteFlagPanelProps) {
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete the flag
-              {' '}
-              <span className="font-medium text-violet-500">{flagKey}</span>
-              ?
+              Are you sure you want to delete the flag{' '}
+              <span className="font-medium text-violet-500">{flagKey}</span>?
               This action cannot be undone.
             </p>
           </div>

@@ -118,7 +118,7 @@ export async function orderRules(flagKey: string, ruleIds: string[]) {
 export async function createDistribution(
   flagKey: string,
   ruleId: string,
-  values: IDistributionBase,
+  values: IDistributionBase
 ) {
   return post(`/flags/${flagKey}/rules/${ruleId}/distributions`, values);
 }
@@ -127,11 +127,11 @@ export async function updateDistribution(
   flagKey: string,
   ruleId: string,
   distributionId: string,
-  values: IDistributionBase,
+  values: IDistributionBase
 ) {
   return put(
     `/flags/${flagKey}/rules/${ruleId}/distributions/${distributionId}`,
-    values,
+    values
   );
 }
 
@@ -144,7 +144,7 @@ export async function createVariant(flagKey: string, values: IVariantBase) {
 export async function updateVariant(
   flagKey: string,
   variantId: string,
-  values: IVariantBase,
+  values: IVariantBase
 ) {
   return put(`/flags/${flagKey}/variants/${variantId}`, values);
 }
@@ -185,7 +185,7 @@ export async function deleteSegment(key: string) {
 // constraints
 export async function createConstraint(
   segmentKey: string,
-  values: IConstraintBase,
+  values: IConstraintBase
 ) {
   return post(`/segments/${segmentKey}/constraints`, values);
 }
@@ -193,23 +193,20 @@ export async function createConstraint(
 export async function updateConstraint(
   segmentKey: string,
   constraintId: string,
-  values: IConstraintBase,
+  values: IConstraintBase
 ) {
-  return put(
-    `/segments/${segmentKey}/constraints/${constraintId}`,
-    values,
-  );
+  return put(`/segments/${segmentKey}/constraints/${constraintId}`, values);
 }
 
 export async function deleteConstraint(
   segmentKey: string,
-  constraintId: string,
+  constraintId: string
 ) {
   const res = await fetch(
     `${apiURL}/segments/${segmentKey}/constraints/${constraintId}`,
     {
       method: 'DELETE',
-    },
+    }
   );
   return res.ok;
 }

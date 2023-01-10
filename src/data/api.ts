@@ -4,7 +4,6 @@ import { IFlagBase } from 'types/Flag';
 import { IRuleBase } from 'types/Rule';
 import { ISegmentBase } from 'types/Segment';
 import { IVariantBase } from 'types/Variant';
-import useError from '~/data/hooks/errors';
 
 const apiURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/api/v1`;
 const metaURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/meta`;

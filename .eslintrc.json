@@ -3,24 +3,17 @@
     "browser": true,
     "es2021": true
   },
-  "extends": [
-    "airbnb",
-    "airbnb-typescript",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:react/jsx-runtime"
-  ],
+  "extends": ["airbnb-typescript/base", "plugin:react/jsx-runtime"],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["react", "import"],
+  "plugins": ["react", "import", "prettier"],
   "rules": {
-    // turn on errors for missing imports
     "import/no-unresolved": "error",
-    "react/require-default-props": "off"
+    "max-len": "off"
   },
   "settings": {
     "import/parsers": {

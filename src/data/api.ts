@@ -5,8 +5,8 @@ import { IRuleBase } from 'types/Rule';
 import { ISegmentBase } from 'types/Segment';
 import { IVariantBase } from 'types/Variant';
 
-const apiURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/api/v1`;
-const metaURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/meta`;
+const apiURL = '/api/v1';
+const metaURL = '/meta';
 
 //
 // base methods

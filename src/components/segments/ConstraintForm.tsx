@@ -207,7 +207,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
 }
 
 const constraintComparisonTypes = () => (
-    Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>
+  Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>
 ).map((t) => ({
   value: t,
   label: ComparisonType[t],

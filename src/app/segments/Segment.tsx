@@ -68,7 +68,7 @@ export default function Segment() {
 
   const constraintTypeToLabel = (t: string) => ComparisonType[t as keyof typeof ComparisonType];
 
-  const constraintOperatorToLabel = (o: string) => ConstraintOperators[o as keyof typeof ConstraintOperators].label;
+  const constraintOperatorToLabel = (o: string) => ConstraintOperators[o].label;
 
   return (
     <>

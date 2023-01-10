@@ -90,15 +90,15 @@ export default function EditRuleForm(props: RuleFormProps) {
           <div className="bg-gray-50 px-4 py-6 sm:px-6">
             <div className="flex items-start justify-between space-x-3">
               <div className="space-y-1">
-              <Dialog.Title className="text-lg font-medium text-gray-900">
+                <Dialog.Title className="text-lg font-medium text-gray-900">
                   Edit Rule
                 </Dialog.Title>
-              <MoreInfo href="https://www.flipt.io/docs/concepts#rules">
+                <MoreInfo href="https://www.flipt.io/docs/concepts#rules">
                   Learn more about rules
                 </MoreInfo>
-            </div>
+              </div>
               <div className="flex h-7 items-center">
-              <button
+                <button
                   type="button"
                   className="text-gray-400 hover:text-gray-500"
                   onClick={() => setOpen(false)}
@@ -106,21 +106,21 @@ export default function EditRuleForm(props: RuleFormProps) {
                   <span className="sr-only">Close panel</span>
                   <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-            </div>
+              </div>
             </div>
           </div>
           <div className="space-y-6 py-6 sm:space-y-0 sm:divide-y sm:divide-gray-200 sm:py-0">
             <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
               <div>
-              <label
+                <label
                   htmlFor="segmentKey"
                   className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                 >
                   Segment
                 </label>
-            </div>
+              </div>
               <div className="sm:col-span-2">
-              <Combobox<SelectableSegment>
+                <Combobox<SelectableSegment>
                   id="segmentKey"
                   name="segmentKey"
                   disabled
@@ -130,19 +130,19 @@ export default function EditRuleForm(props: RuleFormProps) {
                     ...rule.segment,
                   }}
                 />
-            </div>
+              </div>
             </div>
             <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
               <div>
-              <label
+                <label
                   htmlFor="segmentKey"
                   className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                 >
                   Type
                 </label>
-            </div>
+              </div>
               <div className="sm:col-span-2">
-              <fieldset>
+                <fieldset>
                   <legend className="sr-only">Type</legend>
                   <div className="space-y-5">
                     {distTypes.map((dist) => (
@@ -180,91 +180,91 @@ export default function EditRuleForm(props: RuleFormProps) {
                     ))}
                   </div>
                 </fieldset>
-            </div>
+              </div>
             </div>
 
             {ruleType === 'single' && (
             <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-            <div>
-                  <label
-                    htmlFor="variantKey"
-                    className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                  >
-                    Variant
-                  </label>
-                </div>
-            <div className="sm:col-span-2">
-                  <Combobox<SelectableVariant>
-                    id="variant"
-                    name="variant"
-                    selected={{
-                      filterValue: editingRule.rollouts[0].variant.key,
-                      displayValue: editingRule.rollouts[0].variant.key,
-                      ...editingRule.rollouts[0].variant,
-                    }}
-                  />
-                </div>
-          </div>
+              <div>
+                <label
+                  htmlFor="variantKey"
+                  className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                >
+                  Variant
+                </label>
+              </div>
+              <div className="sm:col-span-2">
+                <Combobox<SelectableVariant>
+                  id="variant"
+                  name="variant"
+                  selected={{
+                    filterValue: editingRule.rollouts[0].variant.key,
+                    displayValue: editingRule.rollouts[0].variant.key,
+                    ...editingRule.rollouts[0].variant,
+                  }}
+                />
+              </div>
+            </div>
             )}
 
             {ruleType === 'multi' && (
             <div>
-            <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+              <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+                <div>
+                  <label
+                    htmlFor="variantKey"
+                    className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                  >
+                    Variants
+                  </label>
+                </div>
+              </div>
+              {editingRule.rollouts?.map((dist, index) => (
+                <div
+                  className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-1"
+                  key={dist.variant.id}
+                >
                   <div>
                     <label
-                      htmlFor="variantKey"
-                      className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                      htmlFor={dist.variant.key}
+                      className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
                     >
-                      Variants
+                      {dist.variant.key}
                     </label>
                   </div>
-                </div>
-            {editingRule.rollouts?.map((dist, index) => (
-                  <div
-                    className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-1"
-                    key={dist.variant.id}
-                  >
-                    <div>
-                      <label
-                        htmlFor={dist.variant.key}
-                        className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
+                  <div className="relative sm:col-span-1">
+                    <input
+                      type="number"
+                      className="block w-full rounded-md border-gray-300 pl-7 pr-12 shadow-sm focus:border-violet-300 focus:ring-violet-300 sm:text-sm"
+                      value={dist.distribution.rollout}
+                      name={dist.variant.key}
+                      typeof="number"
+                      step=".01"
+                      min="0"
+                      max="100"
+                      onChange={(e) => {
+                        const newRollouts = [...editingRule.rollouts];
+                        newRollouts[index].distribution.rollout = parseFloat(
+                          e.target.value,
+                        );
+                        setEditingRule({
+                          ...editingRule,
+                          rollouts: newRollouts,
+                        });
+                      }}
+                    />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                      <span
+                        className="text-gray-500 sm:text-sm"
+                        id={`percentage-${dist.variant.key}`}
                       >
-                        {dist.variant.key}
-                      </label>
-                    </div>
-                    <div className="relative sm:col-span-1">
-                      <input
-                        type="number"
-                        className="block w-full rounded-md border-gray-300 pl-7 pr-12 shadow-sm focus:border-violet-300 focus:ring-violet-300 sm:text-sm"
-                        value={dist.distribution.rollout}
-                        name={dist.variant.key}
-                        typeof="number"
-                        step=".01"
-                        min="0"
-                        max="100"
-                        onChange={(e) => {
-                          const newRollouts = [...editingRule.rollouts];
-                          newRollouts[index].distribution.rollout = parseFloat(
-                            e.target.value,
-                          );
-                          setEditingRule({
-                            ...editingRule,
-                            rollouts: newRollouts,
-                          });
-                        }}
-                      />
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                        <span
-                          className="text-gray-500 sm:text-sm"
-                          id={`percentage-${dist.variant.key}`}
-                        >
-                          %
-                        </span>
-                      </div>
+                        %
+                      </span>
                     </div>
                   </div>
-                ))}
-          </div>
+                </div>
+              ))}
+            </div>
             )}
           </div>
         </div>

@@ -10,15 +10,15 @@ const range = (start: number, end: number) => {
 };
 
 type usePaginationProps = {
-    totalCount : number,
-    pageSize : number,
-    siblingCount: number,
-    currentPage : number
-}
+  totalCount : number,
+  pageSize : number,
+  siblingCount: number,
+  currentPage : number
+};
 
 const DOTS = '...';
 
-export const usePagination = (props: usePaginationProps) : (number|string)[] => {
+export const usePagination = (props: usePaginationProps) : (number | string)[] => {
   const {
     totalCount, pageSize, siblingCount, currentPage,
   } = props;

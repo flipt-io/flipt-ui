@@ -131,13 +131,13 @@ export default function FlagForm(props: FlagFormProps) {
                       htmlFor="description"
                       className="block text-sm font-medium text-gray-700"
                     >
-                        Description
+                      Description
                     </label>
                     <span
                       className="text-xs text-gray-500"
                       id="description-optional"
                     >
-                        Optional
+                      Optional
                     </span>
                   </div>
                   <Input

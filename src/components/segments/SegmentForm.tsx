@@ -141,41 +141,41 @@ export default function SegmentForm(props: SegmentFormProps) {
                   <div className="space-y-5">
                     {segmentMatchTypes.map((matchType) => (
                       <div
-                            key={matchType.id}
-                            className="relative flex items-start"
+                        key={matchType.id}
+                        className="relative flex items-start"
+                      >
+                        <div className="flex h-5 items-center">
+                          <input
+                            id={matchType.id}
+                            aria-describedby={`${matchType.id}-description`}
+                            name="matchType"
+                            type="radio"
+                            className="h-4 w-4 border-gray-300 text-violet-400 focus:ring-violet-400"
+                            onChange={(e) => {
+                              formik.handleChange(e);
+                              setSelectedMatchType(
+                                matchType.id as SegmentMatchType,
+                              );
+                            }}
+                            checked={matchType.id === selectedMatchType}
+                            value={matchType.id}
+                          />
+                        </div>
+                        <div className="ml-3 text-sm">
+                          <label
+                            htmlFor={matchType.id}
+                            className="font-medium text-gray-700"
                           >
-                            <div className="flex h-5 items-center">
-                              <input
-                                id={matchType.id}
-                                aria-describedby={`${matchType.id}-description`}
-                                name="matchType"
-                                type="radio"
-                                className="h-4 w-4 border-gray-300 text-violet-400 focus:ring-violet-400"
-                                onChange={(e) => {
-                                  formik.handleChange(e);
-                                  setSelectedMatchType(
-                                    matchType.id as SegmentMatchType,
-                                  );
-                                }}
-                                checked={matchType.id === selectedMatchType}
-                                value={matchType.id}
-                              />
-                            </div>
-                            <div className="ml-3 text-sm">
-                              <label
-                                htmlFor={matchType.id}
-                                className="font-medium text-gray-700"
-                              >
-                                {matchType.name}
-                              </label>
-                              <p
-                                id={`${matchType.id}-description`}
-                                className="text-gray-500"
-                              >
-                                {matchType.description}
-                              </p>
-                            </div>
-                          </div>
+                            {matchType.name}
+                          </label>
+                          <p
+                            id={`${matchType.id}-description`}
+                            className="text-gray-500"
+                          >
+                            {matchType.description}
+                          </p>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </fieldset>

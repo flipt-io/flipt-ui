@@ -2,7 +2,7 @@ import { createContext, useState } from 'react';
 
 export const ErrorContext = createContext({
   error: null as Error | null,
-  setError(error: Error | null) {},
+  setError(_error: Error | null) {},
   clearError() {}
 });
 

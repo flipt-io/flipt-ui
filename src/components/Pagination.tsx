@@ -5,6 +5,43 @@ import {
 import { usePagination } from '~/data/hooks/pagination';
 import { classNames } from '~/utils/helpers';
 
+type PageProps = {
+  page: number | string;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+};
+
+function Page(props: PageProps) {
+  const { page, currentPage, onPageChange } = props;
+  // we are using '...' (string) to represent page links that should not be rendered
+  if (typeof page === 'string') {
+    return (
+      <span className="border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-700">
+        &#8230; {/* ellipsis */}
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href="#"
+      className={classNames(
+        page === currentPage
+          ? 'border-violet-500 text-violet-600'
+          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+        'inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium'
+      )}
+      aria-current={page === currentPage ? 'page' : undefined}
+      onClick={(e) => {
+        e.preventDefault();
+        onPageChange(page);
+      }}
+    >
+      {page}
+    </a>
+  );
+}
+
 export type PaginationProps = {
   className?: string;
   currentPage: number;
@@ -90,42 +127,5 @@ export default function Pagination(props: PaginationProps) {
         )}
       </div>
     </nav>
-  );
-}
-
-type PageProps = {
-  page: number | string;
-  currentPage: number;
-  onPageChange: (page: number) => void;
-};
-
-function Page(props: PageProps) {
-  const { page, currentPage, onPageChange } = props;
-  // we are using '...' (string) to represent page links that should not be rendered
-  if (typeof page === 'string') {
-    return (
-      <span className="border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-700">
-        &#8230; {/* ellipsis */}
-      </span>
-    );
-  }
-
-  return (
-    <a
-      href="#"
-      className={classNames(
-        page === currentPage
-          ? 'border-violet-500 text-violet-600'
-          : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-        'inline-flex items-center border-t-2 px-4 pt-4 text-sm font-medium'
-      )}
-      aria-current={page === currentPage ? 'page' : undefined}
-      onClick={(e) => {
-        e.preventDefault();
-        onPageChange(page);
-      }}
-    >
-      {page}
-    </a>
   );
 }

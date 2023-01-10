@@ -6,8 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "eslint src"
   },
   "dependencies": {
     "@dnd-kit/sortable": "^7.0.2",

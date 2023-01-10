@@ -21,6 +21,7 @@
     ],
     "@typescript-eslint/comma-dangle": ["error", "never"],
     "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/indent": "off",
     "import/no-unresolved": "error",
     "max-len": "off"
   },

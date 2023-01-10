@@ -11,7 +11,7 @@ import { IFlag } from '~/types/Flag';
 import { ISegment } from '~/types/Segment';
 import { IVariant } from '~/types/Variant';
 
-interface distribution {
+interface Distribution {
   variantId: string;
   variantKey: string;
   rollout: number;
@@ -37,6 +37,22 @@ const distTypes = [
     description: 'Returns different variants based on percentages'
   }
 ];
+
+function computePercentages(n: number) {
+  const sum = 100 * 100;
+
+  const d = Math.floor(sum / n);
+  const remainder = sum - d * n;
+
+  const result = [];
+  let i = 0;
+
+  while (++i && i <= n) {
+    result.push((i <= remainder ? d + 1 : d) / 100);
+  }
+
+  return result;
+}
 
 type SelectableSegment = ISegment & ISelectable;
 
@@ -72,7 +88,7 @@ export default function RuleForm(props: RuleFormProps) {
     });
 
     if (ruleType === 'multi') {
-      const distPromises = distributions?.map((dist: distribution) =>
+      const distPromises = distributions?.map((dist: Distribution) =>
         createDistribution(flag.key, rule.id, {
           variantId: dist.variantId,
           rollout: dist.rollout
@@ -301,20 +317,4 @@ export default function RuleForm(props: RuleFormProps) {
       </Form>
     </Formik>
   );
-}
-
-function computePercentages(n: number) {
-  const sum = 100 * 100;
-
-  const d = Math.floor(sum / n);
-  const remainder = sum - d * n;
-
-  const result = [];
-  let i = 0;
-
-  while (++i && i <= n) {
-    result.push((i <= remainder ? d + 1 : d) / 100);
-  }
-
-  return result;
 }

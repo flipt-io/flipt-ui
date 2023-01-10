@@ -13,13 +13,13 @@ import { IFlag } from '~/types/Flag';
 import { IVariant } from '~/types/Variant';
 import FlagMenu from './FlagMenu';
 
-type flagProps = {
+type FlagProps = {
   flag: IFlag;
   onFlagChange: () => void;
 };
 
 export default function EditFlag() {
-  const { flag, onFlagChange } = useOutletContext<flagProps>();
+  const { flag, onFlagChange } = useOutletContext<FlagProps>();
 
   const [showVariantForm, setShowVariantForm] = useState<boolean>(false);
   const [editingVariant, setEditingVariant] = useState<IVariant | null>(null);

@@ -23,6 +23,10 @@
     "@typescript-eslint/comma-dangle": ["error", "never"],
     "@typescript-eslint/no-shadow": "off",
     "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-unused-expressions": [
+      "error",
+      { "allowShortCircuit": true }
+    ],
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }

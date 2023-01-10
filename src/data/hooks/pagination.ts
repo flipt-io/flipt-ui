@@ -9,7 +9,7 @@ const range = (start: number, end: number) => {
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
-type usePaginationProps = {
+type UsePaginationProps = {
   totalCount: number;
   pageSize: number;
   siblingCount: number;
@@ -19,7 +19,7 @@ type usePaginationProps = {
 const DOTS = '...';
 
 export const usePagination = (
-  props: usePaginationProps
+  props: UsePaginationProps
 ): (number | string)[] => {
   const { totalCount, pageSize, siblingCount, currentPage } = props;
   const paginationRange = useMemo(() => {

@@ -20,6 +20,30 @@ import {
   Operator
 } from '~/types/Constraint';
 
+const constraintComparisonTypes = () =>
+  (Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>).map(
+    (t) => ({
+      value: t,
+      label: ComparisonType[t]
+    })
+  );
+
+const constraintOperators = (c: string) => {
+  let opts: Record<string, Operator> = {};
+  switch (ComparisonType[c as keyof typeof ComparisonType]) {
+    case ComparisonType.STRING_COMPARISON_TYPE:
+      opts = ConstraintStringOperators;
+      break;
+    case ComparisonType.NUMBER_COMPARISON_TYPE:
+      opts = ConstraintNumberOperators;
+      break;
+    case ComparisonType.BOOLEAN_COMPARISON_TYPE:
+      opts = ConstraintBooleanOperators;
+      break;
+  }
+  return Object.entries(opts);
+};
+
 type ConstraintFormProps = {
   setOpen: (open: boolean) => void;
   segmentKey: string;
@@ -200,27 +224,3 @@ export default function ConstraintForm(props: ConstraintFormProps) {
     </Formik>
   );
 }
-
-const constraintComparisonTypes = () =>
-  (Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>).map(
-    (t) => ({
-      value: t,
-      label: ComparisonType[t]
-    })
-  );
-
-const constraintOperators = (c: string) => {
-  let opts: Record<string, Operator> = {};
-  switch (ComparisonType[c as keyof typeof ComparisonType]) {
-    case ComparisonType.STRING_COMPARISON_TYPE:
-      opts = ConstraintStringOperators;
-      break;
-    case ComparisonType.NUMBER_COMPARISON_TYPE:
-      opts = ConstraintNumberOperators;
-      break;
-    case ComparisonType.BOOLEAN_COMPARISON_TYPE:
-      opts = ConstraintBooleanOperators;
-      break;
-  }
-  return Object.entries(opts);
-};

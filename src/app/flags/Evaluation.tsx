@@ -35,13 +35,13 @@ import { IVariant } from '~/types/Variant';
 import { classNames } from '~/utils/helpers';
 import FlagMenu from './FlagMenu';
 
-type flagProps = {
+type FlagProps = {
   flag: IFlag;
   onFlagChange: () => void;
 };
 
 export default function Evaluation() {
-  const { flag } = useOutletContext<flagProps>();
+  const { flag } = useOutletContext<FlagProps>();
 
   const [segments, setSegments] = useState<ISegment[]>([]);
   const [rules, setRules] = useState<IEvaluatable[]>([]);

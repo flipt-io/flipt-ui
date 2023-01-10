@@ -62,17 +62,29 @@ const router = createBrowserRouter([
 
 const apiURL = (import.meta.env.FLIPT_BASE_URL ?? "") + "/api/v1";
 
-const fetcher = async uri => {
+const fetcher = async (uri: String) => {
   const res = await fetch(apiURL + uri, { credentials: 'include' })
+
+  class StatusError extends Error {
+    info: string;
+    status: number;
+
+    constructor(message: string, info: string, status: number) {
+      super(message);
+      this.info = info;
+      this.status = status;
+    }
+  }
 
   // If the status code is not in the range 200-299,
   // we still try to parse and throw it.
   if (!res.ok) {
-    const error = new Error('An error occurred while fetching the data.')
-    // Attach extra info to the error object.
-    error.info = await res.json()
-    error.status = res.status
-    throw error
+    let info = '';
+    try {
+      info = await res.json()
+    } catch {}
+
+    return new StatusError('An error occurred while fetching the data.', info, res.status)
   }
 
   return res.json()

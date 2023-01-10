@@ -80,16 +80,20 @@ export default function Footer() {
     <footer className="body-font sticky top-[100vh] text-gray-700">
       <div className="container mx-auto flex max-w-7xl flex-col items-center px-8 py-4 sm:flex-row">
         <p className="mt-4 text-xs text-gray-500 sm:mt-0">
-          {ref() && (
-            <>
-              <a href={refURL()} className="text-violet-500">
-                {ref()}
-              </a>
-              &nbsp;|&nbsp;
-            </>
-          )}
-          &copy; {new Date().getFullYear()} Flipt Software Inc. All rights
-          reserved.
+          <span className="hidden sm:inline">
+            {ref() && (
+              <>
+                <a href={refURL()} className="text-violet-500">
+                  {ref()}
+                </a>
+                &nbsp;|&nbsp;
+              </>
+            )}
+          </span>
+          <span className="block sm:inline">
+            &copy; {new Date().getFullYear()} Flipt Software Inc. All rights
+            reserved.
+          </span>
         </p>
         <span className="mt-4 inline-flex justify-center space-x-5 sm:ml-auto sm:mt-0 sm:justify-start">
           {social.map((item) => (

@@ -26,6 +26,8 @@ export default function SegmentTable(props: SegmentTableProps) {
   const { segments } = props;
 
   const pageSize = 20;
+  const searchThreshold = 10;
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -132,7 +134,7 @@ export default function SegmentTable(props: SegmentTableProps) {
 
   return (
     <>
-      {segments.length > 15 && (
+      {segments.length >= searchThreshold && (
         <Searchbox className="mb-4" value={filter ?? ''} onChange={setFilter} />
       )}
       <table className="divide-y divide-gray-300">

@@ -26,6 +26,8 @@ export default function FlagTable(props: FlagTableProps) {
   const { flags } = props;
 
   const pageSize = 20;
+  const searchThreshold = 10;
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -139,7 +141,7 @@ export default function FlagTable(props: FlagTableProps) {
 
   return (
     <>
-      {flags.length > 15 && (
+      {flags.length >= searchThreshold && (
         <Searchbox className="mb-4" value={filter ?? ''} onChange={setFilter} />
       )}
       <table className="divide-y divide-gray-300">

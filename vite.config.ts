@@ -10,5 +10,12 @@ export default defineConfig({
       '~': path.resolve(__dirname, 'src')
     }
   },
-  envPrefix: 'FLIPT_'
+  envPrefix: 'FLIPT_',
+  server: {
+    proxy: {
+      '/api/v1': 'http://localhost:8080',
+      '/auth/v1': 'http://localhost:8080',
+      '/meta': 'http://localhost:8080',
+    },
+  }
 });

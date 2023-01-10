@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { SWRConfig } from 'swr';
 import Flag, { flagLoader } from '~/app/flags/Flag';
 import Console from './app/console/Console';
@@ -11,7 +11,7 @@ import Segment, { segmentLoader } from './app/segments/Segment';
 import Segments from './app/segments/Segments';
 import Layout from './components/Layout';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <Layout />,
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
       {
         element: <Flags />,
         index: true
+      },
+      {
+        path: 'flags',
+        element: <Flags />
       },
       {
         path: 'flags/new',
@@ -60,7 +64,7 @@ const router = createBrowserRouter([
   }
 ]);
 
-const apiURL = `${import.meta.env.FLIPT_BASE_URL ?? ''}/api/v1`;
+const apiURL = '/api/v1';
 
 const fetcher = (uri: string) => fetch(apiURL + uri).then((res) => res.json());
 

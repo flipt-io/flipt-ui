@@ -28,7 +28,7 @@ export default function SortableRule(props: SortableRuleProps) {
       }
     : undefined;
 
-  const className = isDragging ? 'border-violet-200' : '';
+  const className = isDragging ? 'border-violet-200 cursor-move' : '';
 
   return (
     <Rule

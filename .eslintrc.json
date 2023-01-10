@@ -11,6 +11,7 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react", "import", "prettier"],
+  "ignorePatterns": ["**/*.cjs"],
   "rules": {
     "prettier/prettier": [
       "warn",

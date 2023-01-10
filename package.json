@@ -13,7 +13,7 @@
     "@dnd-kit/sortable": "^7.0.2",
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
-    "@tanstack/react-table": "^8.7.4",
+    "@tanstack/react-table": "^8.7.6",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "formik": "^2.2.9",

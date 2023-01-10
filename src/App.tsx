@@ -6,6 +6,7 @@ import Evaluation from './app/flags/Evaluation';
 import Flag, { flagLoader } from './app/flags/Flag';
 import Flags from './app/flags/Flags';
 import NewFlag from './app/flags/NewFlag';
+import NotFound from './app/NotFound';
 import NewSegment from './app/segments/NewSegment';
 import Segment, { segmentLoader } from './app/segments/Segment';
 import Segments from './app/segments/Segments';
@@ -61,6 +62,10 @@ const router = createHashRouter([
         element: <Console />
       }
     ]
+  },
+  {
+    path: '*',
+    element: <NotFound />
   }
 ]);
 

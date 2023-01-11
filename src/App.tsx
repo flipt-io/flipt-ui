@@ -1,17 +1,19 @@
+import loadable from '@loadable/component';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { SWRConfig } from 'swr';
-import Console from './app/console/Console';
 import ErrorLayout from './app/ErrorLayout';
 import EditFlag from './app/flags/EditFlag';
 import Evaluation from './app/flags/Evaluation';
 import Flag, { flagLoader } from './app/flags/Flag';
-import Flags from './app/flags/Flags';
 import NewFlag from './app/flags/NewFlag';
 import Layout from './app/Layout';
 import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
 import Segment, { segmentLoader } from './app/segments/Segment';
-import Segments from './app/segments/Segments';
+
+const Flags = loadable(() => import('./app/flags/Flags'));
+const Segments = loadable(() => import('./app/segments/Segments'));
+const Console = loadable(() => import('./app/console/Console'));
 
 const router = createHashRouter([
   {

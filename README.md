@@ -3,7 +3,7 @@
 [![Build](https://github.com/flipt-io/flipt-ui/actions/workflows/build.yml/badge.svg)](https://github.com/flipt-io/flipt-ui/actions/workflows/build.yml)
 ![Discord](https://img.shields.io/discord/960634591000014878?color=%238440f1&label=Discord&logo=discord&logoColor=%238440f1&style=flat)
 
-This repository contains the UI for [Flipt](https://github.com/flipt-io/flipt) as of v0.17.0.
+This repository contains the UI for [Flipt](https://github.com/flipt-io/flipt) as of v1.17.0.
 
 It is built with [React](https://reactjs.org/), [Tailwind CSS](https://tailwindcss.com/) and [TypeScript](https://www.typescriptlang.org/).
 

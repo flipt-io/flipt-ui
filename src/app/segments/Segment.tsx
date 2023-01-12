@@ -257,7 +257,8 @@ export default function Segment() {
                           <a
                             href="#"
                             className="pr-2 text-violet-600 hover:text-violet-900"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               setEditingConstraint(constraint);
                               setShowConstraintForm(true);
                             }}
@@ -271,7 +272,8 @@ export default function Segment() {
                           <a
                             href="#"
                             className="pl-2 text-violet-600 hover:text-violet-900"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               setDeletingConstraint(constraint);
                               setShowDeleteConstraintModal(true);
                             }}

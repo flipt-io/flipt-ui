@@ -33,7 +33,10 @@ export default function ErrorLayout() {
           <div className="mt-20">
             <a
               href="#"
-              onClick={() => navigate(-1)}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(-1);
+              }}
               className="text-base font-medium text-violet-600 hover:text-violet-500"
             >
               <span aria-hidden="true">&larr; </span>

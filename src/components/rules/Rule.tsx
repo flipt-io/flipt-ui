@@ -100,7 +100,10 @@ const Rule = forwardRef(
         {rule.rollouts.length > 1 && (
           <a
             href="#"
-            onClick={onEdit}
+            onClick={(e) => {
+              e.preventDefault();
+              onEdit && onEdit();
+            }}
             className="text-xs text-violet-600 hover:text-violet-900"
           >
             Edit&nbsp;|&nbsp;
@@ -108,7 +111,10 @@ const Rule = forwardRef(
         )}
         <a
           href="#"
-          onClick={onDelete}
+          onClick={(e) => {
+            e.preventDefault();
+            onDelete && onDelete();
+          }}
           className="text-xs text-violet-600 hover:text-violet-900"
         >
           Delete

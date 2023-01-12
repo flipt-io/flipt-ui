@@ -156,7 +156,8 @@ export default function EditFlag() {
                         <a
                           href="#"
                           className="pr-2 text-violet-600 hover:text-violet-900"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
                             setEditingVariant(variant);
                             setShowVariantForm(true);
                           }}
@@ -168,7 +169,8 @@ export default function EditFlag() {
                         <a
                           href="#"
                           className="pl-2 text-violet-600 hover:text-violet-900"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
                             setDeletingVariant(variant);
                             setShowDeleteVariantModal(true);
                           }}

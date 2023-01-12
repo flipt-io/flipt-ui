@@ -10,6 +10,9 @@ export default defineConfig({
       '~': path.resolve(__dirname, 'src')
     }
   },
+  build: {
+    manifest: true,
+  },
   envPrefix: 'FLIPT_',
   server: {
     proxy: {

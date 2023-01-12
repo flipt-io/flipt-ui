@@ -140,8 +140,7 @@ export default function Segment() {
           <button
             type="button"
             className="mt-5 mb-1 inline-flex items-center justify-center rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-400 focus:outline-none enabled:hover:bg-red-50 sm:mt-0"
-            onClick={(e) => {
-              e.preventDefault();
+            onClick={() => {
               setShowDeleteSegmentModal(true);
             }}
           >
@@ -194,8 +193,7 @@ export default function Segment() {
                   <Button
                     primary
                     type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
+                    onClick={() => {
                       setEditingConstraint(null);
                       setShowConstraintForm(true);
                     }}

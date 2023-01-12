@@ -190,8 +190,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
                   <button
                     type="button"
                     className="text-gray-400 hover:text-gray-500"
-                    onClick={(e) => {
-                      e.preventDefault();
+                    onClick={() => {
                       setOpen(false);
                     }}
                   >
@@ -254,8 +253,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
           <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
             <div className="flex justify-end space-x-3">
               <Button
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   setOpen(false);
                 }}
               >

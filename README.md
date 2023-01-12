@@ -25,7 +25,7 @@ npm run build
 
 ## Development
 
-We're actively working on making the development process easier, so stay tuned! If you have any suggestions, please [open an issue](https://github.com/flipt-io/flipt-ui/issues/new) or chat with us in our [Discord server](https://www.flipt.io/discord).
+We're actively working on making the development process easier, so stay tuned! If you have any suggestions, please [open an issue](https://github.com/flipt-io/flipt/issues/new) or chat with us in our [Discord server](https://www.flipt.io/discord).
 
 ### Prerequisites
 
@@ -58,8 +58,6 @@ npm install
 ```
 
 ### Running the UI
-
-![Dev](.github/images/dev.png)
 
 Run the development server in a separate terminal:
 

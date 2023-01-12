@@ -3,7 +3,13 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["airbnb-typescript/base", "plugin:react/jsx-runtime"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
+    "airbnb-typescript/base"
+  ],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -35,6 +41,9 @@
     "max-len": "off"
   },
   "settings": {
+    "react": {
+      "version": "detect"
+    },
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },

@@ -1,5 +1,8 @@
 # Flipt UI
 
+[![Build](https://github.com/flipt-io/flipt-ui/actions/workflows/build.yml/badge.svg)](https://github.com/flipt-io/flipt-ui/actions/workflows/build.yml)
+![Discord](https://img.shields.io/discord/960634591000014878?color=%238440f1&label=Discord&logo=discord&logoColor=%238440f1&style=flat)
+
 This repository contains the UI for [Flipt](https://github.com/flipt-io/flipt) as of v0.17.0.
 
 It is built with [React](https://reactjs.org/), [Tailwind CSS](https://tailwindcss.com/) and [TypeScript](https://www.typescriptlang.org/).
@@ -73,3 +76,7 @@ Open [http://localhost:5137](http://localhost:5137) with your browser to see the
 We would love your help! Before submitting a PR, please read over the [Contributing](.github/contributing.md) guide.
 
 No contribution is too small, whether it be bug reports/fixes, feature requests, documentation updates, or anything else that can help drive the project forward.
+
+### Conventional Commits
+
+We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages. Please adhere to this specification when contributing.

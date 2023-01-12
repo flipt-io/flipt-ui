@@ -73,11 +73,11 @@ export default function Segment() {
   const constraintTypeToLabel = (t: string) =>
     ComparisonType[t as keyof typeof ComparisonType];
 
-  const constraintOperatorToLabel = (o: string) => ConstraintOperators[o].label;
+  const constraintOperatorToLabel = (o: string) => ConstraintOperators[o];
 
   return (
     <>
-      {/* variant edit form */}
+      {/* constraint edit form */}
       <Slideover open={showConstraintForm} setOpen={setShowConstraintForm}>
         <ConstraintForm
           segmentKey={segment.key}
@@ -140,7 +140,9 @@ export default function Segment() {
           <button
             type="button"
             className="mt-5 mb-1 inline-flex items-center justify-center rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-400 focus:outline-none enabled:hover:bg-red-50 sm:mt-0"
-            onClick={() => setShowDeleteSegmentModal(true)}
+            onClick={() => {
+              setShowDeleteSegmentModal(true);
+            }}
           >
             Delete
           </button>
@@ -257,7 +259,8 @@ export default function Segment() {
                           <a
                             href="#"
                             className="pr-2 text-violet-600 hover:text-violet-900"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               setEditingConstraint(constraint);
                               setShowConstraintForm(true);
                             }}
@@ -271,7 +274,8 @@ export default function Segment() {
                           <a
                             href="#"
                             className="pl-2 text-violet-600 hover:text-violet-900"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               setDeletingConstraint(constraint);
                               setShowDeleteConstraintModal(true);
                             }}

@@ -95,8 +95,9 @@ export default function FlagForm(props: FlagFormProps) {
                       // check if the name and key are currently in sync
                       // we do this so we don't override a custom key value
                       if (
-                        formik.values.key === '' ||
-                        formik.values.key === stringAsKey(previousName)
+                        isNew &&
+                        (formik.values.key === '' ||
+                          formik.values.key === stringAsKey(previousName))
                       ) {
                         formik.setFieldValue(
                           'key',

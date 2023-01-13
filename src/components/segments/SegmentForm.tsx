@@ -1,5 +1,4 @@
 import { Form, Formik } from 'formik';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
@@ -34,12 +33,7 @@ export default function SegmentForm(props: SegmentFormProps) {
   const navigate = useNavigate();
   const { setError, clearError } = useError();
 
-  const [selectedMatchType, setSelectedMatchType] = useState(
-    segment?.matchType || ('ALL_MATCH_TYPE' as SegmentMatchType)
-  );
-
   const handleSubmit = (values: ISegmentBase) => {
-    values.matchType = selectedMatchType;
     if (isNew) {
       return createSegment(values);
     }
@@ -50,7 +44,7 @@ export default function SegmentForm(props: SegmentFormProps) {
     key: segment?.key || '',
     name: segment?.name || '',
     description: segment?.description || '',
-    matchType: selectedMatchType
+    matchType: segment?.matchType || ('ALL_MATCH_TYPE' as SegmentMatchType)
   };
 
   return (
@@ -99,12 +93,12 @@ export default function SegmentForm(props: SegmentFormProps) {
                     // check if the name and key are currently in sync
                     // we do this so we don't override a custom key value
                     if (
-                      formik.values.key === '' ||
-                      formik.values.key === stringAsKey(previousName)
+                      isNew &&
+                      (formik.values.key === '' ||
+                        formik.values.key === stringAsKey(previousName))
                     ) {
                       formik.setFieldValue('key', stringAsKey(e.target.value));
                     }
-                    formik.handleChange(e);
                   }}
                 />
               </div>
@@ -148,13 +142,13 @@ export default function SegmentForm(props: SegmentFormProps) {
                             name="matchType"
                             type="radio"
                             className="h-4 w-4 border-gray-300 text-violet-400 focus:ring-violet-400"
-                            onChange={(e) => {
-                              formik.handleChange(e);
-                              setSelectedMatchType(
+                            onChange={() => {
+                              formik.setFieldValue(
+                                'matchType',
                                 matchType.id as SegmentMatchType
                               );
                             }}
-                            checked={matchType.id === selectedMatchType}
+                            checked={matchType.id === formik.values.matchType}
                             value={matchType.id}
                           />
                         </div>

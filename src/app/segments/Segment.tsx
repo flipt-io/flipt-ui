@@ -37,7 +37,7 @@ export default function Segment() {
   const navigate = useNavigate();
 
   const [segment, setSegment] = useState<ISegment>(useLoaderData() as ISegment);
-  const [segmentVerison, setSegmentVersion] = useState(0);
+  const [segmentVersion, setSegmentVersion] = useState(0);
 
   const [showConstraintForm, setShowConstraintForm] = useState<boolean>(false);
   const [editingConstraint, setEditingConstraint] =
@@ -60,15 +60,15 @@ export default function Segment() {
       .catch((err) => {
         setError(err);
       });
-  }, [segmentVerison]);
+  }, [clearError, segment.key, setError]);
 
   const incrementSegmentVersion = () => {
-    setSegmentVersion(segmentVerison + 1);
+    setSegmentVersion(segmentVersion + 1);
   };
 
   useEffect(() => {
     fetchSegment();
-  }, [segmentVerison, fetchSegment]);
+  }, [segmentVersion, fetchSegment]);
 
   const constraintTypeToLabel = (t: string) =>
     ComparisonType[t as keyof typeof ComparisonType];

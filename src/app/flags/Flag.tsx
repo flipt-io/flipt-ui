@@ -42,7 +42,7 @@ export default function Flag() {
       .catch((err) => {
         setError(err);
       });
-  }, [flagVersion]);
+  }, [clearError, flag.key, setError]);
 
   const incrementFlagVersion = () => {
     setFlagVersion(flagVersion + 1);

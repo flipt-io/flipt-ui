@@ -1,6 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Form, Formik } from 'formik';
+import { reduce } from 'lodash';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -57,169 +58,121 @@ function computePercentages(n: number) {
   return result;
 }
 
+function validRollout(distributions: Distribution[]) {
+  let sum = reduce(
+    distributions,
+    function (acc, d) {
+      return acc + Number(d.rollout);
+    },
+    0
+  );
+  return sum <= 100;
+}
+
 type SelectableSegment = ISegment & ISelectable;
 
 type SelectableVariant = IVariant & ISelectable;
 
-type DistributionFormProps = {
-  flag: IFlag;
-  ruleType: string;
-  setRuleType: (ruleType: string) => void;
-  distributions?: Distribution[];
-  setDistributions: (distributions: Distribution[]) => void;
+type SingleDistributionFormInputProps = {
+  variants: IVariant[];
   selectedVariant: SelectableVariant | null;
   setSelectedVariant: (variant: SelectableVariant | null) => void;
 };
 
-function DistributionForm(props: DistributionFormProps) {
-  const {
-    flag,
-    ruleType,
-    setRuleType,
-    distributions,
-    setDistributions,
-    selectedVariant,
-    setSelectedVariant
-  } = props;
+function SingleDistributionFormInput(props: SingleDistributionFormInputProps) {
+  const { variants, selectedVariant, setSelectedVariant } = props;
+  return (
+    <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+      <div>
+        <label
+          htmlFor="variantKey"
+          className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+        >
+          Variant
+        </label>
+      </div>
+      <div className="sm:col-span-2">
+        <Combobox<SelectableVariant>
+          id="variant"
+          name="variant"
+          placeholder="Select or search for a variant"
+          values={
+            variants?.map((v) => ({
+              ...v,
+              filterValue: v.key,
+              displayValue: v.name
+            })) || []
+          }
+          selected={selectedVariant}
+          setSelected={setSelectedVariant}
+        />
+      </div>
+    </div>
+  );
+}
+
+type MultiDistributionFormInputProps = {
+  distributions?: Distribution[];
+  setDistributions: (distributions: Distribution[]) => void;
+};
+
+function MultiDistributionFormInputs(props: MultiDistributionFormInputProps) {
+  const { distributions, setDistributions } = props;
 
   return (
-    <>
+    <div>
       <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
         <div>
           <label
-            htmlFor="ruleType"
+            htmlFor="variantKey"
             className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
           >
-            Type
+            Variants
           </label>
         </div>
-        <div className="sm:col-span-2">
-          <fieldset>
-            <legend className="sr-only">Type</legend>
-            <div className="space-y-5">
-              {distTypes.map((dist) => (
-                <div key={dist.id} className="relative flex items-start">
-                  <div className="flex h-5 items-center">
-                    <input
-                      id={dist.id}
-                      aria-describedby={`${dist.id}-description`}
-                      name="ruleType"
-                      type="radio"
-                      className="h-4 w-4 border-gray-300 text-violet-400 focus:ring-violet-400"
-                      onChange={() => {
-                        setRuleType(dist.id);
-                      }}
-                      checked={dist.id === ruleType}
-                      value={dist.id}
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor={dist.id}
-                      className="font-medium text-gray-700"
-                    >
-                      {dist.name}
-                    </label>
-                    <p id={`${dist.id}-description`} className="text-gray-500">
-                      {dist.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </fieldset>
-        </div>
       </div>
-
-      <>
-        {ruleType === 'single' && (
-          <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-            <div>
-              <label
-                htmlFor="variantKey"
-                className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-              >
-                Variant
-              </label>
-            </div>
-            <div className="sm:col-span-2">
-              <Combobox<SelectableVariant>
-                id="variant"
-                name="variant"
-                placeholder="Select or search for a variant"
-                values={
-                  flag?.variants?.map((v) => ({
-                    ...v,
-                    filterValue: v.key,
-                    displayValue: v.name
-                  })) || []
-                }
-                selected={selectedVariant}
-                setSelected={setSelectedVariant}
-              />
-            </div>
-          </div>
-        )}
-      </>
-
-      {ruleType === 'multi' && (
-        <div>
-          <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-            <div>
-              <label
-                htmlFor="variantKey"
-                className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-              >
-                Variants
-              </label>
-            </div>
-          </div>
-          {distributions?.map((dist, index) => (
-            <div
-              className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-1"
-              key={dist.variantId}
+      {distributions?.map((dist, index) => (
+        <div
+          className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-1"
+          key={dist.variantId}
+        >
+          <div>
+            <label
+              htmlFor={dist.variantKey}
+              className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
             >
-              <div>
-                <label
-                  htmlFor={dist.variantKey}
-                  className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
-                >
-                  {dist.variantKey}
-                </label>
-              </div>
-              <div className="relative sm:col-span-1">
-                <input
-                  type="number"
-                  className="block w-full rounded-md border-gray-300 pl-7 pr-12 shadow-sm focus:border-violet-300 focus:ring-violet-300 sm:text-sm"
-                  value={dist.rollout}
-                  name={dist.variantKey}
-                  // eslint-disable-next-line react/no-unknown-property
-                  typeof="number"
-                  step=".01"
-                  min="0"
-                  max="100"
-                  onChange={(e) => {
-                    const newDistributions = [...distributions];
-                    newDistributions[index].rollout = parseFloat(
-                      e.target.value
-                    );
-                    setDistributions(newDistributions);
-                  }}
-                />
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                  <span
-                    className="text-gray-500 sm:text-sm"
-                    id={`percentage-${dist.variantKey}`}
-                  >
-                    %
-                  </span>
-                </div>
-              </div>
+              {dist.variantKey}
+            </label>
+          </div>
+          <div className="relative sm:col-span-1">
+            <input
+              type="number"
+              className="block w-full rounded-md border-gray-300 pl-7 pr-12 shadow-sm focus:border-violet-300 focus:ring-violet-300 sm:text-sm"
+              value={dist.rollout}
+              name={dist.variantKey}
+              // eslint-disable-next-line react/no-unknown-property
+              typeof="number"
+              step=".01"
+              min="0"
+              max="100"
+              onChange={(e) => {
+                const newDistributions = [...distributions];
+                newDistributions[index].rollout = parseFloat(e.target.value);
+                setDistributions(newDistributions);
+              }}
+            />
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+              <span
+                className="text-gray-500 sm:text-sm"
+                id={`percentage-${dist.variantKey}`}
+              >
+                %
+              </span>
             </div>
-          ))}
+          </div>
         </div>
-      )}
-    </>
+      ))}
+    </div>
   );
 }
 
@@ -233,8 +186,6 @@ export default function RuleForm(props: RuleFormProps) {
     useState<SelectableSegment | null>(null);
   const [selectedVariant, setSelectedVariant] =
     useState<SelectableVariant | null>(null);
-
-  const hasVariants = flag.variants && flag.variants.length > 0;
 
   const [distributions, setDistributions] = useState(() => {
     const percentages = computePercentages(flag.variants?.length || 0);
@@ -346,18 +297,74 @@ export default function RuleForm(props: RuleFormProps) {
                     />
                   </div>
                 </div>
-                {hasVariants && (
-                  <DistributionForm
-                    flag={flag}
-                    ruleType={ruleType}
-                    setRuleType={setRuleType}
-                    distributions={distributions}
-                    setDistributions={setDistributions}
+                {flag.variants && (
+                  <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+                    <div>
+                      <label
+                        htmlFor="ruleType"
+                        className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                      >
+                        Type
+                      </label>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <fieldset>
+                        <legend className="sr-only">Type</legend>
+                        <div className="space-y-5">
+                          {distTypes.map((dist) => (
+                            <div
+                              key={dist.id}
+                              className="relative flex items-start"
+                            >
+                              <div className="flex h-5 items-center">
+                                <input
+                                  id={dist.id}
+                                  aria-describedby={`${dist.id}-description`}
+                                  name="ruleType"
+                                  type="radio"
+                                  className="h-4 w-4 border-gray-300 text-violet-400 focus:ring-violet-400"
+                                  onChange={() => {
+                                    setRuleType(dist.id);
+                                  }}
+                                  checked={dist.id === ruleType}
+                                  value={dist.id}
+                                />
+                              </div>
+                              <div className="ml-3 text-sm">
+                                <label
+                                  htmlFor={dist.id}
+                                  className="font-medium text-gray-700"
+                                >
+                                  {dist.name}
+                                </label>
+                                <p
+                                  id={`${dist.id}-description`}
+                                  className="text-gray-500"
+                                >
+                                  {dist.description}
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </fieldset>
+                    </div>
+                  </div>
+                )}
+                {flag.variants && ruleType === 'single' && (
+                  <SingleDistributionFormInput
+                    variants={flag.variants}
                     selectedVariant={selectedVariant}
                     setSelectedVariant={setSelectedVariant}
                   />
                 )}
-                {!hasVariants && (
+                {flag.variants && ruleType === 'multi' && (
+                  <MultiDistributionFormInputs
+                    distributions={distributions}
+                    setDistributions={setDistributions}
+                  />
+                )}
+                {!flag.variants && (
                   <p className="mt-1 px-4 text-center text-sm text-gray-500 sm:px-6 sm:py-5">
                     Flag{' '}
                     <Link to={`/flags/${flag.key}`} className="text-violet-500">

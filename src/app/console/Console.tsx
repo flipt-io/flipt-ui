@@ -53,7 +53,7 @@ export default function Console() {
     } catch (err) {
       setError(err instanceof Error ? err : Error(String(err)));
     }
-  }, []);
+  }, [clearError, setError]);
 
   const handleSubmit = (values: IConsole) => {
     const { flagKey, entityId, context } = values;

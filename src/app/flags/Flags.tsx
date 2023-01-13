@@ -20,7 +20,7 @@ export default function Flags() {
       return;
     }
     clearError();
-  }, error);
+  }, [clearError, error, setError]);
 
   return (
     <>

@@ -20,7 +20,7 @@ export default function Segments() {
       return;
     }
     clearError();
-  }, error);
+  }, [clearError, error, setError]);
 
   return (
     <>

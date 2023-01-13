@@ -102,7 +102,7 @@ export default function Evaluation() {
     });
 
     setRules(rules);
-  }, [rulesVersion]);
+  }, [flag]);
 
   const incrementRulesVersion = () => {
     setRulesVersion(rulesVersion + 1);
@@ -156,7 +156,7 @@ export default function Evaluation() {
 
   useEffect(() => {
     loadData();
-  }, [rulesVersion]);
+  }, [loadData, rulesVersion]);
 
   return (
     <>

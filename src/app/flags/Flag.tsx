@@ -10,7 +10,7 @@ import {
 import DeleteFlagPanel from '~/components/flags/DeleteFlagPanel';
 import Modal from '~/components/Modal';
 import { getFlag } from '~/data/api';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/useError';
 import { IFlag } from '~/types/Flag';
 
 export async function flagLoader({

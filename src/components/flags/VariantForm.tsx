@@ -7,7 +7,7 @@ import Input from '~/components/forms/Input';
 import TextArea from '~/components/forms/TextArea';
 import MoreInfo from '~/components/MoreInfo';
 import { createVariant, updateVariant } from '~/data/api';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/useError';
 import { jsonValidation, keyValidation } from '~/data/validations';
 import { IVariant, IVariantBase } from '~/types/Variant';
 

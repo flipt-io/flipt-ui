@@ -12,7 +12,7 @@ import Combobox, { ISelectable } from '~/components/forms/Combobox';
 import Input from '~/components/forms/Input';
 import TextArea from '~/components/forms/TextArea';
 import { evaluate, listFlags } from '~/data/api';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/useError';
 import {
   jsonValidation,
   keyValidation,

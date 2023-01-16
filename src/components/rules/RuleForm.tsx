@@ -8,7 +8,7 @@ import Button from '~/components/forms/Button';
 import Combobox, { ISelectable } from '~/components/forms/Combobox';
 import MoreInfo from '~/components/MoreInfo';
 import { createDistribution, createRule } from '~/data/api';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/useError';
 import { keyValidation } from '~/data/validations';
 import { IFlag } from '~/types/Flag';
 import { ISegment } from '~/types/Segment';

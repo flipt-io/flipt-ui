@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import SegmentTable from '~/components/segments/SegmentTable';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/useError';
 import { ISegmentList } from '~/types/Segment';
 
 export default function Segments() {

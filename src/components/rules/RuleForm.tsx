@@ -1,25 +1,21 @@
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Form, Formik } from 'formik';
-import { reduce } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
-import Combobox, { ISelectable } from '~/components/forms/Combobox';
+import Combobox from '~/components/forms/Combobox';
 import MoreInfo from '~/components/MoreInfo';
 import { createDistribution, createRule } from '~/data/api';
 import useError from '~/data/hooks/errors';
 import { keyValidation } from '~/data/validations';
+import { IDistributionVariant } from '~/types/Distribution';
 import { IFlag } from '~/types/Flag';
-import { ISegment } from '~/types/Segment';
-import { IVariant } from '~/types/Variant';
-
-interface Distribution {
-  variantId: string;
-  variantKey: string;
-  rollout: number;
-}
+import { ISegment, SelectableSegment } from '~/types/Segment';
+import { SelectableVariant } from '~/types/Variant';
+import MultiDistributionFormInputs from './distributions/MultiDistributionForm';
+import SingleDistributionFormInput from './distributions/SingleDistributionForm';
 
 type RuleFormProps = {
   setOpen: (open: boolean) => void;
@@ -42,7 +38,7 @@ const distTypes = [
   }
 ];
 
-function computePercentages(n: number) {
+const computePercentages = (n: number): number[] => {
   const sum = 100 * 100;
 
   const d = Math.floor(sum / n);
@@ -56,129 +52,20 @@ function computePercentages(n: number) {
   }
 
   return result;
-}
+};
 
-function validRollout(distributions: Distribution[]) {
-  let sum = reduce(
-    distributions,
-    function (acc, d) {
-      return acc + Number(d.rollout);
-    },
-    0
-  );
+const validRollout = (distributions: IDistributionVariant[]): boolean => {
+  const sum = distributions.reduce(function (acc, d) {
+    return acc + Number(d.rollout);
+  }, 0);
+
   return sum <= 100;
-}
-
-type SelectableSegment = ISegment & ISelectable;
-
-type SelectableVariant = IVariant & ISelectable;
-
-type SingleDistributionFormInputProps = {
-  variants: IVariant[];
-  selectedVariant: SelectableVariant | null;
-  setSelectedVariant: (variant: SelectableVariant | null) => void;
 };
-
-function SingleDistributionFormInput(props: SingleDistributionFormInputProps) {
-  const { variants, selectedVariant, setSelectedVariant } = props;
-  return (
-    <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-      <div>
-        <label
-          htmlFor="variantKey"
-          className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-        >
-          Variant
-        </label>
-      </div>
-      <div className="sm:col-span-2">
-        <Combobox<SelectableVariant>
-          id="variant"
-          name="variant"
-          placeholder="Select or search for a variant"
-          values={
-            variants?.map((v) => ({
-              ...v,
-              filterValue: v.key,
-              displayValue: v.name
-            })) || []
-          }
-          selected={selectedVariant}
-          setSelected={setSelectedVariant}
-        />
-      </div>
-    </div>
-  );
-}
-
-type MultiDistributionFormInputProps = {
-  distributions?: Distribution[];
-  setDistributions: (distributions: Distribution[]) => void;
-};
-
-function MultiDistributionFormInputs(props: MultiDistributionFormInputProps) {
-  const { distributions, setDistributions } = props;
-
-  return (
-    <div>
-      <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-        <div>
-          <label
-            htmlFor="variantKey"
-            className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-          >
-            Variants
-          </label>
-        </div>
-      </div>
-      {distributions?.map((dist, index) => (
-        <div
-          className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-1"
-          key={dist.variantId}
-        >
-          <div>
-            <label
-              htmlFor={dist.variantKey}
-              className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
-            >
-              {dist.variantKey}
-            </label>
-          </div>
-          <div className="relative sm:col-span-1">
-            <input
-              type="number"
-              className="block w-full rounded-md border-gray-300 pl-7 pr-12 shadow-sm focus:border-violet-300 focus:ring-violet-300 sm:text-sm"
-              value={dist.rollout}
-              name={dist.variantKey}
-              // eslint-disable-next-line react/no-unknown-property
-              typeof="number"
-              step=".01"
-              min="0"
-              max="100"
-              onChange={(e) => {
-                const newDistributions = [...distributions];
-                newDistributions[index].rollout = parseFloat(e.target.value);
-                setDistributions(newDistributions);
-              }}
-            />
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-              <span
-                className="text-gray-500 sm:text-sm"
-                id={`percentage-${dist.variantKey}`}
-              >
-                %
-              </span>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 export default function RuleForm(props: RuleFormProps) {
   const { setOpen, rulesChanged, flag, rank, segments } = props;
   const { setError, clearError } = useError();
+  const [distributionsValid, setDistributionsValid] = useState<boolean>(true);
 
   const [ruleType, setRuleType] = useState('single');
 
@@ -197,6 +84,14 @@ export default function RuleForm(props: RuleFormProps) {
     }));
   });
 
+  useEffect(() => {
+    if (ruleType === 'multi' && distributions && !validRollout(distributions)) {
+      setDistributionsValid(false);
+    } else {
+      setDistributionsValid(true);
+    }
+  }, [distributions, ruleType]);
+
   const handleSubmit = async () => {
     if (!selectedSegment) {
       throw new Error('No segment selected');
@@ -209,7 +104,7 @@ export default function RuleForm(props: RuleFormProps) {
     });
 
     if (ruleType === 'multi') {
-      const distPromises = distributions?.map((dist: Distribution) =>
+      const distPromises = distributions?.map((dist: IDistributionVariant) =>
         createDistribution(flag.key, rule.id, {
           variantId: dist.variantId,
           rollout: dist.rollout
@@ -364,6 +259,11 @@ export default function RuleForm(props: RuleFormProps) {
                     setDistributions={setDistributions}
                   />
                 )}
+                {!distributionsValid && (
+                  <p className="mt-1 px-4 text-center text-sm text-gray-500 sm:px-6 sm:py-5">
+                    Distribution of variants must have a sum of 100% or less.
+                  </p>
+                )}
                 {!flag.variants && (
                   <p className="mt-1 px-4 text-center text-sm text-gray-500 sm:px-6 sm:py-5">
                     Flag{' '}
@@ -382,7 +282,9 @@ export default function RuleForm(props: RuleFormProps) {
                 <Button
                   primary
                   type="submit"
-                  disabled={!(formik.dirty && formik.isValid)}
+                  disabled={
+                    !(formik.dirty && formik.isValid && distributionsValid)
+                  }
                 >
                   Create
                 </Button>

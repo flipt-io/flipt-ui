@@ -1,3 +1,4 @@
+import { ISelectable } from '~/components/forms/Combobox';
 import { IConstraint } from './Constraint';
 import { IPageable } from './Pageable';
 
@@ -22,3 +23,5 @@ export enum SegmentMatchType {
 export interface ISegmentList extends IPageable {
   segments: ISegment[];
 }
+
+export type SelectableSegment = ISegment & ISelectable;

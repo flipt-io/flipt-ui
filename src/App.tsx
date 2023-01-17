@@ -80,6 +80,7 @@ const fetcher = async (uri: String) => {
 
   class StatusError extends Error {
     info: string;
+
     status: number;
 
     constructor(message: string, info: string, status: number) {
@@ -93,9 +94,7 @@ const fetcher = async (uri: String) => {
   // we still try to parse and throw it.
   if (!res.ok) {
     let info = '';
-    try {
-      info = await res.json();
-    } catch {}
+    info = await res.json();
 
     return new StatusError(
       'An error occurred while fetching the data.',

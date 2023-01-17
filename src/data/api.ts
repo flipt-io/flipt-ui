@@ -6,12 +6,13 @@ import { ISegmentBase } from 'types/Segment';
 import { IVariantBase } from 'types/Variant';
 
 const apiURL = '/api/v1';
+const authURL = '/auth/v1';
 const metaURL = '/meta';
 
 //
 // base methods
-async function get(uri: string) {
-  const res = await fetch(apiURL + uri, {
+async function get(uri: string, base = apiURL) {
+  const res = await fetch(base + uri, {
     method: 'GET',
     headers: {
       Accept: 'application/json'
@@ -54,6 +55,12 @@ async function put<T>(uri: string, values: T) {
     throw new Error(err.message);
   }
   return res.json();
+}
+
+//
+// auth
+export async function listAuthMethods() {
+  return get('/method', authURL);
 }
 
 //

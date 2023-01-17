@@ -81,7 +81,36 @@ const router = createHashRouter([
 
 const apiURL = '/api/v1';
 
-const fetcher = (uri: string) => fetch(apiURL + uri).then((res) => res.json());
+const fetcher = async (uri: String) => {
+  const res = await fetch(apiURL + uri, { credentials: 'include' });
+
+  class StatusError extends Error {
+    info: string;
+
+    status: number;
+
+    constructor(message: string, info: string, status: number) {
+      super(message);
+      this.info = info;
+      this.status = status;
+    }
+  }
+
+  // If the status code is not in the range 200-299,
+  // we still try to parse and throw it.
+  if (!res.ok) {
+    let info = '';
+    info = await res.json();
+
+    return new StatusError(
+      'An error occurred while fetching the data.',
+      info,
+      res.status
+    );
+  }
+
+  return res.json();
+};
 
 export default function App() {
   return (

@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import { createSegment, updateSegment } from '~/data/api';
-import { useError } from '~/data/hooks/useError';
+import { useError } from '~/data/hooks/error';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { ISegment, ISegmentBase, SegmentMatchType } from '~/types/Segment';
 import { stringAsKey } from '~/utils/helpers';

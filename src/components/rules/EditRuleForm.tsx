@@ -7,7 +7,7 @@ import Button from '~/components/forms/Button';
 import Combobox, { ISelectable } from '~/components/forms/Combobox';
 import MoreInfo from '~/components/MoreInfo';
 import { updateDistribution } from '~/data/api';
-import { useError } from '~/data/hooks/useError';
+import { useError } from '~/data/hooks/error';
 import { IEvaluatable } from '~/types/Evaluatable';
 import { ISegment } from '~/types/Segment';
 import { IVariant } from '~/types/Variant';

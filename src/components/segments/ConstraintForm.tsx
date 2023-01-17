@@ -8,7 +8,7 @@ import Input from '~/components/forms/Input';
 import Select from '~/components/forms/Select';
 import MoreInfo from '~/components/MoreInfo';
 import { createConstraint, updateConstraint } from '~/data/api';
-import { useError } from '~/data/hooks/useError';
+import { useError } from '~/data/hooks/error';
 import { requiredValidation } from '~/data/validations';
 import {
   ComparisonType,

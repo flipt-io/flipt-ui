@@ -16,7 +16,7 @@ import DeleteSegmentPanel from '~/components/segments/DeleteSegmentPanel';
 import SegmentForm from '~/components/segments/SegmentForm';
 import Slideover from '~/components/Slideover';
 import { getSegment } from '~/data/api';
-import { useError } from '~/data/hooks/useError';
+import { useError } from '~/data/hooks/error';
 import {
   ComparisonType,
   ConstraintOperators,

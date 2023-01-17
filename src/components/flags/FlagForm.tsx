@@ -5,7 +5,7 @@ import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import Toggle from '~/components/forms/Toggle';
 import { createFlag, updateFlag } from '~/data/api';
-import { useError } from '~/data/hooks/useError';
+import { useError } from '~/data/hooks/error';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { IFlag, IFlagBase } from '~/types/Flag';
 import { stringAsKey } from '~/utils/helpers';

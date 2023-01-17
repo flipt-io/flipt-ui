@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import EmptyState from '~/components/EmptyState';
 import FlagTable from '~/components/flags/FlagTable';
 import Button from '~/components/forms/Button';
-import { useError } from '~/data/hooks/useError';
+import { useError } from '~/data/hooks/error';
 import { IFlagList } from '~/types/Flag';
 
 export default function Flags() {

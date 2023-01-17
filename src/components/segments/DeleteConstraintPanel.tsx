@@ -2,7 +2,7 @@ import { Dialog } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Button from '~/components/forms/Button';
 import { deleteConstraint } from '~/data/api';
-import { useError } from '~/data/hooks/useError';
+import { useError } from '~/data/hooks/error';
 import { IConstraint } from '~/types/Constraint';
 
 type DeleteConstraintPanelProps = {

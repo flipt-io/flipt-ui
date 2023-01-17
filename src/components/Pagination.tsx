@@ -2,7 +2,7 @@ import {
   ArrowLongLeftIcon,
   ArrowLongRightIcon
 } from '@heroicons/react/20/solid';
-import { usePagination } from '~/data/hooks/usePagination';
+import { usePagination } from '~/data/hooks/pagination';
 import { classNames } from '~/utils/helpers';
 
 type PageProps = {

@@ -1,5 +1,5 @@
-import { Icon } from "types/Icon";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
+import { Icon } from 'types/Icon';
 
 type EmptyStateProps = {
   className?: string;
@@ -13,9 +13,9 @@ export default function EmptyState(props: EmptyStateProps) {
   const {
     text,
     secondaryText,
-    className = "",
+    className = '',
     Icon = PlusCircleIcon,
-    onClick,
+    onClick
   } = props;
 
   return (

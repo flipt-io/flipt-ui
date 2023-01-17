@@ -7,6 +7,10 @@ fix or new functionality.
 
 Functionality must meet the design goals and vision for the project to be accepted; I would be happy to discuss how your idea can best fit into Flipt.
 
+## Conventional Commits
+
+We use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages. Please adhere to this specification when contributing.
+
 ## Legal
 
 By submitting a Pull Request, you disavow any rights or claims to any changes

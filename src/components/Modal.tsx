@@ -1,6 +1,6 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Fragment } from 'react';
 
 type ModalProps = {
   open: boolean;

@@ -5,43 +5,43 @@ import {
   KeyboardSensor,
   PointerSensor,
   useSensor,
-  useSensors,
-} from "@dnd-kit/core";
+  useSensors
+} from '@dnd-kit/core';
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { InformationCircleIcon } from "@heroicons/react/20/solid";
-import { useCallback, useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
-import EmptyState from "~/components/EmptyState";
-import Button from "~/components/forms/Button";
-import Modal from "~/components/Modal";
-import DeleteRulePanel from "~/components/rules/DeleteRulePanel";
-import EditRuleForm from "~/components/rules/EditRuleForm";
-import Rule from "~/components/rules/Rule";
-import RuleForm from "~/components/rules/RuleForm";
-import SortableRule from "~/components/rules/SortableRule";
-import Slideover from "~/components/Slideover";
-import { listRules, listSegments, orderRules } from "~/data/api";
-import { IDistribution } from "~/types/Distribution";
-import { IEvaluatable } from "~/types/Evaluatable";
-import { IFlag } from "~/types/Flag";
-import { IRule, IRuleList } from "~/types/Rule";
-import { ISegment, ISegmentList } from "~/types/Segment";
-import { IVariant } from "~/types/Variant";
-import { classNames } from "~/utils/helpers";
-import FlagMenu from "./FlagMenu";
+  verticalListSortingStrategy
+} from '@dnd-kit/sortable';
+import { InformationCircleIcon } from '@heroicons/react/20/solid';
+import { useCallback, useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import EmptyState from '~/components/EmptyState';
+import Button from '~/components/forms/Button';
+import Modal from '~/components/Modal';
+import DeleteRulePanel from '~/components/rules/DeleteRulePanel';
+import EditRuleForm from '~/components/rules/EditRuleForm';
+import Rule from '~/components/rules/Rule';
+import RuleForm from '~/components/rules/RuleForm';
+import SortableRule from '~/components/rules/SortableRule';
+import Slideover from '~/components/Slideover';
+import { listRules, listSegments, orderRules } from '~/data/api';
+import { IDistribution } from '~/types/Distribution';
+import { IEvaluatable } from '~/types/Evaluatable';
+import { IFlag } from '~/types/Flag';
+import { IRule, IRuleList } from '~/types/Rule';
+import { ISegment, ISegmentList } from '~/types/Segment';
+import { IVariant } from '~/types/Variant';
+import { classNames } from '~/utils/helpers';
+import FlagMenu from './FlagMenu';
 
-type flagProps = {
+type FlagProps = {
   flag: IFlag;
   onFlagChange: () => void;
 };
 
 export default function Evaluation() {
-  const { flag } = useOutletContext<flagProps>();
+  const { flag } = useOutletContext<FlagProps>();
 
   const [segments, setSegments] = useState<ISegment[]>([]);
   const [rules, setRules] = useState<IEvaluatable[]>([]);
@@ -60,7 +60,7 @@ export default function Evaluation() {
 
   const loadData = useCallback(async () => {
     const segmentList = (await listSegments()) as ISegmentList;
-    const segments = segmentList.segments;
+    const { segments } = segmentList;
     setSegments(segments);
 
     const ruleList = (await listRules(flag.key)) as IRuleList;
@@ -77,8 +77,8 @@ export default function Evaluation() {
           }
 
           return {
-            variant: variant,
-            distribution: distribution,
+            variant,
+            distribution
           };
         }
       );
@@ -92,17 +92,17 @@ export default function Evaluation() {
 
       return {
         id: rule.id,
-        flag: flag,
-        segment: segment,
+        flag,
+        segment,
         rank: rule.rank,
-        rollouts: rollouts,
+        rollouts,
         createdAt: rule.createdAt,
-        updatedAt: rule.updatedAt,
+        updatedAt: rule.updatedAt
       };
     });
 
     setRules(rules);
-  }, [rulesVersion]);
+  }, [flag]);
 
   const incrementRulesVersion = () => {
     setRulesVersion(rulesVersion + 1);
@@ -111,7 +111,7 @@ export default function Evaluation() {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+      coordinateGetter: sortableKeyboardCoordinates
     })
   );
 
@@ -156,7 +156,7 @@ export default function Evaluation() {
 
   useEffect(() => {
     loadData();
-  }, [rulesVersion]);
+  }, [loadData, rulesVersion]);
 
   return (
     <>
@@ -228,14 +228,14 @@ export default function Evaluation() {
             <div className="flex lg:space-x-5">
               <div className="hidden w-1/4 flex-col space-y-7 pr-3 lg:flex">
                 <p className="text-sm text-gray-500">
-                  Rules are evaluated in order from{" "}
+                  Rules are evaluated in order from{' '}
                   <span className="font-semibold">top to bottom</span>. The
                   first rule that matches will be applied.
                 </p>
                 <p className="text-sm text-gray-500">
                   <InformationCircleIcon className="mr-1 inline-block h-4 w-4 text-violet-300" />
-                  You can re-arrange rules by{" "}
-                  <span className="font-semibold">dragging and dropping</span>{" "}
+                  You can re-arrange rules by{' '}
+                  <span className="font-semibold">dragging and dropping</span>{' '}
                   them into place.
                 </p>
               </div>
@@ -252,28 +252,26 @@ export default function Evaluation() {
                   <ul
                     role="list"
                     className={classNames(
-                      "w-full space-y-5 p-5 lg:w-3/4",
-                      activeRule ? "bg-violet-50" : "bg-gray-50"
+                      'w-full space-y-5 p-5 lg:w-3/4',
+                      activeRule ? 'bg-violet-50' : 'bg-gray-50'
                     )}
                   >
                     {rules &&
                       rules.length > 0 &&
-                      rules.map((rule) => {
-                        return (
-                          <SortableRule
-                            key={rule.id}
-                            rule={rule}
-                            onEdit={() => {
-                              setEditingRule(rule);
-                              setShowEditRuleForm(true);
-                            }}
-                            onDelete={() => {
-                              setDeletingRule(rule);
-                              setShowDeleteRuleModal(true);
-                            }}
-                          />
-                        );
-                      })}
+                      rules.map((rule) => (
+                        <SortableRule
+                          key={rule.id}
+                          rule={rule}
+                          onEdit={() => {
+                            setEditingRule(rule);
+                            setShowEditRuleForm(true);
+                          }}
+                          onDelete={() => {
+                            setDeletingRule(rule);
+                            setShowDeleteRuleModal(true);
+                          }}
+                        />
+                      ))}
                   </ul>
                 </SortableContext>
                 <DragOverlay>

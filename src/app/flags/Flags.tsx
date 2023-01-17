@@ -1,15 +1,15 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import useSWR from "swr";
-import EmptyState from "~/components/EmptyState";
-import FlagTable from "~/components/flags/FlagTable";
-import Button from "~/components/forms/Button";
-import useError from "~/data/hooks/errors";
-import { IFlagList } from "~/types/Flag";
+import { PlusIcon } from '@heroicons/react/24/outline';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
+import EmptyState from '~/components/EmptyState';
+import FlagTable from '~/components/flags/FlagTable';
+import Button from '~/components/forms/Button';
+import useError from '~/data/hooks/errors';
+import { IFlagList } from '~/types/Flag';
 
 export default function Flags() {
-  const { data, error } = useSWR<IFlagList>("/flags");
+  const { data, error } = useSWR<IFlagList>('/flags');
   const flags = data?.flags;
   const navigate = useNavigate();
   const { setError, clearError } = useError();
@@ -20,7 +20,7 @@ export default function Flags() {
       return;
     }
     clearError();
-  }, error);
+  }, [clearError, error, setError]);
 
   return (
     <>
@@ -51,7 +51,7 @@ export default function Flags() {
         ) : (
           <EmptyState
             text="Create Flag"
-            onClick={() => navigate("/flags/new")}
+            onClick={() => navigate('/flags/new')}
           />
         )}
       </div>

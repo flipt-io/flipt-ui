@@ -1,25 +1,25 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
-import EmptyState from "~/components/EmptyState";
-import DeleteVariantPanel from "~/components/flags/DeleteVariantPanel";
-import FlagForm from "~/components/flags/FlagForm";
-import VariantForm from "~/components/flags/VariantForm";
-import Button from "~/components/forms/Button";
-import Modal from "~/components/Modal";
-import MoreInfo from "~/components/MoreInfo";
-import Slideover from "~/components/Slideover";
-import { IFlag } from "~/types/Flag";
-import { IVariant } from "~/types/Variant";
-import FlagMenu from "./FlagMenu";
+import { PlusIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import EmptyState from '~/components/EmptyState';
+import DeleteVariantPanel from '~/components/flags/DeleteVariantPanel';
+import FlagForm from '~/components/flags/FlagForm';
+import VariantForm from '~/components/flags/VariantForm';
+import Button from '~/components/forms/Button';
+import Modal from '~/components/Modal';
+import MoreInfo from '~/components/MoreInfo';
+import Slideover from '~/components/Slideover';
+import { IFlag } from '~/types/Flag';
+import { IVariant } from '~/types/Variant';
+import FlagMenu from './FlagMenu';
 
-type flagProps = {
+type FlagProps = {
   flag: IFlag;
   onFlagChange: () => void;
 };
 
 export default function EditFlag() {
-  const { flag, onFlagChange } = useOutletContext<flagProps>();
+  const { flag, onFlagChange } = useOutletContext<FlagProps>();
 
   const [showVariantForm, setShowVariantForm] = useState<boolean>(false);
   const [editingVariant, setEditingVariant] = useState<IVariant | null>(null);
@@ -156,25 +156,27 @@ export default function EditFlag() {
                         <a
                           href="#"
                           className="pr-2 text-violet-600 hover:text-violet-900"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
                             setEditingVariant(variant);
                             setShowVariantForm(true);
                           }}
                         >
                           Edit
-                          <span className="sr-only">, {variant.key}</span>
+                          <span className="sr-only">,{variant.key}</span>
                         </a>
                         |
                         <a
                           href="#"
                           className="pl-2 text-violet-600 hover:text-violet-900"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.preventDefault();
                             setDeletingVariant(variant);
                             setShowDeleteVariantModal(true);
                           }}
                         >
                           Delete
-                          <span className="sr-only">, {variant.key}</span>
+                          <span className="sr-only">,{variant.key}</span>
                         </a>
                       </td>
                     </tr>

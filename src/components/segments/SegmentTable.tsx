@@ -1,4 +1,4 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/20/solid';
 import {
   createColumnHelper,
   flexRender,
@@ -9,14 +9,14 @@ import {
   PaginationState,
   Row,
   SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-import { formatDistanceToNowStrict, parseISO } from "date-fns";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import Pagination from "~/components/Pagination";
-import Searchbox from "~/components/Searchbox";
-import { ISegment, SegmentMatchType } from "~/types/Segment";
+  useReactTable
+} from '@tanstack/react-table';
+import { formatDistanceToNowStrict, parseISO } from 'date-fns';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Pagination from '~/components/Pagination';
+import Searchbox from '~/components/Searchbox';
+import { ISegment, SegmentMatchType } from '~/types/Segment';
 
 type SegmentTableProps = {
   segments: ISegment[];
@@ -26,18 +26,20 @@ export default function SegmentTable(props: SegmentTableProps) {
   const { segments } = props;
 
   const pageSize = 20;
+  const searchThreshold = 10;
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 20,
+    pageSize: 20
   });
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>('');
 
   const columnHelper = createColumnHelper<ISegment>();
 
   const columns = [
-    columnHelper.accessor("key", {
-      header: "Key",
+    columnHelper.accessor('key', {
+      header: 'Key',
       cell: (info) => (
         <Link to={info.getValue()} className="text-violet-500">
           {info.getValue()}
@@ -45,75 +47,71 @@ export default function SegmentTable(props: SegmentTableProps) {
       ),
       meta: {
         className:
-          "truncate whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900",
-      },
+          'truncate whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900'
+      }
     }),
-    columnHelper.accessor("name", {
-      header: "Name",
+    columnHelper.accessor('name', {
+      header: 'Name',
       cell: (info) => info.getValue(),
       meta: {
-        className: "truncate whitespace-nowrap py-4 px-3 text-sm text-gray-500",
-      },
+        className: 'truncate whitespace-nowrap py-4 px-3 text-sm text-gray-500'
+      }
     }),
-    columnHelper.accessor("matchType", {
-      header: "Match Type",
+    columnHelper.accessor('matchType', {
+      header: 'Match Type',
       cell: (info) =>
         SegmentMatchType[
           info.getValue() as unknown as keyof typeof SegmentMatchType
         ],
       meta: {
-        className: "whitespace-nowrap py-4 px-3 text-sm",
-      },
+        className: 'whitespace-nowrap py-4 px-3 text-sm'
+      }
     }),
-    columnHelper.accessor("description", {
-      header: "Description",
+    columnHelper.accessor('description', {
+      header: 'Description',
       cell: (info) => info.getValue(),
       meta: {
-        className: "truncate whitespace-nowrap py-4 px-3 text-sm text-gray-500",
-      },
+        className: 'truncate whitespace-nowrap py-4 px-3 text-sm text-gray-500'
+      }
     }),
     columnHelper.accessor(
       (row) => formatDistanceToNowStrict(parseISO(row.createdAt)),
       {
-        header: "Created",
-        id: "createdAt",
+        header: 'Created',
+        id: 'createdAt',
         meta: {
-          className: "whitespace-nowrap py-4 px-3 text-sm text-gray-500",
+          className: 'whitespace-nowrap py-4 px-3 text-sm text-gray-500'
         },
         sortingFn: (
           rowA: Row<ISegment>,
           rowB: Row<ISegment>,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           _columnId: string
-        ): number => {
-          return new Date(rowA.original.createdAt) <
-            new Date(rowB.original.createdAt)
+        ): number =>
+          new Date(rowA.original.createdAt) < new Date(rowB.original.createdAt)
             ? 1
-            : -1;
-        },
+            : -1
       }
     ),
     columnHelper.accessor(
       (row) => formatDistanceToNowStrict(parseISO(row.updatedAt)),
       {
-        header: "Updated",
-        id: "updatedAt",
+        header: 'Updated',
+        id: 'updatedAt',
         meta: {
-          className: "whitespace-nowrap py-4 px-3 text-sm text-gray-500",
+          className: 'whitespace-nowrap py-4 px-3 text-sm text-gray-500'
         },
         sortingFn: (
           rowA: Row<ISegment>,
           rowB: Row<ISegment>,
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           _columnId: string
-        ): number => {
-          return new Date(rowA.original.updatedAt) <
-            new Date(rowB.original.updatedAt)
+        ): number =>
+          new Date(rowA.original.updatedAt) < new Date(rowB.original.updatedAt)
             ? 1
-            : -1;
-        },
+            : -1
       }
-    ),
+    )
   ];
 
   const table = useReactTable({
@@ -122,22 +120,22 @@ export default function SegmentTable(props: SegmentTableProps) {
     state: {
       globalFilter: filter,
       sorting,
-      pagination,
+      pagination
     },
-    globalFilterFn: "includesString",
+    globalFilterFn: 'includesString',
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     onGlobalFilterChange: setFilter,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
+    getFilteredRowModel: getFilteredRowModel()
   });
 
   return (
     <>
-      {segments.length > 15 && (
-        <Searchbox className="mb-4" value={filter ?? ""} onChange={setFilter} />
+      {segments.length >= searchThreshold && (
+        <Searchbox className="mb-4" value={filter ?? ''} onChange={setFilter} />
       )}
       <table className="divide-y divide-gray-300">
         <thead>
@@ -174,7 +172,7 @@ export default function SegmentTable(props: SegmentTableProps) {
                               className="h-5 w-5"
                               aria-hidden="true"
                             />
-                          ),
+                          )
                         }[header.column.getIsSorted() as string] ?? null}
                       </span>
                     </a>

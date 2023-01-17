@@ -1,66 +1,79 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { SWRConfig } from "swr";
-import Flag, { flagLoader } from "~/app/flags/Flag";
-import Console from "./app/console/Console";
-import EditFlag from "./app/flags/EditFlag";
-import Evaluation from "./app/flags/Evaluation";
-import Flags from "./app/flags/Flags";
-import NewFlag from "./app/flags/NewFlag";
-import NewSegment from "./app/segments/NewSegment";
-import Segment, { segmentLoader } from "./app/segments/Segment";
-import Segments from "./app/segments/Segments";
-import Layout from "./components/Layout";
+import loadable from '@loadable/component';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { SWRConfig } from 'swr';
+import ErrorLayout from './app/ErrorLayout';
+import EditFlag from './app/flags/EditFlag';
+import Evaluation from './app/flags/Evaluation';
+import Flag, { flagLoader } from './app/flags/Flag';
+import NewFlag from './app/flags/NewFlag';
+import Layout from './app/Layout';
+import NotFoundLayout from './app/NotFoundLayout';
+import NewSegment from './app/segments/NewSegment';
+import Segment, { segmentLoader } from './app/segments/Segment';
 
-const router = createBrowserRouter([
+const Flags = loadable(() => import('./app/flags/Flags'));
+const Segments = loadable(() => import('./app/segments/Segments'));
+const Console = loadable(() => import('./app/console/Console'));
+
+const router = createHashRouter([
   {
-    path: "/",
+    path: '/',
     element: <Layout />,
+    errorElement: <ErrorLayout />,
     children: [
       {
         element: <Flags />,
-        index: true,
+        index: true
       },
       {
-        path: "flags/new",
-        element: <NewFlag />,
+        path: 'flags',
+        element: <Flags />
       },
       {
-        path: "flags/:flagKey",
+        path: 'flags/new',
+        element: <NewFlag />
+      },
+      {
+        path: 'flags/:flagKey',
         element: <Flag />,
         loader: flagLoader,
         children: [
           {
-            path: "",
-            element: <EditFlag />,
+            path: '',
+            element: <EditFlag />
           },
           {
-            path: "evaluation",
-            element: <Evaluation />,
-          },
-        ],
+            path: 'evaluation',
+            element: <Evaluation />
+          }
+        ]
       },
       {
-        path: "segments",
-        element: <Segments />,
+        path: 'segments',
+        element: <Segments />
       },
       {
-        path: "segments/new",
-        element: <NewSegment />,
+        path: 'segments/new',
+        element: <NewSegment />
       },
       {
-        path: "segments/:segmentKey",
+        path: 'segments/:segmentKey',
         element: <Segment />,
-        loader: segmentLoader,
+        loader: segmentLoader
       },
       {
-        path: "console",
-        element: <Console />,
-      },
-    ],
+        path: 'console',
+        element: <Console />
+      }
+    ]
   },
+  {
+    path: '*',
+    element: <NotFoundLayout />
+  }
 ]);
 
-const apiURL = (import.meta.env.FLIPT_BASE_URL ?? "") + "/api/v1";
+const apiURL = '/api/v1';
 
 const fetcher = async (uri: String) => {
   const res = await fetch(apiURL + uri, { credentials: 'include' })
@@ -92,15 +105,13 @@ const fetcher = async (uri: String) => {
 
 export default function App() {
   return (
-    <>
-      <SWRConfig
-        value={{
-          refreshInterval: 10000, // 10 seconds
-          fetcher: fetcher,
-        }}
-      >
-        <RouterProvider router={router} />
-      </SWRConfig>
-    </>
+    <SWRConfig
+      value={{
+        refreshInterval: 10000, // 10 seconds
+        fetcher
+      }}
+    >
+      <RouterProvider router={router} />
+    </SWRConfig>
   );
 }

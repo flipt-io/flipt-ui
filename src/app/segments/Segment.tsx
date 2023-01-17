@@ -1,43 +1,43 @@
-import { CalendarIcon } from "@heroicons/react/20/solid";
-import { formatDistanceToNowStrict, parseISO } from "date-fns";
-import { useCallback, useEffect, useState } from "react";
+import { CalendarIcon } from '@heroicons/react/20/solid';
+import { formatDistanceToNowStrict, parseISO } from 'date-fns';
+import { useCallback, useEffect, useState } from 'react';
 import {
   LoaderFunctionArgs,
   useLoaderData,
-  useNavigate,
-} from "react-router-dom";
-import EmptyState from "~/components/EmptyState";
-import Button from "~/components/forms/Button";
-import Modal from "~/components/Modal";
-import MoreInfo from "~/components/MoreInfo";
-import ConstraintForm from "~/components/segments/ConstraintForm";
-import DeleteConstraintPanel from "~/components/segments/DeleteConstraintPanel";
-import DeleteSegmentPanel from "~/components/segments/DeleteSegmentPanel";
-import SegmentForm from "~/components/segments/SegmentForm";
-import Slideover from "~/components/Slideover";
-import { getSegment } from "~/data/api";
-import useError from "~/data/hooks/errors";
+  useNavigate
+} from 'react-router-dom';
+import EmptyState from '~/components/EmptyState';
+import Button from '~/components/forms/Button';
+import Modal from '~/components/Modal';
+import MoreInfo from '~/components/MoreInfo';
+import ConstraintForm from '~/components/segments/ConstraintForm';
+import DeleteConstraintPanel from '~/components/segments/DeleteConstraintPanel';
+import DeleteSegmentPanel from '~/components/segments/DeleteSegmentPanel';
+import SegmentForm from '~/components/segments/SegmentForm';
+import Slideover from '~/components/Slideover';
+import { getSegment } from '~/data/api';
+import useError from '~/data/hooks/errors';
 import {
   ComparisonType,
   ConstraintOperators,
-  IConstraint,
-} from "~/types/Constraint";
-import { ISegment } from "~/types/Segment";
+  IConstraint
+} from '~/types/Constraint';
+import { ISegment } from '~/types/Segment';
 
 export async function segmentLoader({
-  params,
+  params
 }: LoaderFunctionArgs): Promise<ISegment> {
   if (params.segmentKey) {
     return getSegment(params.segmentKey);
   }
-  return Promise.reject(new Error("No segment key provided"));
+  return Promise.reject(new Error('No segment key provided'));
 }
 
 export default function Segment() {
   const navigate = useNavigate();
 
   const [segment, setSegment] = useState<ISegment>(useLoaderData() as ISegment);
-  const [segmentVerison, setSegmentVersion] = useState(0);
+  const [segmentVersion, setSegmentVersion] = useState(0);
 
   const [showConstraintForm, setShowConstraintForm] = useState<boolean>(false);
   const [editingConstraint, setEditingConstraint] =
@@ -60,27 +60,24 @@ export default function Segment() {
       .catch((err) => {
         setError(err);
       });
-  }, [segmentVerison]);
+  }, [clearError, segment.key, setError]);
 
   const incrementSegmentVersion = () => {
-    setSegmentVersion(segmentVerison + 1);
+    setSegmentVersion(segmentVersion + 1);
   };
 
   useEffect(() => {
     fetchSegment();
-  }, [segmentVerison, fetchSegment]);
+  }, [segmentVersion, fetchSegment]);
 
-  const constraintTypeToLabel = (t: string) => {
-    return ComparisonType[t as keyof typeof ComparisonType];
-  };
+  const constraintTypeToLabel = (t: string) =>
+    ComparisonType[t as keyof typeof ComparisonType];
 
-  const constraintOperatorToLabel = (o: string) => {
-    return ConstraintOperators[o as keyof typeof ConstraintOperators].label;
-  };
+  const constraintOperatorToLabel = (o: string) => ConstraintOperators[o];
 
   return (
     <>
-      {/* variant edit form */}
+      {/* constraint edit form */}
       <Slideover open={showConstraintForm} setOpen={setShowConstraintForm}>
         <ConstraintForm
           segmentKey={segment.key}
@@ -115,7 +112,7 @@ export default function Segment() {
           segmentKey={segment.key}
           setOpen={setShowDeleteSegmentModal}
           onSuccess={() => {
-            navigate("/segments");
+            navigate('/segments');
           }}
         />
       </Modal>
@@ -132,9 +129,9 @@ export default function Segment() {
                 className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-              Created{" "}
+              Created{' '}
               {formatDistanceToNowStrict(parseISO(segment.createdAt), {
-                addSuffix: true,
+                addSuffix: true
               })}
             </div>
           </div>
@@ -143,7 +140,9 @@ export default function Segment() {
           <button
             type="button"
             className="mt-5 mb-1 inline-flex items-center justify-center rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-400 focus:outline-none enabled:hover:bg-red-50 sm:mt-0"
-            onClick={() => setShowDeleteSegmentModal(true)}
+            onClick={() => {
+              setShowDeleteSegmentModal(true);
+            }}
           >
             Delete
           </button>
@@ -260,7 +259,8 @@ export default function Segment() {
                           <a
                             href="#"
                             className="pr-2 text-violet-600 hover:text-violet-900"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               setEditingConstraint(constraint);
                               setShowConstraintForm(true);
                             }}
@@ -274,7 +274,8 @@ export default function Segment() {
                           <a
                             href="#"
                             className="pl-2 text-violet-600 hover:text-violet-900"
-                            onClick={() => {
+                            onClick={(e) => {
+                              e.preventDefault();
                               setDeletingConstraint(constraint);
                               setShowDeleteConstraintModal(true);
                             }}

@@ -1,1 +1,1 @@
-export type Icon = (props: React.ComponentProps<"svg">) => JSX.Element;
+export type Icon = (props: React.ComponentProps<'svg'>) => JSX.Element;

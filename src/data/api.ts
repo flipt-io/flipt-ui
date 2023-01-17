@@ -234,6 +234,6 @@ export async function evaluate(flagKey: string, values: any) {
 //
 // meta
 export async function getInfo() {
-  const res = await fetch(metaURL + "/info", { credentials: 'include' });
+  const res = await fetch(metaURL + '/info', { credentials: 'include' });
   return res.json();
 }

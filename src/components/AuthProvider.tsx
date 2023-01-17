@@ -2,7 +2,11 @@ import { createContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '~/data/hooks/localstorage';
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext({
+  session: null,
+  login: (_data: any) => {},
+  logout: () => {}
+});
 
 export const AuthProvider = (children: any, sessionData: any) => {
   const [session, setSession] = useLocalStorage('session', sessionData);

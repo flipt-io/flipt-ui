@@ -7,7 +7,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import logoFlag from '~/assets/logo-flag.png';
-import Footer from '~/components/Footer';
 
 const links = [
   {
@@ -124,8 +123,7 @@ export default function NotFoundLayout() {
             </div>
           </div>
         </div>
-      </main>
-      <Footer />
+      </main> 
     </div>
   );
 }

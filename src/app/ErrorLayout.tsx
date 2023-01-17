@@ -1,6 +1,5 @@
 import { Link, useNavigate, useRouteError } from 'react-router-dom';
 import logoFlag from '~/assets/logo-flag.png';
-import Footer from '~/components/Footer';
 
 export default function ErrorLayout() {
   const error = useRouteError() as Error;
@@ -45,7 +44,6 @@ export default function ErrorLayout() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

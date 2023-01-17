@@ -2,7 +2,7 @@ import { Dialog } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Button from '~/components/forms/Button';
 import { deleteRule } from '~/data/api';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/error';
 import { IEvaluatable } from '~/types/Evaluatable';
 
 type DeleteRulePanelProps = {

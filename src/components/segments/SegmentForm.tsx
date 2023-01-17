@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import { createSegment, updateSegment } from '~/data/api';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/error';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { ISegment, ISegmentBase, SegmentMatchType } from '~/types/Segment';
 import { stringAsKey } from '~/utils/helpers';
@@ -87,15 +87,12 @@ export default function SegmentForm(props: SegmentFormProps) {
                   name="name"
                   id="name"
                   handleChange={(e) => {
-                    // remove the character that was just added before comparing
-                    const previousName = formik.values.name.slice(0, -1);
-
                     // check if the name and key are currently in sync
                     // we do this so we don't override a custom key value
                     if (
                       isNew &&
                       (formik.values.key === '' ||
-                        formik.values.key === stringAsKey(previousName))
+                        formik.values.key === stringAsKey(formik.values.name))
                     ) {
                       formik.setFieldValue('key', stringAsKey(e.target.value));
                     }

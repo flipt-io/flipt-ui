@@ -5,7 +5,7 @@ import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import Toggle from '~/components/forms/Toggle';
 import { createFlag, updateFlag } from '~/data/api';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/error';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { IFlag, IFlagBase } from '~/types/Flag';
 import { stringAsKey } from '~/utils/helpers';
@@ -89,15 +89,12 @@ export default function FlagForm(props: FlagFormProps) {
                     name="name"
                     id="name"
                     handleChange={(e) => {
-                      // remove the character that was just added before comparing
-                      const previousName = formik.values.name.slice(0, -1);
-
                       // check if the name and key are currently in sync
                       // we do this so we don't override a custom key value
                       if (
                         isNew &&
                         (formik.values.key === '' ||
-                          formik.values.key === stringAsKey(previousName))
+                          formik.values.key === stringAsKey(formik.values.name))
                       ) {
                         formik.setFieldValue(
                           'key',

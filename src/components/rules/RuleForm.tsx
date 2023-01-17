@@ -8,7 +8,7 @@ import Button from '~/components/forms/Button';
 import Combobox from '~/components/forms/Combobox';
 import MoreInfo from '~/components/MoreInfo';
 import { createDistribution, createRule } from '~/data/api';
-import useError from '~/data/hooks/errors';
+import { useError } from '~/data/hooks/error';
 import { keyValidation } from '~/data/validations';
 import { IDistributionVariant } from '~/types/Distribution';
 import { IFlag } from '~/types/Flag';

@@ -261,7 +261,8 @@ export default function RuleForm(props: RuleFormProps) {
                 )}
                 {!distributionsValid && (
                   <p className="mt-1 px-4 text-center text-sm text-gray-500 sm:px-6 sm:py-5">
-                    Distribution of variants must have a sum of 100% or less.
+                    Multi-variant rules must have distributions that add up to
+                    100% or less.
                   </p>
                 )}
                 {!flag.variants && (

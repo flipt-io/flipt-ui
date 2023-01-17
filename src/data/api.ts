@@ -13,6 +13,7 @@ const metaURL = '/meta';
 // base methods
 async function get(uri: string, base = apiURL) {
   const res = await fetch(base + uri, {
+    credentials: 'include',
     method: 'GET',
     headers: {
       Accept: 'application/json'
@@ -27,6 +28,7 @@ async function get(uri: string, base = apiURL) {
 
 async function post<T>(uri: string, values: T) {
   const res = await fetch(apiURL + uri, {
+    credentials: 'include',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -43,6 +45,7 @@ async function post<T>(uri: string, values: T) {
 
 async function put<T>(uri: string, values: T) {
   const res = await fetch(apiURL + uri, {
+    credentials: 'include',
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -55,6 +58,14 @@ async function put<T>(uri: string, values: T) {
     throw new Error(err.message);
   }
   return res.json();
+}
+
+async function del(uri: string) {
+  const res = await fetch(apiURL + uri, {
+    credentials: 'include',
+    method: 'DELETE'
+  });
+  return res.ok;
 }
 
 //
@@ -82,10 +93,7 @@ export async function updateFlag(key: string, values: IFlagBase) {
 }
 
 export async function deleteFlag(key: string) {
-  const res = await fetch(`${apiURL}/flags/${key}`, {
-    method: 'DELETE'
-  });
-  return res.ok;
+  return del(`/flags/${key}`);
 }
 
 //
@@ -99,14 +107,12 @@ export async function createRule(flagKey: string, values: IRuleBase) {
 }
 
 export async function deleteRule(flagKey: string, ruleId: string) {
-  const res = await fetch(`${apiURL}/flags/${flagKey}/rules/${ruleId}`, {
-    method: 'DELETE'
-  });
-  return res.ok;
+  return del(`/flags/${flagKey}/rules/${ruleId}`);
 }
 
 export async function orderRules(flagKey: string, ruleIds: string[]) {
   const res = await fetch(`${apiURL}/flags/${flagKey}/rules/order`, {
+    credentials: 'include',
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -157,10 +163,7 @@ export async function updateVariant(
 }
 
 export async function deleteVariant(flagKey: string, variantId: string) {
-  const res = await fetch(`${apiURL}/flags/${flagKey}/variants/${variantId}`, {
-    method: 'DELETE'
-  });
-  return res.ok;
+  return del(`/flags/${flagKey}/variants/${variantId}`);
 }
 
 //
@@ -182,10 +185,7 @@ export async function updateSegment(key: string, values: ISegmentBase) {
 }
 
 export async function deleteSegment(key: string) {
-  const res = await fetch(`${apiURL}/segments/${key}`, {
-    method: 'DELETE'
-  });
-  return res.ok;
+  return del(`/segments/${key}`);
 }
 
 //
@@ -209,18 +209,14 @@ export async function deleteConstraint(
   segmentKey: string,
   constraintId: string
 ) {
-  const res = await fetch(
-    `${apiURL}/segments/${segmentKey}/constraints/${constraintId}`,
-    {
-      method: 'DELETE'
-    }
-  );
-  return res.ok;
+  return del(`/segments/${segmentKey}/constraints/${constraintId}`);
 }
 
+//
 // evaluate
 export async function evaluate(flagKey: string, values: any) {
   const res = await fetch(`${apiURL}/evaluate`, {
+    credentials: 'include',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -241,6 +237,5 @@ export async function evaluate(flagKey: string, values: any) {
 //
 // meta
 export async function getInfo() {
-  const res = await fetch(metaURL + '/info', { credentials: 'include' });
-  return res.json();
+  return get('/info', metaURL);
 }

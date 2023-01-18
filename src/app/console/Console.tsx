@@ -79,7 +79,7 @@ export default function Console() {
       .catch((err) => {
         setError(err);
       });
-  }, []);
+  }, [clearError, loadData, setError]);
 
   const initialvalues: IConsole = {
     flagKey: selectedFlag?.key || '',

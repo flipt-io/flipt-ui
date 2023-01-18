@@ -21,7 +21,7 @@ export default function SessionProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession] = useStorage('session', null);
+  const [session, setSession] = useStorage('flipt', null);
 
   const loadSession = useCallback(async () => {
     let data = null;

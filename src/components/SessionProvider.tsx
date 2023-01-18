@@ -1,10 +1,16 @@
 import { createContext, useEffect, useMemo } from 'react';
 import { getAuthSelf, getInfo } from '~/data/api';
 import { useStorage } from '~/data/hooks/storage';
-import { AuthMethodOIDCSession } from '~/types/Auth';
+import { AuthMethodOIDCSelf } from '~/types/Auth';
+import { Info } from '~/types/Meta';
+
+type Session = {
+  info: Info;
+  self: AuthMethodOIDCSelf;
+};
 
 interface SessionContextType {
-  session?: AuthMethodOIDCSession;
+  session?: Session;
   setSession: (data: any) => void;
 }
 

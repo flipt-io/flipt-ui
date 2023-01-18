@@ -17,7 +17,7 @@ export interface AuthMethodOIDC extends AuthMethod {
   };
 }
 
-export interface AuthMethodOIDCSessionMetadata {
+export interface AuthMethodOIDCMetadata {
   'io.flipt.auth.oidc.email': string;
   'io.flipt.auth.oidc.email_verified': string;
   'io.flipt.auth.oidc.name': string;
@@ -25,11 +25,11 @@ export interface AuthMethodOIDCSessionMetadata {
   'io.flipt.auth.oidc.provider': string;
 }
 
-export interface AuthMethodOIDCSession {
+export interface AuthMethodOIDCSelf {
   id: string;
   method: string;
   expiresAt: Date;
   createdAt: Date;
   updatedAt: Date;
-  metadata: AuthMethodOIDCSessionMetadata;
+  metadata: AuthMethodOIDCMetadata;
 }

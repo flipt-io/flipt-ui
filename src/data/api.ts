@@ -42,16 +42,16 @@ async function get(uri: string, base = apiURL) {
   return request('GET', base + uri);
 }
 
-async function post<T>(uri: string, values: T) {
-  return request('POST', uri, values);
+async function post<T>(uri: string, values: T, base = apiURL) {
+  return request('POST', base + uri, values);
 }
 
-async function put<T>(uri: string, values: T) {
-  return request('PUT', uri, values);
+async function put<T>(uri: string, values: T, base = apiURL) {
+  return request('PUT', base + uri, values);
 }
 
-async function del(uri: string) {
-  return request('DELETE', uri);
+async function del(uri: string, base = apiURL) {
+  return request('DELETE', base + uri);
 }
 
 //

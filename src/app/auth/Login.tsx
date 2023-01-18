@@ -11,8 +11,10 @@ import { AuthMethod, AuthMethodOIDC } from '~/types/Auth';
 export async function loginLoader(): Promise<AuthMethodOIDC> {
   const resp = await listAuthMethods();
   // TODO: support alternative auth methods
-  return resp.methods.find(
-    (m: AuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
+  return (
+    resp.methods.find(
+      (m: AuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
+    ) || null
   );
 }
 

@@ -1,4 +1,5 @@
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
+import { getInfo } from '~/data/api';
 import { AuthMethodOIDCSession } from '~/types/Auth';
 
 interface AuthContextType {
@@ -15,27 +16,17 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   const [session, setSession] = useState<AuthMethodOIDCSession | undefined>();
-  // const [authRequired, setAuthRequired] = useState(false);
 
-  // const checkAuth = async () => {
-  //   try {
-  //     // TODO: store this in context
-  //     await getInfo();
-  //     setAuthRequired(false);
-  //   } catch (err) {
-  //     // if (err instanceof APIError) {
-  //     //   // if we get a 401, we need to login
-  //     //   if (err.status === 401) {
-  //     //     setAuthRequired(true);
-  //     //   }
-  //     // }
-  //     setAuthRequired(true);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   checkAuth();
-  // }, []);
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        // TODO: store this in context
+        const userData = await getInfo();
+        setSession(userData);
+      } catch (err) {}
+    };
+    checkAuth();
+  }, [session, setSession]);
 
   const value = useMemo(
     () => ({

@@ -33,27 +33,22 @@ export default function Console() {
   const navigate = useNavigate();
 
   const loadData = useCallback(async () => {
-    try {
-      const initialFlagList = (await listFlags()) as IFlagList;
-      const { flags } = initialFlagList;
+    const initialFlagList = (await listFlags()) as IFlagList;
+    const { flags } = initialFlagList;
 
-      setFlags(
-        flags.map((flag) => {
-          const status = flag.enabled ? 'active' : 'inactive';
+    setFlags(
+      flags.map((flag) => {
+        const status = flag.enabled ? 'active' : 'inactive';
 
-          return {
-            ...flag,
-            status,
-            filterValue: flag.key,
-            displayValue: flag.name
-          };
-        })
-      );
-      clearError();
-    } catch (err) {
-      setError(err instanceof Error ? err : Error(String(err)));
-    }
-  }, [clearError, setError]);
+        return {
+          ...flag,
+          status,
+          filterValue: flag.key,
+          displayValue: flag.name
+        };
+      })
+    );
+  }, []);
 
   const handleSubmit = (values: IConsole) => {
     const { flagKey, entityId, context } = values;
@@ -79,8 +74,12 @@ export default function Console() {
   }, [response]);
 
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    loadData()
+      .then(() => clearError())
+      .catch((err) => {
+        setError(err);
+      });
+  }, []);
 
   const initialvalues: IConsole = {
     flagKey: selectedFlag?.key || '',

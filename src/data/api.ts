@@ -9,69 +9,59 @@ const apiURL = '/api/v1';
 const authURL = '/auth/v1';
 const metaURL = '/meta';
 
+export class APIError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 //
 // base methods
-async function get(uri: string, base = apiURL) {
-  const res = await fetch(base + uri, {
+async function request(method: string, uri: string, body?: any) {
+  const res = await fetch(uri, {
     credentials: 'include',
-    method: 'GET',
+    method,
     headers: {
+      'Content-Type': 'application/json',
       Accept: 'application/json'
-    }
+    },
+    body: JSON.stringify(body)
   });
   if (!res.ok) {
     const err = await res.json();
-    throw new Error(err.message);
+    throw new APIError(err.message, res.status);
   }
+
   return res.json();
+}
+
+async function get(uri: string, base = apiURL) {
+  return request('GET', base + uri);
 }
 
 async function post<T>(uri: string, values: T) {
-  const res = await fetch(apiURL + uri, {
-    credentials: 'include',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    },
-    body: JSON.stringify(values)
-  });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message);
-  }
-  return res.json();
+  return request('POST', uri, values);
 }
 
 async function put<T>(uri: string, values: T) {
-  const res = await fetch(apiURL + uri, {
-    credentials: 'include',
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    },
-    body: JSON.stringify(values)
-  });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message);
-  }
-  return res.json();
+  return request('PUT', uri, values);
 }
 
 async function del(uri: string) {
-  const res = await fetch(apiURL + uri, {
-    credentials: 'include',
-    method: 'DELETE'
-  });
-  return res.ok;
+  return request('DELETE', uri);
 }
 
 //
 // auth
 export async function listAuthMethods() {
   return get('/method', authURL);
+}
+
+export async function getAuthSelf() {
+  return get('/self', authURL);
 }
 
 //

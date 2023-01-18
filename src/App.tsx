@@ -20,6 +20,7 @@ const router = createHashRouter([
   {
     path: '/login',
     element: <Login />,
+    errorElement: <ErrorLayout />,
     loader: loginLoader
   },
   {

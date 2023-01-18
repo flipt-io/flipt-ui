@@ -1,9 +1,10 @@
 import { faOpenid } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { Navigate, useLoaderData } from 'react-router-dom';
 import logoFlag from '~/assets/logo-flag.png';
 import { listAuthMethods } from '~/data/api';
+import { useAuth } from '~/data/hooks/auth';
 import { useError } from '~/data/hooks/error';
 import { AuthMethod, AuthMethodOIDC } from '~/types/Auth';
 
@@ -16,6 +17,8 @@ export async function loginLoader(): Promise<AuthMethodOIDC> {
 }
 
 export default function Login() {
+  const { session } = useAuth();
+
   const authOIDC = useLoaderData() as AuthMethodOIDC;
   const [providers, setProviders] = useState<
     {
@@ -27,6 +30,7 @@ export default function Login() {
 
   const { setError, clearError } = useError();
 
+  // TODO: move to API
   const authorize = async (uri: string) => {
     const res = await fetch(uri, {
       credentials: 'include',
@@ -58,6 +62,10 @@ export default function Login() {
     );
     setProviders(loginProviders);
   }, [authOIDC]);
+
+  if (session) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <>

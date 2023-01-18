@@ -1,35 +1,50 @@
-import { createContext, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from '~/data/hooks/localstorage';
+import { createContext, useMemo, useState } from 'react';
+import { AuthMethodOIDCSession } from '~/types/Auth';
 
-export const AuthContext = createContext({
-  session: null,
-  login: (_data: any) => {},
-  logout: () => {}
-});
+interface AuthContextType {
+  // authRequired: boolean;
+  session?: AuthMethodOIDCSession;
+  setSession: (data: any) => void;
+}
 
-export const AuthProvider = (children: any, sessionData: any) => {
-  const [session, setSession] = useLocalStorage('session', sessionData);
-  const navigate = useNavigate();
+export const AuthContext = createContext({} as AuthContextType);
 
-  const login = async (data: any) => {
-    setSession(data);
-    navigate('/', { replace: true });
-  };
+export default function AuthProvider({
+  children
+}: {
+  children: React.ReactNode;
+}) {
+  const [session, setSession] = useState<AuthMethodOIDCSession | undefined>();
+  // const [authRequired, setAuthRequired] = useState(false);
 
-  const logout = () => {
-    setSession(null);
-    navigate('/logout', { replace: true });
-  };
+  // const checkAuth = async () => {
+  //   try {
+  //     // TODO: store this in context
+  //     await getInfo();
+  //     setAuthRequired(false);
+  //   } catch (err) {
+  //     // if (err instanceof APIError) {
+  //     //   // if we get a 401, we need to login
+  //     //   if (err.status === 401) {
+  //     //     setAuthRequired(true);
+  //     //   }
+  //     // }
+  //     setAuthRequired(true);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   checkAuth();
+  // }, []);
 
   const value = useMemo(
     () => ({
+      // authRequired,
       session,
-      login,
-      logout
+      setSession
     }),
-    [session]
+    [session, setSession]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+}

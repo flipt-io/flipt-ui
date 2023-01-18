@@ -15,7 +15,7 @@ export default function UserProfile(props: UserProfileProps) {
   return (
     <Menu as="div" className="relative ml-3">
       <div>
-        <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm hover:ring-2 hover:ring-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2">
+        <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm hover:ring-2 hover:ring-white/80 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2">
           <span className="sr-only">Open user menu</span>
           <img
             className="h-8 w-8 rounded-full"

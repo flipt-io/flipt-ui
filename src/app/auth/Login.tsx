@@ -1,27 +1,16 @@
 import { faOpenid } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
-import { Navigate, useLoaderData } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import logoFlag from '~/assets/logo-flag.png';
 import { listAuthMethods } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSession } from '~/data/hooks/session';
 import { AuthMethod, AuthMethodOIDC } from '~/types/Auth';
 
-export async function loginLoader(): Promise<AuthMethodOIDC> {
-  const resp = await listAuthMethods();
-  // TODO: support alternative auth methods
-  return (
-    resp.methods.find(
-      (m: AuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
-    ) || null
-  );
-}
-
 export default function Login() {
   const { session } = useSession();
 
-  const authOIDC = useLoaderData() as AuthMethodOIDC;
   const [providers, setProviders] = useState<
     {
       name: string;
@@ -52,18 +41,37 @@ export default function Login() {
     window.location.href = body.authorizeUrl;
   };
 
-  useEffect(() => {
-    const loginProviders = Object.entries(authOIDC.metadata.providers).map(
-      ([k, v]) => {
-        return {
-          name: k,
-          authorize_url: v.authorize_url,
-          callback_url: v.callback_url
-        };
+  const loadAvailableProviders = useCallback(async () => {
+    try {
+      const resp = await listAuthMethods();
+      // TODO: support alternative auth methods
+
+      const authOIDC = resp.methods.find(
+        (m: AuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
+      ) as AuthMethodOIDC;
+
+      if (!authOIDC) {
+        return;
       }
-    );
-    setProviders(loginProviders);
-  }, [authOIDC]);
+
+      const loginProviders = Object.entries(authOIDC.metadata.providers).map(
+        ([k, v]) => {
+          return {
+            name: k,
+            authorize_url: v.authorize_url,
+            callback_url: v.callback_url
+          };
+        }
+      );
+      setProviders(loginProviders);
+    } catch (err) {
+      setError(err instanceof Error ? err : Error(String(err)));
+    }
+  }, [setError]);
+
+  useEffect(() => {
+    loadAvailableProviders();
+  }, [loadAvailableProviders]);
 
   if (session) {
     return <Navigate to="/" />;

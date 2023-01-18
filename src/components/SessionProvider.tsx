@@ -1,4 +1,4 @@
-import { createContext, useEffect, useMemo } from 'react';
+import { createContext, useCallback, useEffect, useMemo } from 'react';
 import { getAuthSelf, getInfo } from '~/data/api';
 import { useStorage } from '~/data/hooks/storage';
 import { AuthMethodOIDCSelf } from '~/types/Auth';
@@ -23,39 +23,40 @@ export default function SessionProvider({
 }) {
   const [session, setSession] = useStorage('session', null);
 
-  useEffect(() => {
-    const loadSession = async () => {
-      let data = null;
+  const loadSession = useCallback(async () => {
+    let data = null;
 
-      try {
-        const info = await getInfo();
-        data = {
-          info: info
-        };
-      } catch (err) {
-        // if we can't get the info, we're not logged in
-        // or there was an error, either way, clear the session so we redirect
-        // to the login page
-        setSession(null);
-        return;
-      }
+    try {
+      const info = await getInfo();
+      data = {
+        info: info
+      };
+    } catch (err) {
+      // if we can't get the info, we're not logged in
+      // or there was an error, either way, clear the session so we redirect
+      // to the login page
+      setSession(null);
+      return;
+    }
 
-      try {
-        const self = await getAuthSelf();
-        data = {
-          ...data,
-          self: self
-        };
-      } catch (err) {
-        // if we can't get the self info and we got here then auth is likely not enabled
-        // so we can just return
-        return;
-      }
-
+    try {
+      const self = await getAuthSelf();
+      data = {
+        ...data,
+        self: self
+      };
+    } catch (err) {
+      // if we can't get the self info and we got here then auth is likely not enabled
+      // so we can just return
+      return;
+    } finally {
       setSession(data);
-    };
+    }
+  }, []); // TODO: including setSession or removing the array causes an infinite loop
+
+  useEffect(() => {
     loadSession();
-  }, []);
+  }, [loadSession]);
 
   const value = useMemo(
     () => ({

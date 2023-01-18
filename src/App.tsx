@@ -1,7 +1,7 @@
 import loadable from '@loadable/component';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { SWRConfig } from 'swr';
-import Login, { loginLoader } from './app/auth/Login';
+import Login from './app/auth/Login';
 import ErrorLayout from './app/ErrorLayout';
 import EditFlag from './app/flags/EditFlag';
 import Evaluation from './app/flags/Evaluation';
@@ -21,8 +21,7 @@ const router = createHashRouter([
   {
     path: '/login',
     element: <Login />,
-    errorElement: <ErrorLayout />,
-    loader: loginLoader
+    errorElement: <ErrorLayout />
   },
   {
     path: '/',

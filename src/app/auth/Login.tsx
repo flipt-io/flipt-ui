@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { Navigate, useLoaderData } from 'react-router-dom';
 import logoFlag from '~/assets/logo-flag.png';
 import { listAuthMethods } from '~/data/api';
-import { useAuth } from '~/data/hooks/auth';
 import { useError } from '~/data/hooks/error';
+import { useSession } from '~/data/hooks/session';
 import { AuthMethod, AuthMethodOIDC } from '~/types/Auth';
 
 export async function loginLoader(): Promise<AuthMethodOIDC> {
@@ -17,7 +17,7 @@ export async function loginLoader(): Promise<AuthMethodOIDC> {
 }
 
 export default function Login() {
-  const { session } = useAuth();
+  const { session } = useSession();
 
   const authOIDC = useLoaderData() as AuthMethodOIDC;
   const [providers, setProviders] = useState<

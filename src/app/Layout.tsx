@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import AuthProvider from '~/components/AuthProvider';
-import { useAuth } from '~/data/hooks/auth';
+import { useSession } from '~/data/hooks/session';
 import ErrorNotification from '../components/ErrorNotification';
 import { ErrorProvider } from '../components/ErrorProvider';
 import Footer from '../components/Footer';
@@ -9,10 +8,9 @@ import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
 function InnerLayout() {
-  const { session } = useAuth();
+  const { session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  console.log('session', session);
   if (!session) {
     return <Navigate to="/login" />;
   }
@@ -37,10 +35,8 @@ function InnerLayout() {
 export default function Layout() {
   return (
     <ErrorProvider>
-      <AuthProvider>
-        <InnerLayout />
-        <ErrorNotification />
-      </AuthProvider>
+      <InnerLayout />
+      <ErrorNotification />
     </ErrorProvider>
   );
 }

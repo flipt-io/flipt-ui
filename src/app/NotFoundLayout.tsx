@@ -123,7 +123,7 @@ export default function NotFoundLayout() {
             </div>
           </div>
         </div>
-      </main> 
+      </main>
     </div>
   );
 }

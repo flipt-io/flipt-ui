@@ -11,6 +11,7 @@ import Layout from './app/Layout';
 import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
 import Segment, { segmentLoader } from './app/segments/Segment';
+import SessionProvider from './components/SessionProvider';
 
 const Flags = loadable(() => import('./app/flags/Flags'));
 const Segments = loadable(() => import('./app/segments/Segments'));
@@ -121,7 +122,9 @@ export default function App() {
         fetcher
       }}
     >
-      <RouterProvider router={router} />
+      <SessionProvider>
+        <RouterProvider router={router} />
+      </SessionProvider>
     </SWRConfig>
   );
 }

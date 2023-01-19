@@ -1,5 +1,10 @@
-import { faOpenid } from '@fortawesome/free-brands-svg-icons';
+import {
+  faGitlab,
+  faGoogle,
+  faOpenid
+} from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toLower, upperFirst } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import logoFlag from '~/assets/logo-flag.png';
@@ -7,6 +12,25 @@ import { listAuthMethods } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSession } from '~/data/hooks/session';
 import { AuthMethod, AuthMethodOIDC } from '~/types/Auth';
+
+interface ILoginProvider {
+  displayName: string;
+  icon?: any;
+}
+
+const knownProviders: Record<string, ILoginProvider> = {
+  google: {
+    displayName: 'Google',
+    icon: faGoogle
+  },
+  gitlab: {
+    displayName: 'GitLab',
+    icon: faGitlab
+  },
+  auth0: {
+    displayName: 'Auth0'
+  }
+};
 
 export default function Login() {
   const { session } = useSession();
@@ -16,6 +40,7 @@ export default function Login() {
       name: string;
       authorize_url: string;
       callback_url: string;
+      icon: any;
     }[]
   >([]);
 
@@ -44,7 +69,6 @@ export default function Login() {
     try {
       const resp = await listAuthMethods();
       // TODO: support alternative auth methods
-
       const authOIDC = resp.methods.find(
         (m: AuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
       ) as AuthMethodOIDC;
@@ -55,10 +79,12 @@ export default function Login() {
 
       const loginProviders = Object.entries(authOIDC.metadata.providers).map(
         ([k, v]) => {
+          k = toLower(k);
           return {
-            name: k,
+            name: knownProviders[k]?.displayName || upperFirst(k), // if we dont know the provider, just capitalize the first letter
             authorize_url: v.authorize_url,
-            callback_url: v.callback_url
+            callback_url: v.callback_url,
+            icon: knownProviders[k]?.icon || faOpenid // if we dont know the provider icon, use the openid icon
           };
         }
       );
@@ -101,7 +127,7 @@ export default function Login() {
                     <div key={provider.name}>
                       <a
                         href="#"
-                        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:text-violet-500 hover:shadow-violet-200"
+                        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:text-violet-500 hover:shadow-violet-300"
                         onClick={(e) => {
                           e.preventDefault();
                           authorize(provider.authorize_url);
@@ -111,7 +137,7 @@ export default function Login() {
                           Sign in with {provider.name}
                         </span>
                         <FontAwesomeIcon
-                          icon={faOpenid}
+                          icon={provider.icon}
                           className="text-gray h-5 w-5"
                           aria-hidden={true}
                         />

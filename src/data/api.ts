@@ -64,6 +64,10 @@ export async function getAuthSelf() {
   return get('/self', authURL);
 }
 
+export async function expireAuthSelf() {
+  return put('/self/expire', {}, authURL);
+}
+
 //
 // flags
 export async function listFlags() {

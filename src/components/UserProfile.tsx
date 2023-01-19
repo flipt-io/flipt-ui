@@ -1,5 +1,7 @@
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
+import { expireAuthSelf } from '~/data/api';
+import { useError } from '~/data/hooks/error';
 import { classNames } from '~/utils/helpers';
 
 type UserProfileProps = {
@@ -10,7 +12,17 @@ type UserProfileProps = {
 export default function UserProfile(props: UserProfileProps) {
   const { name, imgURL } = props;
 
-  const userNavigation = [{ name: 'Logout', href: '#' }];
+  const { setError } = useError();
+
+  const logout = async () => {
+    expireAuthSelf()
+      .then(() => {
+        window.location.href = '/';
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  };
 
   return (
     <Menu as="div" className="relative ml-3">
@@ -36,21 +48,23 @@ export default function UserProfile(props: UserProfileProps) {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          {userNavigation.map((item) => (
-            <Menu.Item key={item.name}>
-              {({ active }) => (
-                <a
-                  href={item.href}
-                  className={classNames(
-                    active ? 'bg-gray-100' : '',
-                    'block px-4 py-2 text-sm text-gray-700'
-                  )}
-                >
-                  {item.name}
-                </a>
-              )}
-            </Menu.Item>
-          ))}
+          <Menu.Item key="logout">
+            {({ active }) => (
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  logout();
+                }}
+                className={classNames(
+                  active ? 'bg-gray-100' : '',
+                  'block px-4 py-2 text-sm text-gray-700'
+                )}
+              >
+                Logout
+              </a>
+            )}
+          </Menu.Item>
         </Menu.Items>
       </Transition>
     </Menu>

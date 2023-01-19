@@ -21,7 +21,6 @@ export default function Login() {
 
   const { setError, clearError } = useError();
 
-  // TODO: move to API
   const authorize = async (uri: string) => {
     const res = await fetch(uri, {
       credentials: 'include',

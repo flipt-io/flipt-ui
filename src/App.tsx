@@ -1,7 +1,6 @@
 import loadable from '@loadable/component';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { SWRConfig } from 'swr';
-import Login from './app/auth/Login';
 import ErrorLayout from './app/ErrorLayout';
 import EditFlag from './app/flags/EditFlag';
 import Evaluation from './app/flags/Evaluation';
@@ -16,6 +15,7 @@ import SessionProvider from './components/SessionProvider';
 const Flags = loadable(() => import('./app/flags/Flags'));
 const Segments = loadable(() => import('./app/segments/Segments'));
 const Console = loadable(() => import('./app/console/Console'));
+const Login = loadable(() => import('./app/auth/Login'));
 
 const router = createHashRouter([
   {

@@ -5,7 +5,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { toLower, upperFirst } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import logoFlag from '~/assets/logo-flag.png';
 import { listAuthMethods } from '~/data/api';
@@ -35,7 +35,6 @@ const knownProviders: Record<string, ILoginProvider> = {
 export default function Login() {
   const { session } = useSession();
 
-  const [loading, setLoading] = useState(true);
   const [providers, setProviders] = useState<
     {
       name: string;
@@ -65,43 +64,38 @@ export default function Login() {
     window.location.href = body.authorizeUrl;
   };
 
-  const loadAvailableProviders = useCallback(async () => {
-    try {
-      const resp = await listAuthMethods();
-      // TODO: support alternative auth methods
-      const authOIDC = resp.methods.find(
-        (m: AuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
-      ) as AuthMethodOIDC;
-
-      if (!authOIDC) {
-        return;
-      }
-
-      const loginProviders = Object.entries(authOIDC.metadata.providers).map(
-        ([k, v]) => {
-          k = toLower(k);
-          return {
-            name: knownProviders[k]?.displayName || upperFirst(k), // if we dont know the provider, just capitalize the first letter
-            authorize_url: v.authorize_url,
-            callback_url: v.callback_url,
-            icon: knownProviders[k]?.icon || faOpenid // if we dont know the provider icon, use the openid icon
-          };
-        }
-      );
-      setProviders(loginProviders);
-    } catch (err) {
-      setError(err instanceof Error ? err : Error(String(err)));
-    } finally {
-      setLoading(false);
-    }
-  }, [setProviders, setError]);
-
   useEffect(() => {
-    if (!loading) {
-      return;
-    }
-    loadAvailableProviders();
-  }, [loadAvailableProviders, loading]);
+    const loadProviders = async () => {
+      try {
+        const resp = await listAuthMethods();
+        // TODO: support alternative auth methods
+        const authOIDC = resp.methods.find(
+          (m: AuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
+        ) as AuthMethodOIDC;
+
+        if (!authOIDC) {
+          return;
+        }
+
+        const loginProviders = Object.entries(authOIDC.metadata.providers).map(
+          ([k, v]) => {
+            k = toLower(k);
+            return {
+              name: knownProviders[k]?.displayName || upperFirst(k), // if we dont know the provider, just capitalize the first letter
+              authorize_url: v.authorize_url,
+              callback_url: v.callback_url,
+              icon: knownProviders[k]?.icon || faOpenid // if we dont know the provider icon, use the openid icon
+            };
+          }
+        );
+        setProviders(loginProviders);
+      } catch (err) {
+        setError(err instanceof Error ? err : Error(String(err)));
+      }
+    };
+
+    loadProviders();
+  }, [setError]);
 
   if (session) {
     return <Navigate to="/" />;

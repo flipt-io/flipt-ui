@@ -95,7 +95,7 @@ export default function Login() {
     };
 
     loadProviders();
-  }, [setError]);
+  }, [setProviders, setError]);
 
   if (session) {
     return <Navigate to="/" />;

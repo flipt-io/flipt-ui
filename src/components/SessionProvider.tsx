@@ -54,8 +54,9 @@ export default function SessionProvider({
         setSession(data);
       }
     };
-    loadSession();
-  }, [setSession]);
+    if (!session) loadSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = useMemo(
     () => ({

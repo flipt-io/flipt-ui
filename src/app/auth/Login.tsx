@@ -35,6 +35,7 @@ const knownProviders: Record<string, ILoginProvider> = {
 export default function Login() {
   const { session } = useSession();
 
+  const [loading, setLoading] = useState(true);
   const [providers, setProviders] = useState<
     {
       name: string;
@@ -90,12 +91,17 @@ export default function Login() {
       setProviders(loginProviders);
     } catch (err) {
       setError(err instanceof Error ? err : Error(String(err)));
+    } finally {
+      setLoading(false);
     }
-  }, [setError]);
+  }, [setProviders, setError]);
 
   useEffect(() => {
+    if (!loading) {
+      return;
+    }
     loadAvailableProviders();
-  }, [loadAvailableProviders]);
+  }, [loadAvailableProviders, loading]);
 
   if (session) {
     return <Navigate to="/" />;

@@ -54,8 +54,8 @@ export default function SessionProvider({
         setSession(data);
       }
     };
-    if (!session) loadSession();
-  }, [session, setSession]);
+    loadSession();
+  }, [setSession]);
 
   const value = useMemo(
     () => ({

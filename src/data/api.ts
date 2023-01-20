@@ -24,7 +24,7 @@ export class APIError extends Error {
 function setCsrf(req: Request): Request {
   const csrfToken = window.localStorage.getItem(csrfTokenHeaderKey);
   if (csrfToken !== null) {
-    req.headers.set(csrfTokenHeaderKey, csrfToken);
+    req.headers[csrfTokenHeaderKey] = csrfToken;
   }
 
   return req;

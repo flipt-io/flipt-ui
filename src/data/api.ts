@@ -6,54 +6,77 @@ import { ISegmentBase } from 'types/Segment';
 import { IVariantBase } from 'types/Variant';
 
 const apiURL = '/api/v1';
+const authURL = '/auth/v1';
 const metaURL = '/meta';
+const csrfTokenHeaderKey = 'x-csrf-token';
+
+export class APIError extends Error {
+  status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
 
 //
 // base methods
-async function get(uri: string) {
-  const res = await fetch(apiURL + uri, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json'
-    }
-  });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message);
+function setCsrf(req: any) {
+  const csrfToken = window.localStorage.getItem(csrfTokenHeaderKey);
+  if (csrfToken !== null) {
+    req.headers[csrfTokenHeaderKey] = csrfToken;
   }
-  return res.json();
+
+  return req;
 }
 
-async function post<T>(uri: string, values: T) {
-  const res = await fetch(apiURL + uri, {
-    method: 'POST',
+async function request(method: string, uri: string, body?: any) {
+  const req = setCsrf({
+    method,
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json'
     },
-    body: JSON.stringify(values)
+    body: JSON.stringify(body)
   });
+
+  const res = await fetch(uri, req);
   if (!res.ok) {
     const err = await res.json();
-    throw new Error(err.message);
+    throw new APIError(err.message, res.status);
   }
+
   return res.json();
 }
 
-async function put<T>(uri: string, values: T) {
-  const res = await fetch(apiURL + uri, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    },
-    body: JSON.stringify(values)
-  });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message);
-  }
-  return res.json();
+async function get(uri: string, base = apiURL) {
+  return request('GET', base + uri);
+}
+
+async function post<T>(uri: string, values: T, base = apiURL) {
+  return request('POST', base + uri, values);
+}
+
+async function put<T>(uri: string, values: T, base = apiURL) {
+  return request('PUT', base + uri, values);
+}
+
+async function del(uri: string, base = apiURL) {
+  return request('DELETE', base + uri);
+}
+
+//
+// auth
+export async function listAuthMethods() {
+  return get('/method', authURL);
+}
+
+export async function getAuthSelf() {
+  return get('/self', authURL);
+}
+
+export async function expireAuthSelf() {
+  return put('/self/expire', {}, authURL);
 }
 
 //
@@ -75,10 +98,7 @@ export async function updateFlag(key: string, values: IFlagBase) {
 }
 
 export async function deleteFlag(key: string) {
-  const res = await fetch(`${apiURL}/flags/${key}`, {
-    method: 'DELETE'
-  });
-  return res.ok;
+  return del(`/flags/${key}`);
 }
 
 //
@@ -92,14 +112,11 @@ export async function createRule(flagKey: string, values: IRuleBase) {
 }
 
 export async function deleteRule(flagKey: string, ruleId: string) {
-  const res = await fetch(`${apiURL}/flags/${flagKey}/rules/${ruleId}`, {
-    method: 'DELETE'
-  });
-  return res.ok;
+  return del(`/flags/${flagKey}/rules/${ruleId}`);
 }
 
 export async function orderRules(flagKey: string, ruleIds: string[]) {
-  const res = await fetch(`${apiURL}/flags/${flagKey}/rules/order`, {
+  const req = setCsrf({
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -108,6 +125,8 @@ export async function orderRules(flagKey: string, ruleIds: string[]) {
       ruleIds
     })
   });
+
+  const res = await fetch(`${apiURL}/flags/${flagKey}/rules/order`, req);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message);
@@ -150,10 +169,7 @@ export async function updateVariant(
 }
 
 export async function deleteVariant(flagKey: string, variantId: string) {
-  const res = await fetch(`${apiURL}/flags/${flagKey}/variants/${variantId}`, {
-    method: 'DELETE'
-  });
-  return res.ok;
+  return del(`/flags/${flagKey}/variants/${variantId}`);
 }
 
 //
@@ -175,10 +191,7 @@ export async function updateSegment(key: string, values: ISegmentBase) {
 }
 
 export async function deleteSegment(key: string) {
-  const res = await fetch(`${apiURL}/segments/${key}`, {
-    method: 'DELETE'
-  });
-  return res.ok;
+  return del(`/segments/${key}`);
 }
 
 //
@@ -202,18 +215,13 @@ export async function deleteConstraint(
   segmentKey: string,
   constraintId: string
 ) {
-  const res = await fetch(
-    `${apiURL}/segments/${segmentKey}/constraints/${constraintId}`,
-    {
-      method: 'DELETE'
-    }
-  );
-  return res.ok;
+  return del(`/segments/${segmentKey}/constraints/${constraintId}`);
 }
 
+//
 // evaluate
 export async function evaluate(flagKey: string, values: any) {
-  const res = await fetch(`${apiURL}/evaluate`, {
+  const req = setCsrf({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -224,6 +232,8 @@ export async function evaluate(flagKey: string, values: any) {
       ...values
     })
   });
+
+  const res = await fetch(`${apiURL}/evaluate`, req);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message);
@@ -234,6 +244,24 @@ export async function evaluate(flagKey: string, values: any) {
 //
 // meta
 export async function getInfo() {
-  const res = await fetch(metaURL + '/info', { credentials: 'include' });
+  const req = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    }
+  };
+
+  const res = await fetch(`${metaURL}/info`, req);
+  if (!res.ok) {
+    const err = await res.json();
+    throw new APIError(err.message, res.status);
+  }
+
+  const token = res.headers.get(csrfTokenHeaderKey);
+  if (token !== null) {
+    window.localStorage.setItem(csrfTokenHeaderKey, token);
+  }
+
   return res.json();
 }

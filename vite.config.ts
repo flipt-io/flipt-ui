@@ -19,6 +19,7 @@ export default defineConfig({
       '/api/v1': 'http://localhost:8080',
       '/auth/v1': 'http://localhost:8080',
       '/meta': 'http://localhost:8080'
-    }
+    },
+    origin: 'http://localhost:5173'
   }
 });

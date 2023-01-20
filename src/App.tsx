@@ -10,12 +10,19 @@ import Layout from './app/Layout';
 import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
 import Segment, { segmentLoader } from './app/segments/Segment';
+import SessionProvider from './components/SessionProvider';
 
 const Flags = loadable(() => import('./app/flags/Flags'));
 const Segments = loadable(() => import('./app/segments/Segments'));
 const Console = loadable(() => import('./app/console/Console'));
+const Login = loadable(() => import('./app/auth/Login'));
 
 const router = createHashRouter([
+  {
+    path: '/login',
+    element: <Login />,
+    errorElement: <ErrorLayout />
+  },
   {
     path: '/',
     element: <Layout />,
@@ -76,7 +83,7 @@ const router = createHashRouter([
 const apiURL = '/api/v1';
 
 const fetcher = async (uri: String) => {
-  const res = await fetch(apiURL + uri, { credentials: 'include' });
+  const res = await fetch(apiURL + uri);
 
   class StatusError extends Error {
     info: string;
@@ -110,11 +117,12 @@ export default function App() {
   return (
     <SWRConfig
       value={{
-        refreshInterval: 10000, // 10 seconds
         fetcher
       }}
     >
-      <RouterProvider router={router} />
+      <SessionProvider>
+        <RouterProvider router={router} />
+      </SessionProvider>
     </SWRConfig>
   );
 }

@@ -1,20 +1,24 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useSession } from '~/data/hooks/session';
 import ErrorNotification from '../components/ErrorNotification';
 import { ErrorProvider } from '../components/ErrorProvider';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
-// const userNavigation = [{ name: "Sign out", href: "#" }];
-
-export default function Layout() {
+function InnerLayout() {
+  const { session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  if (!session) {
+    return <Navigate to="/login" />;
+  }
+
   return (
-    <ErrorProvider>
+    <>
       <Sidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
-      <div className="flex min-h-screen flex-col md:pl-64">
+      <div className="flex min-h-screen flex-col bg-white md:pl-64">
         <Header setSidebarOpen={setSidebarOpen} />
 
         <main className="flex px-6 py-10">
@@ -24,6 +28,14 @@ export default function Layout() {
         </main>
         <Footer />
       </div>
+    </>
+  );
+}
+
+export default function Layout() {
+  return (
+    <ErrorProvider>
+      <InnerLayout />
       <ErrorNotification />
     </ErrorProvider>
   );

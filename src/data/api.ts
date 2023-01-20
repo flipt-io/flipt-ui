@@ -8,6 +8,7 @@ import { IVariantBase } from 'types/Variant';
 const apiURL = '/api/v1';
 const authURL = '/auth/v1';
 const metaURL = '/meta';
+const csrfTokenHeaderKey = 'x-csrf-token';
 
 export class APIError extends Error {
   status: number;
@@ -21,7 +22,7 @@ export class APIError extends Error {
 //
 // base methods
 async function request(method: string, uri: string, body?: any) {
-  const res = await fetch(uri, {
+  const req = setCsrf({
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -29,6 +30,8 @@ async function request(method: string, uri: string, body?: any) {
     },
     body: JSON.stringify(body)
   });
+
+  const res = await fetch(uri, req);
   if (!res.ok) {
     const err = await res.json();
     throw new APIError(err.message, res.status);
@@ -51,6 +54,15 @@ async function put<T>(uri: string, values: T, base = apiURL) {
 
 async function del(uri: string, base = apiURL) {
   return request('DELETE', base + uri);
+}
+
+function setCsrf(req: Request): Request {
+  const csrfToken = window.localStorage.getItem(csrfTokenHeaderKey);
+  if (csrfToken !== null) {
+    req.headers[csrfTokenHeaderKey] = csrfToken
+  }
+
+  return req;
 }
 
 //
@@ -104,7 +116,7 @@ export async function deleteRule(flagKey: string, ruleId: string) {
 }
 
 export async function orderRules(flagKey: string, ruleIds: string[]) {
-  const res = await fetch(`${apiURL}/flags/${flagKey}/rules/order`, {
+  const req = setCsrf({
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -113,6 +125,8 @@ export async function orderRules(flagKey: string, ruleIds: string[]) {
       ruleIds
     })
   });
+
+  const res = await fetch(`${apiURL}/flags/${flagKey}/rules/order`, req);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message);
@@ -207,7 +221,7 @@ export async function deleteConstraint(
 //
 // evaluate
 export async function evaluate(flagKey: string, values: any) {
-  const res = await fetch(`${apiURL}/evaluate`, {
+  const req = setCsrf({
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -218,6 +232,8 @@ export async function evaluate(flagKey: string, values: any) {
       ...values
     })
   });
+
+  const res = await fetch(`${apiURL}/evaluate`, req);
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message);
@@ -228,5 +244,24 @@ export async function evaluate(flagKey: string, values: any) {
 //
 // meta
 export async function getInfo() {
-  return get('/info', metaURL);
+  const req = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+  }
+
+  const res = await fetch(`${metaURL}/info`, req);
+  if (!res.ok) {
+    const err = await res.json();
+    throw new APIError(err.message, res.status);
+  }
+
+  const token = res.headers.get(csrfTokenHeaderKey);
+  if (token !== null) {
+    window.localStorage.setItem(csrfTokenHeaderKey, token);
+  }
+
+  return res.json();
 }

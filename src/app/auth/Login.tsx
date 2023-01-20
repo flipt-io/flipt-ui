@@ -48,7 +48,6 @@ export default function Login() {
 
   const authorize = async (uri: string) => {
     const res = await fetch(uri, {
-      credentials: 'include',
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

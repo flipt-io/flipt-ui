@@ -83,7 +83,7 @@ const router = createHashRouter([
 const apiURL = '/api/v1';
 
 const fetcher = async (uri: String) => {
-  const res = await fetch(apiURL + uri, { credentials: 'include' });
+  const res = await fetch(apiURL + uri);
 
   class StatusError extends Error {
     info: string;

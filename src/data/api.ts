@@ -22,7 +22,6 @@ export class APIError extends Error {
 // base methods
 async function request(method: string, uri: string, body?: any) {
   const res = await fetch(uri, {
-    credentials: 'include',
     method,
     headers: {
       'Content-Type': 'application/json',
@@ -106,7 +105,6 @@ export async function deleteRule(flagKey: string, ruleId: string) {
 
 export async function orderRules(flagKey: string, ruleIds: string[]) {
   const res = await fetch(`${apiURL}/flags/${flagKey}/rules/order`, {
-    credentials: 'include',
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -210,7 +208,6 @@ export async function deleteConstraint(
 // evaluate
 export async function evaluate(flagKey: string, values: any) {
   const res = await fetch(`${apiURL}/evaluate`, {
-    credentials: 'include',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -1,8 +1,7 @@
 import {
-  ArrowTopRightOnSquareIcon,
+  BookOpenIcon,
   CodeBracketIcon,
   FlagIcon,
-  QuestionMarkCircleIcon,
   UsersIcon
 } from '@heroicons/react/24/outline';
 import { NavLink } from 'react-router-dom';
@@ -34,10 +33,6 @@ function NavItem(props: NavItemProps) {
         aria-hidden="true"
       />
       {name}
-      <ArrowTopRightOnSquareIcon
-        className="ml-2 h-4 w-4 text-white hover:bg-gray-50 md:text-gray-400"
-        aria-hidden="true"
-      />
     </a>
   ) : (
     <NavLink
@@ -98,7 +93,7 @@ export default function Nav(props: NavProps) {
     {
       name: 'Documentation',
       to: 'https://flipt.io/docs?utm_source=app',
-      Icon: QuestionMarkCircleIcon,
+      Icon: BookOpenIcon,
       external: true
     }
   ];

@@ -1,4 +1,5 @@
 import { Menu, Transition } from '@headlessui/react';
+import { UserCircleIcon } from '@heroicons/react/24/solid';
 import { Fragment } from 'react';
 import { expireAuthSelf } from '~/data/api';
 import { useError } from '~/data/hooks/error';
@@ -6,7 +7,7 @@ import { useSession } from '~/data/hooks/session';
 import { classNames } from '~/utils/helpers';
 
 type UserProfileProps = {
-  name: string;
+  name?: string;
   imgURL?: string;
 };
 
@@ -32,13 +33,21 @@ export default function UserProfile(props: UserProfileProps) {
       <div>
         <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm hover:ring-2 hover:ring-white/80 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2">
           <span className="sr-only">Open user menu</span>
-          <img
-            className="h-8 w-8 rounded-full"
-            src={imgURL}
-            alt={name}
-            title={name}
-            referrerPolicy="no-referrer"
-          />
+          {imgURL && (
+            <img
+              className="h-8 w-8 rounded-full"
+              src={imgURL}
+              alt={name || 'User'}
+              title={name || 'User'}
+              referrerPolicy="no-referrer"
+            />
+          )}
+          {!imgURL && (
+            <UserCircleIcon
+              className="h-8 w-8 rounded-full text-violet-300"
+              aria-hidden="true"
+            />
+          )}
         </Menu.Button>
       </div>
       <Transition

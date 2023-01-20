@@ -21,6 +21,15 @@ export class APIError extends Error {
 
 //
 // base methods
+function setCsrf(req: Request): Request {
+  const csrfToken = window.localStorage.getItem(csrfTokenHeaderKey);
+  if (csrfToken !== null) {
+    req.headers.set(csrfTokenHeaderKey, csrfToken);
+  }
+
+  return req;
+}
+
 async function request(method: string, uri: string, body?: any) {
   const req = setCsrf({
     method,
@@ -54,15 +63,6 @@ async function put<T>(uri: string, values: T, base = apiURL) {
 
 async function del(uri: string, base = apiURL) {
   return request('DELETE', base + uri);
-}
-
-function setCsrf(req: Request): Request {
-  const csrfToken = window.localStorage.getItem(csrfTokenHeaderKey);
-  if (csrfToken !== null) {
-    req.headers[csrfTokenHeaderKey] = csrfToken
-  }
-
-  return req;
 }
 
 //
@@ -249,8 +249,8 @@ export async function getInfo() {
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json'
-    },
-  }
+    }
+  };
 
   const res = await fetch(`${metaURL}/info`, req);
   if (!res.ok) {

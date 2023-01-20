@@ -2,6 +2,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { expireAuthSelf } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import { useSession } from '~/data/hooks/session';
 import { classNames } from '~/utils/helpers';
 
 type UserProfileProps = {
@@ -13,10 +14,12 @@ export default function UserProfile(props: UserProfileProps) {
   const { name, imgURL } = props;
 
   const { setError } = useError();
+  const { setSession } = useSession();
 
   const logout = async () => {
     expireAuthSelf()
       .then(() => {
+        setSession(null);
         window.location.href = '/';
       })
       .catch((err) => {

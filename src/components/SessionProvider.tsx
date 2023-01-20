@@ -52,11 +52,11 @@ export default function SessionProvider({
     } finally {
       setSession(data);
     }
-  }, []); // TODO: including setSession or removing the array causes an infinite loop
+  }, [setSession]);
 
   useEffect(() => {
-    loadSession();
-  }, [loadSession]);
+    if (!session) loadSession();
+  }, [loadSession, session]);
 
   const value = useMemo(
     () => ({

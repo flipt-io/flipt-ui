@@ -117,7 +117,6 @@ export default function App() {
   return (
     <SWRConfig
       value={{
-        refreshInterval: 10000, // 10 seconds
         fetcher
       }}
     >

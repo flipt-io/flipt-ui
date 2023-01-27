@@ -17,7 +17,7 @@
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
     "@loadable/component": "^5.15.2",
-    "@tanstack/react-table": "^8.7.6",
+    "@tanstack/react-table": "^8.7.8",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "formik": "^2.2.9",

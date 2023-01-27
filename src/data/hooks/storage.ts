@@ -22,5 +22,13 @@ export const useStorage = (key: string, initialValue: any) => {
     }
   };
 
-  return [storedValue, setValue];
+  const clearValue = () => {
+    try {
+      window.localStorage.removeItem(key);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return [storedValue, setValue, clearValue];
 };

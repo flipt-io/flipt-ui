@@ -21,7 +21,7 @@ export default function SessionProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession] = useStorage('flipt', null);
+  const [session, setSession, clearSession] = useStorage('flipt', null);
 
   useEffect(() => {
     const loadSession = async () => {
@@ -36,7 +36,7 @@ export default function SessionProvider({
         // if we can't get the info, we're not logged in
         // or there was an error, either way, clear the session so we redirect
         // to the login page
-        setSession(null);
+        clearSession();
         return;
       }
 

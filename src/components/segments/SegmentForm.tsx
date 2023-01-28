@@ -5,9 +5,11 @@ import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import { createSegment, updateSegment } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import { useSuccess } from '~/data/hooks/success';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { ISegment, ISegmentBase, SegmentMatchType } from '~/types/Segment';
 import { stringAsKey } from '~/utils/helpers';
+import Loading from '../Loading';
 
 const segmentMatchTypes = [
   {
@@ -30,8 +32,10 @@ type SegmentFormProps = {
 export default function SegmentForm(props: SegmentFormProps) {
   const { segment, segmentChanged } = props;
   const isNew = segment === undefined;
+  const submitPhrase = isNew ? 'Create' : 'Update';
   const navigate = useNavigate();
   const { setError, clearError } = useError();
+  const { setSuccess } = useSuccess();
 
   const handleSubmit = (values: ISegmentBase) => {
     if (isNew) {
@@ -55,6 +59,9 @@ export default function SegmentForm(props: SegmentFormProps) {
         handleSubmit(values)
           .then(() => {
             clearError();
+            setSuccess(
+              `Successfully ${submitPhrase.toLocaleLowerCase()}d segment`
+            );
 
             if (isNew) {
               navigate(`/segments/${values.key}`);
@@ -192,11 +199,17 @@ export default function SegmentForm(props: SegmentFormProps) {
               </Button>
               <Button
                 primary
-                className="ml-3"
+                className="ml-3 min-w-[80px]"
                 type="submit"
-                disabled={!(formik.dirty && formik.isValid)}
+                disabled={
+                  !(formik.dirty && formik.isValid && !formik.isSubmitting)
+                }
               >
-                {isNew ? 'Create' : 'Update'}
+                {formik.isSubmitting ? (
+                  <Loading isButton isPrimary />
+                ) : (
+                  submitPhrase
+                )}
               </Button>
             </div>
           </div>

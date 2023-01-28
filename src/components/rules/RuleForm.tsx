@@ -9,11 +9,13 @@ import Combobox from '~/components/forms/Combobox';
 import MoreInfo from '~/components/MoreInfo';
 import { createDistribution, createRule } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import { useSuccess } from '~/data/hooks/success';
 import { keyValidation } from '~/data/validations';
 import { IDistributionVariant } from '~/types/Distribution';
 import { IFlag } from '~/types/Flag';
 import { ISegment, SelectableSegment } from '~/types/Segment';
 import { SelectableVariant } from '~/types/Variant';
+import Loading from '../Loading';
 import MultiDistributionFormInputs from './distributions/MultiDistributionForm';
 import SingleDistributionFormInput from './distributions/SingleDistributionForm';
 
@@ -65,6 +67,7 @@ const validRollout = (distributions: IDistributionVariant[]): boolean => {
 export default function RuleForm(props: RuleFormProps) {
   const { setOpen, rulesChanged, flag, rank, segments } = props;
   const { setError, clearError } = useError();
+  const { setSuccess } = useSuccess();
   const [distributionsValid, setDistributionsValid] = useState<boolean>(true);
 
   const [ruleType, setRuleType] = useState('single');
@@ -124,6 +127,7 @@ export default function RuleForm(props: RuleFormProps) {
 
     rulesChanged();
     clearError();
+    setSuccess('Successfully created new rule');
     setOpen(false);
   };
 
@@ -283,11 +287,21 @@ export default function RuleForm(props: RuleFormProps) {
                 <Button
                   primary
                   type="submit"
+                  className="min-w-[80px]"
                   disabled={
-                    !(formik.dirty && formik.isValid && distributionsValid)
+                    !(
+                      formik.dirty &&
+                      formik.isValid &&
+                      distributionsValid &&
+                      !formik.isSubmitting
+                    )
                   }
                 >
-                  Create
+                  {formik.isSubmitting ? (
+                    <Loading isButton isPrimary />
+                  ) : (
+                    'Create'
+                  )}
                 </Button>
               </div>
             </div>

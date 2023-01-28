@@ -9,6 +9,7 @@ import Select from '~/components/forms/Select';
 import MoreInfo from '~/components/MoreInfo';
 import { createConstraint, updateConstraint } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import { useSuccess } from '~/data/hooks/success';
 import { requiredValidation } from '~/data/validations';
 import {
   ComparisonType,
@@ -19,6 +20,7 @@ import {
   IConstraintBase,
   NoValueOperators
 } from '~/types/Constraint';
+import Loading from '../Loading';
 
 const constraintComparisonTypes = () =>
   (Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>).map(
@@ -138,8 +140,10 @@ type ConstraintFormProps = {
 export default function ConstraintForm(props: ConstraintFormProps) {
   const { setOpen, segmentKey, constraint, onSuccess } = props;
   const { setError, clearError } = useError();
+  const { setSuccess } = useSuccess();
 
   const isNew = constraint === undefined;
+  const submitPhrase = isNew ? 'Create' : 'Update';
   const title = isNew ? 'New Constraint' : 'Edit Constraint';
 
   const initialValues: IConstraintBase = {
@@ -163,6 +167,9 @@ export default function ConstraintForm(props: ConstraintFormProps) {
         handleSubmit(values)
           .then(() => {
             clearError();
+            setSuccess(
+              `Successfully ${submitPhrase.toLocaleLowerCase()}d constraint`
+            );
             onSuccess();
           })
           .catch((err) => {
@@ -262,9 +269,16 @@ export default function ConstraintForm(props: ConstraintFormProps) {
               <Button
                 primary
                 type="submit"
-                disabled={!(formik.dirty && formik.isValid)}
+                className="min-w-[80px]"
+                disabled={
+                  !(formik.dirty && formik.isValid && !formik.isSubmitting)
+                }
               >
-                {isNew ? 'Create' : 'Update'}
+                {formik.isSubmitting ? (
+                  <Loading isButton isPrimary />
+                ) : (
+                  submitPhrase
+                )}
               </Button>
             </div>
           </div>

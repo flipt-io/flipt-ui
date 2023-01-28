@@ -288,11 +288,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                   }
                   className="min-w-[80px]"
                 >
-                  {formik.isSubmitting ? (
-                    <Loading isButton isPrimary />
-                  ) : (
-                    'Update'
-                  )}
+                  {formik.isSubmitting ? <Loading isPrimary /> : 'Update'}
                 </Button>
               </div>
             </div>

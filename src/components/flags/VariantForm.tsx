@@ -168,11 +168,7 @@ export default function VariantForm(props: VariantFormProps) {
                   !(formik.dirty && formik.isValid && !formik.isSubmitting)
                 }
               >
-                {formik.isSubmitting ? (
-                  <Loading isButton isPrimary />
-                ) : (
-                  submitPhrase
-                )}
+                {formik.isSubmitting ? <Loading isPrimary /> : submitPhrase}
               </Button>
             </div>
           </div>

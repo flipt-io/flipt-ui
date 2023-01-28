@@ -1,9 +1,17 @@
 import { Transition } from '@headlessui/react';
 import { CheckCircleIcon, XMarkIcon } from '@heroicons/react/20/solid';
+import { useEffect } from 'react';
 import { useSuccess } from '~/data/hooks/success';
 
 export default function SuccessNotification() {
-  const { success, setSuccess } = useSuccess();
+  const { success, clearSuccess } = useSuccess();
+
+  // Close the notification after 3 seconds
+  useEffect(() => {
+    if (success !== null) {
+      setTimeout(() => clearSuccess(), 3000);
+    }
+  }, [success, clearSuccess]);
 
   return (
     <Transition show={success !== null}>
@@ -23,7 +31,7 @@ export default function SuccessNotification() {
               <div className="-mx-1.5 -my-1.5">
                 <button
                   type="button"
-                  onClick={() => setSuccess(null)}
+                  onClick={() => clearSuccess()}
                   className="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50"
                 >
                   <span className="sr-only">Dismiss</span>

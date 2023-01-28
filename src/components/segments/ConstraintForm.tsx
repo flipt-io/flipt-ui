@@ -274,11 +274,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
                   !(formik.dirty && formik.isValid && !formik.isSubmitting)
                 }
               >
-                {formik.isSubmitting ? (
-                  <Loading isButton isPrimary />
-                ) : (
-                  submitPhrase
-                )}
+                {formik.isSubmitting ? <Loading isPrimary /> : submitPhrase}
               </Button>
             </div>
           </div>

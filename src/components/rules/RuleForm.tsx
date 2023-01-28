@@ -297,11 +297,7 @@ export default function RuleForm(props: RuleFormProps) {
                     )
                   }
                 >
-                  {formik.isSubmitting ? (
-                    <Loading isButton isPrimary />
-                  ) : (
-                    'Create'
-                  )}
+                  {formik.isSubmitting ? <Loading isPrimary /> : 'Create'}
                 </Button>
               </div>
             </div>

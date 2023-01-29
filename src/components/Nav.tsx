@@ -7,12 +7,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import { classNames } from '../utils/helpers';
 
-type Icon = (
-  props: React.SVGProps<SVGSVGElement> & {
-    title?: string;
-    titleId?: string;
-  }
-) => JSX.Element;
+type Icon = (props: React.SVGProps<SVGSVGElement>) => any;
 
 type NavItemProps = {
   to: string;

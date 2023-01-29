@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { ErrorContext } from '~/components/ErrorProvider';
+import { NotificationContext } from '~/components/NotificationProvider';
 
 export const useError = () => {
-  const { error, setError, clearError } = useContext(ErrorContext);
+  const { error, setError, clearError } = useContext(NotificationContext);
   return { error, setError, clearError };
 };

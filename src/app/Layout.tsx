@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import SuccessNotification from '~/components/SuccessNotification';
 import { useSession } from '~/data/hooks/session';
 import ErrorNotification from '../components/ErrorNotification';
-import { ErrorProvider } from '../components/ErrorProvider';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { NotificationProvider } from '../components/NotificationProvider';
 import Sidebar from '../components/Sidebar';
 
 function InnerLayout() {
@@ -34,9 +35,10 @@ function InnerLayout() {
 
 export default function Layout() {
   return (
-    <ErrorProvider>
+    <NotificationProvider>
       <InnerLayout />
       <ErrorNotification />
-    </ErrorProvider>
+      <SuccessNotification />
+    </NotificationProvider>
   );
 }

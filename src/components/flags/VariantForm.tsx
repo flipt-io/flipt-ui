@@ -8,8 +8,10 @@ import TextArea from '~/components/forms/TextArea';
 import MoreInfo from '~/components/MoreInfo';
 import { createVariant, updateVariant } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import { useSuccess } from '~/data/hooks/success';
 import { jsonValidation, keyValidation } from '~/data/validations';
 import { IVariant, IVariantBase } from '~/types/Variant';
+import Loading from '../Loading';
 
 type VariantFormProps = {
   setOpen: (open: boolean) => void;
@@ -22,7 +24,9 @@ export default function VariantForm(props: VariantFormProps) {
   const { setOpen, flagKey, variant, onSuccess } = props;
   const isNew = variant === undefined;
   const title = isNew ? 'New Variant' : 'Edit Variant';
+  const submitPhrase = isNew ? 'Create' : 'Update';
   const { setError, clearError } = useError();
+  const { setSuccess } = useSuccess();
 
   const handleSubmit = async (values: IVariantBase) => {
     if (isNew) {
@@ -44,6 +48,9 @@ export default function VariantForm(props: VariantFormProps) {
         handleSubmit(values)
           .then(() => {
             clearError();
+            setSuccess(
+              `Successfully ${submitPhrase.toLocaleLowerCase()}d variant.`
+            );
             onSuccess();
           })
           .catch((err) => {
@@ -155,10 +162,13 @@ export default function VariantForm(props: VariantFormProps) {
               <Button onClick={() => setOpen(false)}>Cancel</Button>
               <Button
                 primary
+                className="min-w-[80px]"
                 type="submit"
-                disabled={!(formik.dirty && formik.isValid)}
+                disabled={
+                  !(formik.dirty && formik.isValid && !formik.isSubmitting)
+                }
               >
-                {isNew ? 'Create' : 'Update'}
+                {formik.isSubmitting ? <Loading isPrimary /> : submitPhrase}
               </Button>
             </div>
           </div>

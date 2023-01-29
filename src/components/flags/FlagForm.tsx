@@ -6,9 +6,11 @@ import Input from '~/components/forms/Input';
 import Toggle from '~/components/forms/Toggle';
 import { createFlag, updateFlag } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import { useSuccess } from '~/data/hooks/success';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { IFlag, IFlagBase } from '~/types/Flag';
 import { stringAsKey } from '~/utils/helpers';
+import Loading from '../Loading';
 
 type FlagFormProps = {
   flag?: IFlag;
@@ -18,8 +20,10 @@ type FlagFormProps = {
 export default function FlagForm(props: FlagFormProps) {
   const { flag, flagChanged } = props;
   const isNew = flag === undefined;
+  const submitPhrase = isNew ? 'Create' : 'Update';
   const navigate = useNavigate();
   const { setError, clearError } = useError();
+  const { setSuccess } = useSuccess();
 
   const handleSubmit = (values: IFlagBase) => {
     if (isNew) {
@@ -43,7 +47,9 @@ export default function FlagForm(props: FlagFormProps) {
         handleSubmit(values)
           .then(() => {
             clearError();
-
+            setSuccess(
+              `Successfully ${submitPhrase.toLocaleLowerCase()}d flag`
+            );
             if (isNew) {
               navigate(`/flags/${values.key}`);
               return;
@@ -52,6 +58,7 @@ export default function FlagForm(props: FlagFormProps) {
             flagChanged && flagChanged();
           })
           .catch((err) => {
+            console.log(err);
             setError(err);
           });
       }}
@@ -147,11 +154,13 @@ export default function FlagForm(props: FlagFormProps) {
                 </Button>
                 <Button
                   primary
-                  className="ml-3"
+                  className="ml-3 min-w-[80px]"
                   type="submit"
-                  disabled={!(formik.dirty && formik.isValid)}
+                  disabled={
+                    !(formik.dirty && formik.isValid && !formik.isSubmitting)
+                  }
                 >
-                  {isNew ? 'Create' : 'Update'}
+                  {formik.isSubmitting ? <Loading isPrimary /> : submitPhrase}
                 </Button>
               </div>
             </div>

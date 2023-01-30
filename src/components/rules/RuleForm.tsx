@@ -87,8 +87,6 @@ export default function RuleForm(props: RuleFormProps) {
     }));
   });
 
-  console.log(flag);
-
   useEffect(() => {
     if (ruleType === 'multi' && distributions && !validRollout(distributions)) {
       setDistributionsValid(false);

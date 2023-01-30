@@ -269,7 +269,7 @@ export default function RuleForm(props: RuleFormProps) {
                     100% or less.
                   </p>
                 )}
-                {!flag.variants && (
+                {(!flag.variants || flag.variants?.length == 0) && (
                   <p className="mt-1 px-4 text-center text-sm text-gray-500 sm:px-6 sm:py-5">
                     Flag{' '}
                     <Link to={`/flags/${flag.key}`} className="text-violet-500">

@@ -12,6 +12,7 @@ type Session = {
 interface SessionContextType {
   session?: Session;
   setSession: (data: any) => void;
+  clearSession: () => void;
 }
 
 export const SessionContext = createContext({} as SessionContextType);
@@ -61,9 +62,10 @@ export default function SessionProvider({
   const value = useMemo(
     () => ({
       session,
-      setSession
+      setSession,
+      clearSession
     }),
-    [session, setSession]
+    [session, setSession, clearSession]
   );
 
   return (

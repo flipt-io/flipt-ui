@@ -15,12 +15,12 @@ export default function UserProfile(props: UserProfileProps) {
   const { name, imgURL } = props;
 
   const { setError } = useError();
-  const { setSession } = useSession();
+  const { clearSession } = useSession();
 
   const logout = async () => {
     expireAuthSelf()
       .then(() => {
-        setSession(null);
+        clearSession();
         window.location.href = '/';
       })
       .catch((err) => {

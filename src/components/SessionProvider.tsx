@@ -21,12 +21,13 @@ export default function SessionProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession, clearSession] = useStorage('flipt_session', null);
+  const [session, setSession, clearSession] = useStorage('session', null);
 
   useEffect(() => {
     const loadSession = async () => {
       let session = {
-        required: true
+        required: true,
+        authenticated: false
       } as Session;
 
       try {

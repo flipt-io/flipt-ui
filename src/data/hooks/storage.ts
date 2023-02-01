@@ -19,7 +19,7 @@ export const useStorage = (key: string, initialValue: any) => {
         value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       const buffer = Buffer.from(JSON.stringify(valueToStore));
-      window.localStorage.setItem(buffer.toString('base64'), key);
+      window.localStorage.setItem(key, buffer.toString('base64'));
     } catch (error) {
       console.error(error);
     }

@@ -1,6 +1,6 @@
 import { createContext, useEffect, useMemo } from 'react';
 import { getAuthSelf, getInfo } from '~/data/api';
-import { useStorage } from '~/data/hooks/storage';
+import { useLocalStorage } from '~/data/hooks/storage';
 import { AuthMethodOIDCSelf } from '~/types/Auth';
 
 type Session = {
@@ -22,7 +22,11 @@ export default function SessionProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession, clearSession] = useStorage('session', null);
+  const [session, setSession, clearSession] = useLocalStorage(
+    'session',
+    null,
+    true
+  );
 
   useEffect(() => {
     const loadSession = async () => {

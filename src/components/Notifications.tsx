@@ -5,16 +5,18 @@ import {
   XMarkIcon
 } from '@heroicons/react/24/outline';
 import { Fragment, useState } from 'react';
+import { useSessionStorage } from '~/data/hooks/storage';
 import { Info } from '~/types/Meta';
 
 type NotificationProps = {
   show: boolean;
   setShow: (show: boolean) => void;
+  markSeen: () => void;
   info: Info;
 };
 
 export function Notification(props: NotificationProps) {
-  const { info, show, setShow } = props;
+  const { info, show, setShow, markSeen } = props;
 
   return (
     <>
@@ -44,7 +46,7 @@ export function Notification(props: NotificationProps) {
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className="text-sm font-medium text-gray-900">
-                      Upgrade Available
+                      Update Available
                     </p>
                     <p className="mt-1 text-sm text-gray-500">
                       A new version of Flipt is available!
@@ -63,6 +65,7 @@ export function Notification(props: NotificationProps) {
                         onClick={(e) => {
                           e.preventDefault();
                           setShow(false);
+                          markSeen();
                         }}
                       >
                         Dismiss
@@ -75,6 +78,7 @@ export function Notification(props: NotificationProps) {
                       className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none"
                       onClick={() => {
                         setShow(false);
+                        markSeen();
                       }}
                     >
                       <span className="sr-only">Close</span>
@@ -99,26 +103,43 @@ export default function Notifications(props: NotificationsProps) {
   const { info } = props;
   const [show, setShow] = useState(false);
 
+  const [newNotifications, setNewNotification] = useSessionStorage(
+    'new_notifications',
+    info.updateAvailable
+  );
+
   return (
     <>
-      <Notification info={info} show={show} setShow={setShow} />
+      {info.updateAvailable && (
+        <Notification
+          info={info}
+          show={show}
+          setShow={setShow}
+          markSeen={() => setNewNotification(false)}
+        />
+      )}
 
       <button
         type="button"
         className="without-ring relative rounded-full text-violet-100"
       >
-        <span className="absolute top-0 right-0 flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-100"></span>
-        </span>
+        {newNotifications && (
+          <span className="absolute top-0 right-0 flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-100"></span>
+          </span>
+        )}
         <span className="sr-only">View notifications</span>
-        <BellIcon
-          className="h-8 w-6 fill-violet-300 hover:fill-violet-200"
-          aria-hidden="true"
-          onClick={() => {
-            setShow(true);
-          }}
-        />
+
+        {info.updateAvailable && (
+          <BellIcon
+            className="h-8 w-6 fill-violet-300 hover:fill-violet-200"
+            aria-hidden="true"
+            onClick={() => {
+              setShow(true);
+            }}
+          />
+        )}
       </button>
     </>
   );

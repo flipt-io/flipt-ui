@@ -110,14 +110,12 @@ export default function Notifications(props: NotificationsProps) {
 
   return (
     <>
-      {info.updateAvailable && (
-        <Notification
-          info={info}
-          show={show}
-          setShow={setShow}
-          markSeen={() => setNewNotification(false)}
-        />
-      )}
+      <Notification
+        info={info}
+        show={show}
+        setShow={setShow}
+        markSeen={() => setNewNotification(false)}
+      />
 
       <button
         type="button"
@@ -131,15 +129,13 @@ export default function Notifications(props: NotificationsProps) {
         )}
         <span className="sr-only">View notifications</span>
 
-        {info.updateAvailable && (
-          <BellIcon
-            className="h-8 w-6 fill-violet-300 hover:fill-violet-200"
-            aria-hidden="true"
-            onClick={() => {
-              setShow(true);
-            }}
-          />
-        )}
+        <BellIcon
+          className="h-8 w-6 fill-violet-300 hover:fill-violet-200"
+          aria-hidden="true"
+          onClick={() => {
+            setShow(true);
+          }}
+        />
       </button>
     </>
   );

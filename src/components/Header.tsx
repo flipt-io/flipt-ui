@@ -40,7 +40,10 @@ export default function Header(props: HeaderProps) {
         <div className="flex flex-1" />
         <div className="ml-4 flex items-center md:ml-6">
           {/* notifications */}
-          {info && <Notifications info={info} />}
+
+          {/* TODO: currently we only show the update available notification, 
+          this will need to be re-worked if we support other notifications */}
+          {info && info.updateAvailable && <Notifications info={info} />}
 
           {/* user profile */}
           {session && session.self && (

@@ -8,6 +8,7 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
+    "plugin:playwright/playwright-test",
     "airbnb-typescript/base"
   ],
   "overrides": [],

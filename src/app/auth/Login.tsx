@@ -97,7 +97,7 @@ export default function Login() {
     loadProviders();
   }, [setProviders, setError]);
 
-  if (session) {
+  if (session && (!session.required || session.authenticated)) {
     return <Navigate to="/" />;
   }
 

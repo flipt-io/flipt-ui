@@ -1,10 +1,12 @@
+import { Buffer } from 'buffer';
 import { useState } from 'react';
 
 export const useStorage = (key: string, initialValue: any) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      const buffer = item ? Buffer.from(item, 'base64') : null;
+      return buffer ? JSON.parse(buffer.toLocaleString()) : initialValue;
     } catch (error) {
       console.error(error);
       return initialValue;
@@ -16,7 +18,8 @@ export const useStorage = (key: string, initialValue: any) => {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
-      window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      const buffer = Buffer.from(JSON.stringify(valueToStore));
+      window.localStorage.setItem(buffer.toString('base64'), key);
     } catch (error) {
       console.error(error);
     }

@@ -2,11 +2,11 @@ import { createContext, useEffect, useMemo } from 'react';
 import { getAuthSelf, getInfo } from '~/data/api';
 import { useStorage } from '~/data/hooks/storage';
 import { AuthMethodOIDCSelf } from '~/types/Auth';
-import { Info } from '~/types/Meta';
 
 type Session = {
-  info: Info;
-  self: AuthMethodOIDCSelf;
+  required: boolean;
+  authenticated: boolean;
+  self?: AuthMethodOIDCSelf;
 };
 
 interface SessionContextType {
@@ -21,17 +21,16 @@ export default function SessionProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession, clearSession] = useStorage('flipt', null);
+  const [session, setSession, clearSession] = useStorage('flipt_session', null);
 
   useEffect(() => {
     const loadSession = async () => {
-      let data = null;
+      let session = {
+        required: true
+      } as Session;
 
       try {
-        const info = await getInfo();
-        data = {
-          info: info
-        };
+        await getInfo();
       } catch (err) {
         // if we can't get the info, we're not logged in
         // or there was an error, either way, clear the session so we redirect
@@ -42,16 +41,22 @@ export default function SessionProvider({
 
       try {
         const self = await getAuthSelf();
-        data = {
-          ...data,
+        session = {
+          authenticated: true,
+          required: true,
           self: self
         };
       } catch (err) {
         // if we can't get the self info and we got here then auth is likely not enabled
         // so we can just return
-        return;
+        session = {
+          authenticated: false,
+          required: false
+        };
       } finally {
-        setSession(data);
+        if (session) {
+          setSession(session);
+        }
       }
     };
     if (!session) loadSession();

@@ -22,11 +22,7 @@ export default function SessionProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [session, setSession, clearSession] = useLocalStorage(
-    'session',
-    null,
-    true
-  );
+  const [session, setSession, clearSession] = useLocalStorage('session', null);
 
   useEffect(() => {
     const loadSession = async () => {

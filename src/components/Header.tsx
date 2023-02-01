@@ -1,5 +1,9 @@
 import { Bars3BottomLeftIcon } from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
+import { getInfo } from '~/data/api';
 import { useSession } from '~/data/hooks/session';
+import { Info } from '~/types/Meta';
+import Notifications from './Notifications';
 import UserProfile from './UserProfile';
 
 type HeaderProps = {
@@ -8,7 +12,18 @@ type HeaderProps = {
 
 export default function Header(props: HeaderProps) {
   const { setSidebarOpen } = props;
-  // const [notifications, setNotifications] = useState(false);
+  const [info, setInfo] = useState<Info | null>(null);
+
+  useEffect(() => {
+    getInfo()
+      .then((info: Info) => {
+        setInfo(info);
+      })
+      .catch(() => {
+        // nothing to do, component will degrade gracefully
+      });
+  }, []);
+
   const { session } = useSession();
 
   return (
@@ -24,26 +39,10 @@ export default function Header(props: HeaderProps) {
       <div className="flex flex-1 justify-between px-4">
         <div className="flex flex-1" />
         <div className="ml-4 flex items-center md:ml-6">
-          {/* TODO: Add back notifications when we support them */}
-          {/* <button
-            type="button"
-            className="without-ring relative rounded-full p-1 text-white"
-          > */}
-          {/* TODO: Add a pulse animation to this button when there are new notifications */}
-          {/* {notifications && (
-              <span className="absolute top-0 right-0 flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-300"></span>
-              </span>
-            )}
-            <span className="sr-only">View notifications</span>
-            <BellIcon
-              className="h-8 w-6 hover:fill-violet-300"
-              aria-hidden="true"
-            /> */}
-          {/* </button> */}
+          {/* notifications */}
+          {info && <Notifications info={info} />}
 
-          {/* Profile dropdown */}
+          {/* user profile */}
           {session && session.self && (
             <UserProfile
               name={session.self.metadata['io.flipt.auth.oidc.name']}

@@ -62,20 +62,14 @@ function ConstraintOperatorSelect(props: InputProps) {
 
   const [field] = useField(props);
 
-  // set default value for operator when type changes
-  useEffect(() => {
-    if (type === 'BOOLEAN_COMPARISON_TYPE') {
-      setFieldValue(props.name, 'true');
-      return;
-    }
-    setFieldValue(props.name, 'eq');
-  }, [type, props.name, setFieldValue]);
-
   return (
     <Select
       className="mt-1"
       {...field}
       {...props}
+      handleChange={(e) => {
+        setFieldValue(field.name, e.target.value);
+      }}
       options={constraintOperators(type)}
     />
   );
@@ -84,7 +78,8 @@ function ConstraintOperatorSelect(props: InputProps) {
 function ConstraintValueField(props: InputProps) {
   const [show, setShow] = useState(true);
   const {
-    values: { type, operator }
+    values: { type, operator },
+    dirty
   } = useFormikContext<{ type: string; operator: string }>();
 
   const [field] = useField({
@@ -107,7 +102,7 @@ function ConstraintValueField(props: InputProps) {
     }
     const noValue = NoValueOperators.includes(operator);
     setShow(!noValue);
-  }, [type, operator]);
+  }, [type, operator, field.name, dirty]);
 
   if (!show) {
     return <></>;
@@ -163,6 +158,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
   return (
     <Formik
       initialValues={initialValues}
+      enableReinitialize={true}
       onSubmit={(values) => {
         handleSubmit(values)
           .then(() => {
@@ -237,7 +233,15 @@ export default function ConstraintForm(props: ConstraintFormProps) {
                     className="mt-1"
                     value={formik.values.type}
                     options={constraintComparisonTypes()}
-                    handleChange={formik.handleChange}
+                    handleChange={(e) => {
+                      formik.setFieldValue('type', e.target.value);
+
+                      if (e.target.value === 'BOOLEAN_COMPARISON_TYPE') {
+                        formik.setFieldValue('operator', 'true');
+                      } else {
+                        formik.setFieldValue('operator', 'eq');
+                      }
+                    }}
                   />
                 </div>
               </div>

@@ -1,12 +1,22 @@
 import { Buffer } from 'buffer';
 import { useState } from 'react';
 
-export const useStorage = (key: string, initialValue: any) => {
+const useStorage = (
+  key: string,
+  initialValue: any,
+  storage: Storage,
+  encode = false
+) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
-      const item = window.localStorage.getItem(key);
-      const buffer = item ? Buffer.from(item, 'base64') : null;
-      return buffer ? JSON.parse(buffer.toLocaleString()) : initialValue;
+      const item = storage.getItem(key);
+
+      if (encode) {
+        const buffer = item ? Buffer.from(item, 'base64') : null;
+        return buffer ? JSON.parse(buffer.toLocaleString()) : initialValue;
+      }
+
+      return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       console.error(error);
       return initialValue;
@@ -18,8 +28,15 @@ export const useStorage = (key: string, initialValue: any) => {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
-      const buffer = Buffer.from(JSON.stringify(valueToStore));
-      window.localStorage.setItem(key, buffer.toString('base64'));
+
+      let v = JSON.stringify(valueToStore);
+
+      if (encode) {
+        const buffer = Buffer.from(v);
+        v = buffer.toString('base64');
+      }
+
+      storage.setItem(key, v);
     } catch (error) {
       console.error(error);
     }
@@ -27,11 +44,27 @@ export const useStorage = (key: string, initialValue: any) => {
 
   const clearValue = () => {
     try {
-      window.localStorage.removeItem(key);
+      storage.removeItem(key);
     } catch (error) {
       console.error(error);
     }
   };
 
   return [storedValue, setValue, clearValue];
+};
+
+export const useSessionStorage = (
+  key: string,
+  initialValue: any,
+  encode = false
+) => {
+  return useStorage(key, initialValue, window.sessionStorage, encode);
+};
+
+export const useLocalStorage = (
+  key: string,
+  initialValue: any,
+  encode = false
+) => {
+  return useStorage(key, initialValue, window.localStorage, encode);
 };

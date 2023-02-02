@@ -1,6 +1,7 @@
 export interface Info {
   version: string;
-  latestVersion: string;
+  latestVersion?: string;
+  latestVersionURL?: string;
   commit: string;
   buildDate: string;
   goVersion: string;

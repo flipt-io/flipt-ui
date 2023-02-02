@@ -1,6 +1,6 @@
 import { CalendarIcon } from '@heroicons/react/20/solid';
 import { formatDistanceToNowStrict, parseISO } from 'date-fns';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   LoaderFunctionArgs,
   useLoaderData,
@@ -75,11 +75,17 @@ export default function Segment() {
 
   const constraintOperatorToLabel = (o: string) => ConstraintOperators[o];
 
+  const constraintFormRef = useRef(null);
   return (
     <>
       {/* constraint edit form */}
-      <Slideover open={showConstraintForm} setOpen={setShowConstraintForm}>
+      <Slideover
+        open={showConstraintForm}
+        setOpen={setShowConstraintForm}
+        ref={constraintFormRef}
+      >
         <ConstraintForm
+          ref={constraintFormRef}
           segmentKey={segment.key}
           constraint={editingConstraint || undefined}
           setOpen={setShowConstraintForm}

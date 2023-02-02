@@ -1,6 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Form, Formik } from 'formik';
+import { forwardRef } from 'react';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
@@ -20,7 +21,7 @@ type VariantFormProps = {
   onSuccess: () => void;
 };
 
-export default function VariantForm(props: VariantFormProps) {
+const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
   const { setOpen, flagKey, variant, onSuccess } = props;
   const isNew = variant === undefined;
   const title = isNew ? 'New Variant' : 'Edit Variant';
@@ -98,7 +99,7 @@ export default function VariantForm(props: VariantFormProps) {
                   </label>
                 </div>
                 <div className="sm:col-span-2">
-                  <Input name="key" id="key" />
+                  <Input name="key" id="key" forwardRef={ref} />
                 </div>
               </div>
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
@@ -176,4 +177,7 @@ export default function VariantForm(props: VariantFormProps) {
       )}
     </Formik>
   );
-}
+});
+
+VariantForm.displayName = 'VariantForm';
+export default VariantForm;

@@ -95,6 +95,7 @@ export default function FlagForm(props: FlagFormProps) {
                     className="mt-1"
                     name="name"
                     id="name"
+                    autoFocus={isNew}
                     handleChange={(e) => {
                       // check if the name and key are currently in sync
                       // we do this so we don't override a custom key value

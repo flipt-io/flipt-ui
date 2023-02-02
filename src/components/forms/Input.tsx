@@ -6,27 +6,29 @@ type InputProps = {
   name: string;
   type?: string;
   className?: string;
-  autocomplete?: boolean;
-  disabled?: boolean;
+  autoComplete?: boolean;
+  forwardRef?: React.RefObject<HTMLInputElement>;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
 export default function Input(props: InputProps) {
   const {
     id,
     type = 'text',
-    className,
+    className = '',
     handleChange,
-    autocomplete = false,
-    disabled = false
+    autoComplete = false,
+    forwardRef,
+    ...rest
   } = props;
 
   const [field, meta] = useField(props);
-  const hasError = meta.touched && meta.error;
+  const hasError = !!(meta.touched && meta.error);
 
   return (
     <>
       <input
+        ref={forwardRef}
         className={classNames(
           hasError ? 'border-red-400' : 'border-gray-300',
           `${className} block w-full rounded-md shadow-sm focus:border-violet-300 focus:ring-violet-300 disabled:cursor-not-allowed disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm`
@@ -38,8 +40,8 @@ export default function Input(props: InputProps) {
           field.onChange(e);
           handleChange && handleChange(e);
         }}
-        autoComplete={autocomplete ? 'on' : 'off'}
-        disabled={disabled}
+        autoComplete={autoComplete ? 'on' : 'off'}
+        {...rest}
       />
       {meta.touched && meta.error ? (
         <div className="mt-1 text-sm text-red-500">{meta.error}</div>

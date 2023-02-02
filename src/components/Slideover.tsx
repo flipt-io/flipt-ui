@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { forwardRef, Fragment } from 'react';
 
 type SlideOverProps = {
   open: boolean;
@@ -7,12 +7,17 @@ type SlideOverProps = {
   children: React.ReactNode;
 };
 
-export default function Slideover(props: SlideOverProps) {
+const SlideOver = forwardRef((props: SlideOverProps, ref: any) => {
   const { open, setOpen } = props;
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={setOpen}
+        initialFocus={ref}
+      >
         <div className="fixed inset-0" />
 
         <div className="fixed inset-0 overflow-hidden">
@@ -37,4 +42,7 @@ export default function Slideover(props: SlideOverProps) {
       </Dialog>
     </Transition.Root>
   );
-}
+});
+
+SlideOver.displayName = 'SlideOver';
+export default SlideOver;

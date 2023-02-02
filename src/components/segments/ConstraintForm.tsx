@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Form, Formik, useField, useFormikContext } from 'formik';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
@@ -132,7 +132,7 @@ type ConstraintFormProps = {
   onSuccess: () => void;
 };
 
-export default function ConstraintForm(props: ConstraintFormProps) {
+const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
   const { setOpen, segmentKey, constraint, onSuccess } = props;
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
@@ -214,7 +214,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
                   </label>
                 </div>
                 <div className="sm:col-span-2">
-                  <Input name="property" id="property" />
+                  <Input name="property" id="property" forwardRef={ref} />
                 </div>
               </div>
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
@@ -286,4 +286,7 @@ export default function ConstraintForm(props: ConstraintFormProps) {
       )}
     </Formik>
   );
-}
+});
+
+ConstraintForm.displayName = 'ConstraintForm';
+export default ConstraintForm;

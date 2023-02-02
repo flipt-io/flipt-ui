@@ -93,6 +93,7 @@ export default function SegmentForm(props: SegmentFormProps) {
                   className="mt-1"
                   name="name"
                   id="name"
+                  autoFocus={isNew}
                   handleChange={(e) => {
                     // check if the name and key are currently in sync
                     // we do this so we don't override a custom key value

@@ -1,5 +1,5 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import EmptyState from '~/components/EmptyState';
 import DeleteVariantPanel from '~/components/flags/DeleteVariantPanel';
@@ -27,13 +27,19 @@ export default function EditFlag() {
     useState<boolean>(false);
   const [deletingVariant, setDeletingVariant] = useState<IVariant | null>(null);
 
+  const variantFormRef = useRef(null);
   return (
     <>
       <FlagMenu flag={flag} selected="details" />
 
       {/* variant edit form */}
-      <Slideover open={showVariantForm} setOpen={setShowVariantForm}>
+      <Slideover
+        open={showVariantForm}
+        setOpen={setShowVariantForm}
+        ref={variantFormRef}
+      >
         <VariantForm
+          ref={variantFormRef}
           flagKey={flag.key}
           variant={editingVariant || undefined}
           setOpen={setShowVariantForm}

@@ -26,10 +26,10 @@ export default function Flags() {
     <>
       <div className="flex-row justify-between pb-5 sm:flex sm:items-center">
         <div className="flex flex-col">
-          <h1 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl">
+          <h1 className="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:text-3xl">
             Flags
           </h1>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm text-gray-500 dark:text-slate-300">
             Flags represent features that you can easily enable or disable
           </p>
         </div>

@@ -47,7 +47,7 @@ export default function FlagTable(props: FlagTableProps) {
       ),
       meta: {
         className:
-          'truncate whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900'
+          'truncate whitespace-nowrap py-4 px-3 text-sm font-medium text-gray-900 dark:text-white'
       }
     }),
     columnHelper.accessor('name', {
@@ -153,7 +153,7 @@ export default function FlagTable(props: FlagTableProps) {
                   <th
                     key={header.id}
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 dark:text-white"
                   >
                     <a
                       href="#"
@@ -188,7 +188,7 @@ export default function FlagTable(props: FlagTableProps) {
                   <th
                     key={header.id}
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900 dark:text-white"
                   >
                     {header.isPlaceholder
                       ? null
@@ -202,7 +202,7 @@ export default function FlagTable(props: FlagTableProps) {
             </tr>
           ))}
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody className="divide-y divide-gray-200 dark:divide-gray-500">
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (

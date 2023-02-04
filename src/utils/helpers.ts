@@ -16,3 +16,7 @@ export function stringAsKey(str: string) {
 
   // return temp;
 }
+
+export function truncateKey(str: string, len: number = 25): string {
+  return str.length > len ? str.substring(0, len) + '...' : str;
+}

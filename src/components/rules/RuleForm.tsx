@@ -15,6 +15,7 @@ import { IDistributionVariant } from '~/types/Distribution';
 import { IFlag } from '~/types/Flag';
 import { ISegment, SelectableSegment } from '~/types/Segment';
 import { SelectableVariant } from '~/types/Variant';
+import { truncateKey } from '~/utils/helpers';
 import Loading from '../Loading';
 import MultiDistributionFormInputs from './distributions/MultiDistributionForm';
 import SingleDistributionFormInput from './distributions/SingleDistributionForm';
@@ -188,7 +189,7 @@ export default function RuleForm(props: RuleFormProps) {
                       placeholder="Select or search for a segment"
                       values={segments.map((s) => ({
                         ...s,
-                        filterValue: s.key,
+                        filterValue: truncateKey(s.key),
                         displayValue: s.name
                       }))}
                       selected={selectedSegment}
@@ -273,7 +274,7 @@ export default function RuleForm(props: RuleFormProps) {
                   <p className="mt-1 px-4 text-center text-sm text-gray-500 sm:px-6 sm:py-5">
                     Flag{' '}
                     <Link to={`/flags/${flag.key}`} className="text-violet-500">
-                      {flag.key}
+                      {truncateKey(flag.key)}
                     </Link>{' '}
                     has no variants. You can add variants in the details
                     section.

@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '~/components/Pagination';
 import Searchbox from '~/components/Searchbox';
 import { ISegment, SegmentMatchType } from '~/types/Segment';
+import { truncateKey } from '~/utils/helpers';
 
 type SegmentTableProps = {
   segments: ISegment[];
@@ -42,7 +43,7 @@ export default function SegmentTable(props: SegmentTableProps) {
       header: 'Key',
       cell: (info) => (
         <Link to={info.getValue()} className="text-violet-500">
-          {info.getValue()}
+          {truncateKey(info.getValue())}
         </Link>
       ),
       meta: {

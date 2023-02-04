@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import Pagination from '~/components/Pagination';
 import Searchbox from '~/components/Searchbox';
 import { IFlag } from '~/types/Flag';
+import { truncateKey } from '~/utils/helpers';
 
 type FlagTableProps = {
   flags: IFlag[];
@@ -42,7 +43,7 @@ export default function FlagTable(props: FlagTableProps) {
       header: 'Key',
       cell: (info) => (
         <Link to={`/flags/${info.getValue()}`} className="text-violet-500">
-          {info.getValue()}
+          {truncateKey(info.getValue())}
         </Link>
       ),
       meta: {

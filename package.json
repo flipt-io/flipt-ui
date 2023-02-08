@@ -14,7 +14,7 @@
     "@dnd-kit/core": "^6.0.7",
     "@dnd-kit/sortable": "^7.0.2",
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
-    "@fortawesome/free-brands-svg-icons": "^6.2.1",
+    "@fortawesome/free-brands-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@headlessui/react": "^1.7.10",
     "@heroicons/react": "^2.0.14",

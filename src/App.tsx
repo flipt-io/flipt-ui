@@ -10,6 +10,7 @@ import Layout from './app/Layout';
 import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
 import Segment, { segmentLoader } from './app/segments/Segment';
+import Settings from './app/settings/Settings';
 import SessionProvider from './components/SessionProvider';
 
 const Flags = loadable(() => import('./app/flags/Flags'));
@@ -71,6 +72,10 @@ const router = createHashRouter([
       {
         path: 'console',
         element: <Console />
+      },
+      {
+        path: 'settings',
+        element: <Settings />
       }
     ]
   },

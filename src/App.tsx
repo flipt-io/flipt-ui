@@ -11,6 +11,7 @@ import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
 import Segment, { segmentLoader } from './app/segments/Segment';
 import Settings from './app/settings/Settings';
+import Tokens from './app/settings/Tokens';
 import SessionProvider from './components/SessionProvider';
 
 const Flags = loadable(() => import('./app/flags/Flags'));
@@ -75,7 +76,17 @@ const router = createHashRouter([
       },
       {
         path: 'settings',
-        element: <Settings />
+        element: <Settings />,
+        children: [
+          {
+            element: <Tokens />,
+            index: true
+          },
+          {
+            path: 'tokens',
+            element: <Tokens />
+          }
+        ]
       }
     ]
   },

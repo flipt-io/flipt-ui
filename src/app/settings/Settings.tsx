@@ -1,12 +1,13 @@
-import TabBar from '~/components/TabBar';
+import { Outlet } from 'react-router-dom';
 
 export default function Settings() {
-  const tabs = [
-    {
-      name: 'API Tokens',
-      to: '/settings/tokens'
-    }
-  ];
+  // TODO: Add tabs back in when we have more than one setting section
+  // const tabs = [
+  //   {
+  //     name: 'API Tokens',
+  //     to: '/settings/tokens'
+  //   }
+  // ];
 
   return (
     <>
@@ -17,7 +18,8 @@ export default function Settings() {
           </h2>
         </div>
       </div>
-      <TabBar tabs={tabs} />
+      {/* <TabBar tabs={tabs} /> */}
+      <Outlet />
     </>
   );
 }

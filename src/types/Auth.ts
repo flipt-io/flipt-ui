@@ -33,3 +33,12 @@ export interface AuthMethodOIDCSelf {
   updatedAt: Date;
   metadata: AuthMethodOIDCMetadata;
 }
+
+export interface IToken {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  expiresAt?: Date;
+}

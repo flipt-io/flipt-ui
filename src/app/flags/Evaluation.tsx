@@ -273,8 +273,9 @@ export default function Evaluation() {
             </div>
           ) : (
             <EmptyState
-              text="Add Rule"
+              text="New Rule"
               onClick={() => {
+                setEditingRule(null);
                 setShowRuleForm(true);
               }}
             />

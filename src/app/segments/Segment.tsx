@@ -299,7 +299,7 @@ export default function Segment() {
                 </table>
               ) : (
                 <EmptyState
-                  text="Add Constraint"
+                  text="New Constraint"
                   onClick={() => {
                     setEditingConstraint(null);
                     setShowConstraintForm(true);

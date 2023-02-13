@@ -184,7 +184,7 @@ export default function EditFlag() {
               </table>
             ) : (
               <EmptyState
-                text="Add Variant"
+                text="New Variant"
                 onClick={() => {
                   setEditingVariant(null);
                   setShowVariantForm(true);

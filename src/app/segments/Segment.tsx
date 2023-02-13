@@ -76,6 +76,7 @@ export default function Segment() {
   const constraintOperatorToLabel = (o: string) => ConstraintOperators[o];
 
   const constraintFormRef = useRef(null);
+
   return (
     <>
       {/* constraint edit form */}

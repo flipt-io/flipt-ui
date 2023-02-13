@@ -1,12 +1,12 @@
 import { createContext, useEffect, useMemo } from 'react';
 import { getAuthSelf, getInfo } from '~/data/api';
 import { useLocalStorage } from '~/data/hooks/storage';
-import { AuthMethodOIDCSelf } from '~/types/Auth';
+import { IAuthenticationOIDC } from '~/types/Auth';
 
 type Session = {
   required: boolean;
   authenticated: boolean;
-  self?: AuthMethodOIDCSelf;
+  self?: IAuthenticationOIDC;
 };
 
 interface SessionContextType {

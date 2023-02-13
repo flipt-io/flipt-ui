@@ -4,6 +4,7 @@ import { IFlagBase } from 'types/Flag';
 import { IRuleBase } from 'types/Rule';
 import { ISegmentBase } from 'types/Segment';
 import { IVariantBase } from 'types/Variant';
+import { ITokenBase } from './../types/Auth';
 
 const apiURL = '/api/v1';
 const authURL = '/auth/v1';
@@ -77,6 +78,18 @@ export async function getAuthSelf() {
 
 export async function expireAuthSelf() {
   return put('/self/expire', {}, authURL);
+}
+
+export async function createToken(values: ITokenBase) {
+  return post('/method/token', values, authURL);
+}
+
+export async function deleteToken(id: string) {
+  return del(`/tokens/${id}`, authURL);
+}
+
+export async function listTokens(method = 'METHOD_TOKEN') {
+  return get(`/tokens?method=${method}`, authURL);
 }
 
 //

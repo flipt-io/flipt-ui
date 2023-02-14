@@ -1,12 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { format, parseISO } from 'date-fns';
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
@@ -16,7 +10,6 @@ import DeleteTokenPanel from '~/components/tokens/DeleteTokenPanel';
 import { listTokens } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { IAuthenticationToken, IAuthenticationTokenList } from '~/types/Auth';
-import { classNames } from '~/utils/helpers';
 import TokenForm from './TokenForm';
 
 export async function tokenLoader(): Promise<IAuthenticationTokenList> {
@@ -24,7 +17,7 @@ export async function tokenLoader(): Promise<IAuthenticationTokenList> {
 }
 
 export default function Tokens() {
-  const checkbox = useRef();
+  // const checkbox = useRef();
   const data = useLoaderData() as IAuthenticationTokenList;
   const [tokens, setTokens] = useState<IAuthenticationToken[]>(
     data.authentications
@@ -53,11 +46,11 @@ export default function Tokens() {
     fetchTokens();
   }, [tokensVersion, fetchTokens]);
 
-  const [checked, setChecked] = useState(false);
-  const [indeterminate, setIndeterminate] = useState(false);
-  const [selectedTokens, setSelectedTokens] = useState<IAuthenticationToken[]>(
-    []
-  );
+  // const [checked, setChecked] = useState(false);
+  // const [indeterminate, setIndeterminate] = useState(false);
+  // const [selectedTokens, setSelectedTokens] = useState<IAuthenticationToken[]>(
+  //   []
+  // );
 
   const [showTokenForm, setShowTokenForm] = useState<boolean>(false);
   const [showDeleteTokenModal, setShowDeleteTokenModal] =
@@ -65,21 +58,21 @@ export default function Tokens() {
   const [deletingToken, setDeletingToken] =
     useState<IAuthenticationToken | null>(null);
 
-  useLayoutEffect(() => {
-    const isIndeterminate =
-      selectedTokens.length > 0 && selectedTokens.length < tokens.length;
-    setChecked(selectedTokens.length === tokens.length);
-    setIndeterminate(isIndeterminate);
-    if (checkbox && checkbox.current) {
-      checkbox.current.indeterminate = isIndeterminate;
-    }
-  }, [selectedTokens]);
+  // useLayoutEffect(() => {
+  //   const isIndeterminate =
+  //     selectedTokens.length > 0 && selectedTokens.length < tokens.length;
+  //   setChecked(selectedTokens.length === tokens.length);
+  //   setIndeterminate(isIndeterminate);
+  //   if (checkbox && checkbox.current) {
+  //     checkbox.current.indeterminate = isIndeterminate;
+  //   }
+  // }, [selectedTokens]);
 
-  const toggleAll = () => {
-    setSelectedTokens(checked || indeterminate ? [] : tokens);
-    setChecked(!checked && !indeterminate);
-    setIndeterminate(false);
-  };
+  // const toggleAll = () => {
+  //   setSelectedTokens(checked || indeterminate ? [] : tokens);
+  //   setChecked(!checked && !indeterminate);
+  //   setIndeterminate(false);
+  // };
 
   const tokenFormRef = useRef(null);
 
@@ -138,7 +131,7 @@ export default function Tokens() {
             <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                 <div className="relative overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-                  {selectedTokens.length > 0 && (
+                  {/* {selectedTokens.length > 0 && (
                     <div className="absolute top-0 left-12 flex h-12 items-center space-x-3 bg-gray-50 sm:left-16">
                       <button
                         type="button"
@@ -147,11 +140,11 @@ export default function Tokens() {
                         Delete All
                       </button>
                     </div>
-                  )}
+                  )} */}
                   <table className="min-w-full table-fixed divide-y divide-gray-300">
                     <thead className="bg-gray-50">
                       <tr>
-                        <th
+                        {/* <th
                           scope="col"
                           className="relative w-12 px-6 sm:w-16 sm:px-8"
                         >
@@ -162,7 +155,7 @@ export default function Tokens() {
                             checked={checked}
                             onChange={toggleAll}
                           />
-                        </th>
+                        </th> */}
                         <th
                           scope="col"
                           className="min-w-[12rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
@@ -199,13 +192,13 @@ export default function Tokens() {
                       {tokens.map((token) => (
                         <tr
                           key={token.id}
-                          className={
-                            selectedTokens.includes(token)
-                              ? 'bg-gray-50'
-                              : undefined
-                          }
+                          // className={
+                          //   selectedTokens.includes(token)
+                          //     ? 'bg-gray-50'
+                          //     : undefined
+                          // }
                         >
-                          <td className="relative w-12 px-6 sm:w-16 sm:px-8">
+                          {/* <td className="relative w-12 px-6 sm:w-16 sm:px-8">
                             {selectedTokens.includes(token) && (
                               <div className="absolute inset-y-0 left-0 w-0.5 bg-violet-600" />
                             )}
@@ -222,14 +215,15 @@ export default function Tokens() {
                                 )
                               }
                             />
-                          </td>
+                          </td> */}
                           <td
-                            className={classNames(
-                              'whitespace-nowrap py-4 pr-3 text-sm font-medium',
-                              selectedTokens.includes(token)
-                                ? 'text-violet-600'
-                                : 'text-gray-900'
-                            )}
+                            className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-700"
+                            // className={classNames(
+                            //   'whitespace-nowrap py-4 pr-3 text-sm font-medium',
+                            //   selectedTokens.includes(token)
+                            //     ? 'text-violet-600'
+                            //     : 'text-gray-900'
+                            // )}
                           >
                             {token.metadata['io.flipt.auth.token.name']}
                           </td>

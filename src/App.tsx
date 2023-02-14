@@ -100,14 +100,33 @@ const fetcher = async (uri: String) => {
   // If the status code is not in the range 200-299,
   // we still try to parse and throw it.
   if (!res.ok) {
+    if (res.status === 401) {
+      window.localStorage.clear();
+      window.location.reload();
+    }
+
+    const contentType = res.headers.get('content-type');
+
+    if (!contentType || !contentType.includes('application/json')) {
+      const err = new StatusError(
+        'An unexpected error occurred.',
+        await res.text(),
+        res.status
+      );
+      console.log(err);
+      throw err;
+    }
+
     let info = '';
     info = await res.json();
 
-    return new StatusError(
+    const err = new StatusError(
       'An error occurred while fetching the data.',
       info,
       res.status
     );
+    console.log(err);
+    throw err;
   }
 
   return res.json();

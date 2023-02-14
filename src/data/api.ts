@@ -43,8 +43,23 @@ async function request(method: string, uri: string, body?: any) {
 
   const res = await fetch(uri, req);
   if (!res.ok) {
-    const err = await res.json();
-    throw new APIError(err.message, res.status);
+    if (res.status === 401) {
+      window.localStorage.clear();
+      window.location.reload();
+    }
+
+    const contentType = res.headers.get('content-type');
+
+    if (!contentType || !contentType.includes('application/json')) {
+      const err = new APIError('An unexpected error occurred.', res.status);
+      console.log(err);
+      throw err;
+    }
+
+    let err = await res.json();
+    err = new APIError(err.message, res.status);
+    console.log(err);
+    throw err;
   }
 
   return res.json();
@@ -234,24 +249,11 @@ export async function deleteConstraint(
 //
 // evaluate
 export async function evaluate(flagKey: string, values: any) {
-  const req = setCsrf({
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    },
-    body: JSON.stringify({
-      flagKey,
-      ...values
-    })
-  });
-
-  const res = await fetch(`${apiURL}/evaluate`, req);
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message);
-  }
-  return res.json();
+  const body = {
+    flagKey,
+    ...values
+  };
+  return post('/evaluate', body);
 }
 
 //
@@ -267,8 +269,18 @@ export async function getInfo() {
 
   const res = await fetch(`${metaURL}/info`, req);
   if (!res.ok) {
-    const err = await res.json();
-    throw new APIError(err.message, res.status);
+    const contentType = res.headers.get('content-type');
+
+    if (!contentType || !contentType.includes('application/json')) {
+      const err = new APIError('An unexpected error occurred.', res.status);
+      console.log(err);
+      throw err;
+    }
+
+    let err = await res.json();
+    err = new APIError(err.message, res.status);
+    console.log(err);
+    throw err;
   }
 
   const token = res.headers.get(csrfTokenHeaderKey);

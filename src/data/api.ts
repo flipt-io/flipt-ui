@@ -1,10 +1,10 @@
+import { ITokenBase } from 'types/Auth';
 import { IConstraintBase } from 'types/Constraint';
 import { IDistributionBase } from 'types/Distribution';
 import { IFlagBase } from 'types/Flag';
 import { IRuleBase } from 'types/Rule';
 import { ISegmentBase } from 'types/Segment';
 import { IVariantBase } from 'types/Variant';
-import { ITokenBase } from './../types/Auth';
 
 const apiURL = '/api/v1';
 const authURL = '/auth/v1';

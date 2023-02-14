@@ -29,7 +29,8 @@ const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
 
   const initialValues = {
     name: '',
-    description: ''
+    description: '',
+    expires: ''
   };
 
   return (
@@ -40,7 +41,19 @@ const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
         description: requiredValidation
       })}
       onSubmit={(values) => {
-        handleSubmit(values)
+        let token: ITokenBase = {
+          name: values.name,
+          description: values.description
+        };
+
+        // parse expires into UTC date
+        if (values.expires) {
+          let d = new Date(values.expires);
+          d.setHours(24, 0, 0, 0); // set to 24:00:00 localtime (nearest midnight in future)
+          token.expiresAt = d.toISOString();
+        }
+
+        handleSubmit(token)
           .then(() => {
             clearError();
           })
@@ -107,25 +120,17 @@ const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                 <div>
                   <label
-                    htmlFor="expiresAt"
+                    htmlFor="expires"
                     className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                   >
-                    Expires At
+                    Expires On
                   </label>
-                  <span
-                    className="text-xs text-gray-400"
-                    id="expiresAt-optional"
-                  >
+                  <span className="text-xs text-gray-400" id="expires-optional">
                     Optional
                   </span>
                 </div>
                 <div className="sm:col-span-2">
-                  <Input
-                    type="datetime-local"
-                    id="expiresAt"
-                    name="expiresAt"
-                    value=""
-                  />
+                  <Input type="date" id="expires" name="expires" />
                 </div>
               </div>
             </div>

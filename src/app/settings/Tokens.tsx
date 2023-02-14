@@ -250,11 +250,11 @@ export default function Tokens() {
                             {token.metadata['io.flipt.auth.token.description']}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                            {format(parseISO(token.createdAt), 'Pp')}
+                            {format(parseISO(token.createdAt), 'MM/dd/yyyy')}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {token.expiresAt !== null &&
-                              format(parseISO(token.expiresAt), 'Pp')}
+                              format(parseISO(token.expiresAt), 'MM/dd/yyyy')}
                           </td>
                           <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                             <a

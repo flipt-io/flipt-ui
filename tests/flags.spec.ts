@@ -24,7 +24,7 @@ test('can update flag', async ({ page }) => {
 test('can add variants to flag', async ({ page }) => {
   await test.step('add variant', async () => {
     await page.getByRole('link', { name: 'hello-test' }).click();
-    await page.getByRole('button', { name: 'Add Variant' }).click();
+    await page.getByRole('button', { name: 'New Variant' }).click();
     await page
       .getByRole('dialog', { name: 'New Variant' })
       .locator('#key')

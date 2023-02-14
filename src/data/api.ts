@@ -1,4 +1,4 @@
-import { ITokenBase } from 'types/Auth';
+import { IAuthTokenBase } from 'types/auth/Token';
 import { IConstraintBase } from 'types/Constraint';
 import { IDistributionBase } from 'types/Distribution';
 import { IFlagBase } from 'types/Flag';
@@ -95,7 +95,7 @@ export async function expireAuthSelf() {
   return put('/self/expire', {}, authURL);
 }
 
-export async function createToken(values: ITokenBase) {
+export async function createToken(values: IAuthTokenBase) {
   return post('/method/token', values, authURL);
 }
 

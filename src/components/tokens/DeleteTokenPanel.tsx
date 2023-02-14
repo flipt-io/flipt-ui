@@ -2,12 +2,12 @@ import { Dialog } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { deleteToken } from '~/data/api';
 import { useError } from '~/data/hooks/error';
-import { IAuthenticationToken } from '~/types/Auth';
+import { IAuthToken } from '~/types/auth/Token';
 import Button from '../forms/Button';
 
 type DeleteTokenPanelProps = {
   setOpen: (open: boolean) => void;
-  token: IAuthenticationToken | null;
+  token: IAuthToken | null;
   onSuccess: () => void;
 };
 

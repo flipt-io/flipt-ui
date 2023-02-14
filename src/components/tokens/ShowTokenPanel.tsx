@@ -4,14 +4,14 @@ import hljs from 'highlight.js';
 import text from 'highlight.js/lib/languages/plaintext';
 import 'highlight.js/styles/tokyo-night-dark.css';
 import { useEffect } from 'react';
-import { IToken } from '~/types/Auth';
+import { IAuthTokenSecret } from '~/types/auth/Token';
 import Button from '../forms/Button';
 
 hljs.registerLanguage('text', text);
 
 type ShowTokenPanelProps = {
   setOpen: (open: boolean) => void;
-  token: IToken | null;
+  token: IAuthTokenSecret | null;
 };
 
 export default function ShowTokenPanel(props: ShowTokenPanelProps) {

@@ -10,18 +10,18 @@ import MoreInfo from '~/components/MoreInfo';
 import { createToken } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { requiredValidation } from '~/data/validations';
-import { IToken, ITokenBase } from '~/types/Auth';
+import { IAuthTokenBase, IAuthTokenSecret } from '~/types/auth/Token';
 
 type TokenFormProps = {
   setOpen: (open: boolean) => void;
-  onSuccess: (token: IToken) => void;
+  onSuccess: (token: IAuthTokenSecret) => void;
 };
 
 const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
   const { setOpen, onSuccess } = props;
   const { setError, clearError } = useError();
 
-  const handleSubmit = async (values: ITokenBase) => {
+  const handleSubmit = async (values: IAuthTokenBase) => {
     createToken(values).then((resp) => {
       onSuccess(resp);
     });
@@ -41,7 +41,7 @@ const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
         description: requiredValidation
       })}
       onSubmit={(values) => {
-        let token: ITokenBase = {
+        let token: IAuthTokenBase = {
           name: values.name,
           description: values.description
         };

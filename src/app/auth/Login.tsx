@@ -11,7 +11,8 @@ import logoFlag from '~/assets/logo-flag.png';
 import { listAuthMethods } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSession } from '~/data/hooks/session';
-import { IAuthMethod, IAuthMethodOIDC } from '~/types/Auth';
+import { IAuthMethod } from '~/types/Auth';
+import { IAuthMethodOIDC } from '~/types/auth/OIDC';
 
 interface ILoginProvider {
   displayName: string;

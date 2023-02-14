@@ -11,22 +11,20 @@ import ShowTokenPanel from '~/components/tokens/ShowTokenPanel';
 import { listTokens } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import {
-  IAuthenticationToken,
-  IAuthenticationTokenList,
-  IToken
-} from '~/types/Auth';
+  IAuthToken,
+  IAuthTokenList,
+  IAuthTokenSecret
+} from '~/types/auth/Token';
 import TokenForm from './TokenForm';
 
-export async function tokenLoader(): Promise<IAuthenticationTokenList> {
+export async function tokenLoader(): Promise<IAuthTokenList> {
   return listTokens();
 }
 
 export default function Tokens() {
   // const checkbox = useRef();
-  const data = useLoaderData() as IAuthenticationTokenList;
-  const [tokens, setTokens] = useState<IAuthenticationToken[]>(
-    data.authentications
-  );
+  const data = useLoaderData() as IAuthTokenList;
+  const [tokens, setTokens] = useState<IAuthToken[]>(data.authentications);
 
   const [tokensVersion, setTokensVersion] = useState(0);
 
@@ -57,15 +55,16 @@ export default function Tokens() {
   //   []
   // );
 
-  const [createdToken, setCreatedToken] = useState<IToken | null>(null);
+  const [createdToken, setCreatedToken] = useState<IAuthTokenSecret | null>(
+    null
+  );
   const [showCreatedTokenModal, setShowCreatedTokenModal] = useState(false);
 
   const [showTokenForm, setShowTokenForm] = useState<boolean>(false);
 
   const [showDeleteTokenModal, setShowDeleteTokenModal] =
     useState<boolean>(false);
-  const [deletingToken, setDeletingToken] =
-    useState<IAuthenticationToken | null>(null);
+  const [deletingToken, setDeletingToken] = useState<IAuthToken | null>(null);
 
   // useLayoutEffect(() => {
   //   const isIndeterminate =
@@ -96,7 +95,7 @@ export default function Tokens() {
         <TokenForm
           ref={tokenFormRef}
           setOpen={setShowTokenForm}
-          onSuccess={(token: IToken) => {
+          onSuccess={(token: IAuthTokenSecret) => {
             incrementTokensVersion();
             setShowTokenForm(false);
             setCreatedToken(token);

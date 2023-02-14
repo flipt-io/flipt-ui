@@ -7,9 +7,14 @@ import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import Slideover from '~/components/Slideover';
 import DeleteTokenPanel from '~/components/tokens/DeleteTokenPanel';
+import ShowTokenPanel from '~/components/tokens/ShowTokenPanel';
 import { listTokens } from '~/data/api';
 import { useError } from '~/data/hooks/error';
-import { IAuthenticationToken, IAuthenticationTokenList } from '~/types/Auth';
+import {
+  IAuthenticationToken,
+  IAuthenticationTokenList,
+  IToken
+} from '~/types/Auth';
 import TokenForm from './TokenForm';
 
 export async function tokenLoader(): Promise<IAuthenticationTokenList> {
@@ -52,7 +57,11 @@ export default function Tokens() {
   //   []
   // );
 
+  const [createdToken, setCreatedToken] = useState<IToken | null>(null);
+  const [showCreatedTokenModal, setShowCreatedTokenModal] = useState(false);
+
   const [showTokenForm, setShowTokenForm] = useState<boolean>(false);
+
   const [showDeleteTokenModal, setShowDeleteTokenModal] =
     useState<boolean>(false);
   const [deletingToken, setDeletingToken] =
@@ -87,9 +96,11 @@ export default function Tokens() {
         <TokenForm
           ref={tokenFormRef}
           setOpen={setShowTokenForm}
-          onSuccess={() => {
-            setShowTokenForm(false);
+          onSuccess={(token: IToken) => {
             incrementTokensVersion();
+            setShowTokenForm(false);
+            setCreatedToken(token);
+            setShowCreatedTokenModal(true);
           }}
         />
       </Slideover>
@@ -103,6 +114,14 @@ export default function Tokens() {
             incrementTokensVersion();
             setShowDeleteTokenModal(false);
           }}
+        />
+      </Modal>
+
+      {/* token created modal */}
+      <Modal open={showCreatedTokenModal} setOpen={setShowCreatedTokenModal}>
+        <ShowTokenPanel
+          token={createdToken}
+          setOpen={setShowCreatedTokenModal}
         />
       </Modal>
 
@@ -130,7 +149,7 @@ export default function Tokens() {
           {tokens && tokens.length > 0 ? (
             <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                <div className="relative overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                <div className="relative overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md">
                   {/* {selectedTokens.length > 0 && (
                     <div className="absolute top-0 left-12 flex h-12 items-center space-x-3 bg-gray-50 sm:left-16">
                       <button
@@ -158,7 +177,7 @@ export default function Tokens() {
                         </th> */}
                         <th
                           scope="col"
-                          className="min-w-[12rem] py-3.5 pr-3 text-left text-sm font-semibold text-gray-900"
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                         >
                           Name
                         </th>
@@ -217,7 +236,7 @@ export default function Tokens() {
                             />
                           </td> */}
                           <td
-                            className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-700"
+                            className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-700"
                             // className={classNames(
                             //   'whitespace-nowrap py-4 pr-3 text-sm font-medium',
                             //   selectedTokens.includes(token)

@@ -9,22 +9,22 @@ import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { createToken } from '~/data/api';
 import { useError } from '~/data/hooks/error';
-import { useSuccess } from '~/data/hooks/success';
 import { requiredValidation } from '~/data/validations';
-import { ITokenBase } from '~/types/Auth';
+import { IToken, ITokenBase } from '~/types/Auth';
 
 type TokenFormProps = {
   setOpen: (open: boolean) => void;
-  onSuccess: () => void;
+  onSuccess: (token: IToken) => void;
 };
 
 const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
-  const { setOpen } = props;
+  const { setOpen, onSuccess } = props;
   const { setError, clearError } = useError();
-  const { setSuccess } = useSuccess();
 
-  const handleSubmit = (values: ITokenBase) => {
-    return createToken(values);
+  const handleSubmit = async (values: ITokenBase) => {
+    createToken(values).then((resp) => {
+      onSuccess(resp);
+    });
   };
 
   const initialValues = {
@@ -43,8 +43,6 @@ const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
         handleSubmit(values)
           .then(() => {
             clearError();
-            setSuccess('Successfully created token');
-            setOpen(false);
           })
           .catch((err) => {
             console.log(err);

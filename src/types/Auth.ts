@@ -55,3 +55,8 @@ export interface ITokenBase {
   description: string;
   expiresAt?: string;
 }
+
+export interface IToken {
+  clientToken: string;
+  authentication: IAuthenticationToken;
+}

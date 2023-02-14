@@ -91,8 +91,8 @@ export default function Segment() {
           constraint={editingConstraint || undefined}
           setOpen={setShowConstraintForm}
           onSuccess={() => {
-            setShowConstraintForm(false);
             incrementSegmentVersion();
+            setShowConstraintForm(false);
           }}
         />
       </Slideover>

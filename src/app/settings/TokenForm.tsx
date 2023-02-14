@@ -130,7 +130,12 @@ const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
                   </span>
                 </div>
                 <div className="sm:col-span-2">
-                  <Input type="date" id="expires" name="expires" />
+                  <Input
+                    type="date"
+                    id="expires"
+                    name="expires"
+                    min={new Date().toISOString().split('T')[0]}
+                  />
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import EmptyState from '~/components/EmptyState';
+import EmptyStateButton from '~/components/EmptyStateButton';
 import DeleteVariantPanel from '~/components/flags/DeleteVariantPanel';
 import FlagForm from '~/components/flags/FlagForm';
 import VariantForm from '~/components/flags/VariantForm';
@@ -183,7 +183,7 @@ export default function EditFlag() {
                 </tbody>
               </table>
             ) : (
-              <EmptyState
+              <EmptyStateButton
                 text="New Variant"
                 onClick={() => {
                   setEditingVariant(null);

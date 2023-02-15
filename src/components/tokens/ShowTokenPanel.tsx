@@ -1,10 +1,11 @@
 import { Dialog } from '@headlessui/react';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
 import hljs from 'highlight.js';
 import text from 'highlight.js/lib/languages/plaintext';
 import 'highlight.js/styles/tokyo-night-dark.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IAuthTokenSecret } from '~/types/auth/Token';
+import { classNames } from '~/utils/helpers';
 import Button from '../forms/Button';
 
 hljs.registerLanguage('text', text);
@@ -16,10 +17,20 @@ type ShowTokenPanelProps = {
 
 export default function ShowTokenPanel(props: ShowTokenPanelProps) {
   const { setOpen, token } = props;
+  const [copied, setCopied] = useState(false);
+  const [copiedText, setCopiedText] = useState(token?.clientToken);
 
   useEffect(() => {
     hljs.initHighlighting();
   }, [token]);
+
+  const copyTextToClipboard = (text: string) => {
+    if ('clipboard' in navigator) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand('copy', true, text);
+    }
+  };
 
   return (
     <>
@@ -38,16 +49,43 @@ export default function ShowTokenPanel(props: ShowTokenPanelProps) {
             <p className="text-sm text-gray-500">
               Please copy the token below and store it in a secure location.
             </p>
-            <p className="text-sm text-gray-700">
-              You will not be able to view it again!
+            <p className="mt-2 text-sm text-gray-700">
+              You will not be able to view it again
             </p>
           </div>
-          <div className="mt-4">
-            <pre className="p-2 text-sm md:h-full">
-              <code className="text rounded-sm md:h-full">
-                {token?.clientToken}
-              </code>
-            </pre>
+          <div className="m-auto mt-4 flex content-center bg-[#1a1b26]">
+            <div className="m-auto flex">
+              <pre className="p-2 text-sm md:h-full">
+                <code className="text rounded-sm md:h-full">{copiedText}</code>
+              </pre>
+              {token?.clientToken && (
+                <button
+                  className=""
+                  onClick={() => {
+                    copyTextToClipboard(token?.clientToken);
+                    setCopied(true);
+                    setCopiedText('Copied to clipboard');
+                    setTimeout(() => {
+                      setCopied(false);
+                      setCopiedText(token?.clientToken);
+                    }, 2000);
+                  }}
+                >
+                  <CheckIcon
+                    className={classNames(
+                      'absolute m-auto h-6 w-6 justify-center align-middle text-green-400 transition-opacity duration-300 ease-in-out hover:text-white',
+                      copied ? 'visible opacity-100' : 'invisible opacity-0'
+                    )}
+                  />
+                  <ClipboardDocumentIcon
+                    className={classNames(
+                      'm-auto h-6 w-6 justify-center align-middle text-gray-400 transition-opacity duration-300 ease-in-out hover:text-white',
+                      copied ? 'invisible opacity-0' : 'visible opacity-100'
+                    )}
+                  />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

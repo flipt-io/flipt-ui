@@ -235,7 +235,7 @@ export default function Tokens() {
                             />
                           </td> */}
                           <td
-                            className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-700"
+                            className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-600"
                             // className={classNames(
                             //   'whitespace-nowrap py-4 pr-3 text-sm font-medium',
                             //   selectedTokens.includes(token)

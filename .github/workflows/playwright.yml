@@ -16,6 +16,8 @@ jobs:
     services:
       flipt:
         image: flipt/flipt:nightly
+        env:
+          FLIPT_AUTHENTICATION_METHODS_TOKEN_ENABLED: true
         ports:
           # Opens tcp port 8080 on the host and service container
           - 8080:8080

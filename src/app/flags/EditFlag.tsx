@@ -10,7 +10,7 @@ import Modal from '~/components/Modal';
 import MoreInfo from '~/components/MoreInfo';
 import Slideover from '~/components/Slideover';
 import { IVariant } from '~/types/Variant';
-import { FlagProps } from './Flag';
+import { FlagProps } from './FlagProps';
 
 export default function EditFlag() {
   const { flag, onFlagChange } = useOutletContext<FlagProps>();

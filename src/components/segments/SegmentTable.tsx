@@ -152,7 +152,10 @@ export default function SegmentTable(props: SegmentTableProps) {
                     <a
                       href="#"
                       className="group inline-flex"
-                      onClick={header.column.getToggleSortingHandler()}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        header.column.getToggleSortingHandler();
+                      }}
                     >
                       {header.isPlaceholder
                         ? null

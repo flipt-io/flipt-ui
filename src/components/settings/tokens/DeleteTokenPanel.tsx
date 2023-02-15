@@ -3,7 +3,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { deleteToken } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { IAuthToken } from '~/types/auth/Token';
-import Button from '../forms/Button';
+import Button from '../../forms/Button';
 
 type DeleteTokenPanelProps = {
   setOpen: (open: boolean) => void;
@@ -40,9 +40,7 @@ export default function DeleteTokenPanel(props: DeleteTokenPanelProps) {
           <div className="mt-2">
             <p className="text-sm text-gray-500">
               Are you sure you want to delete the token{' '}
-              <span className="font-medium text-violet-500">
-                {token?.metadata['io.flipt.auth.token.name']}
-              </span>
+              <span className="font-medium text-violet-500">{token?.name}</span>
               ? This action cannot be undone.
             </p>
           </div>

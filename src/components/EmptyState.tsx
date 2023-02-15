@@ -10,7 +10,7 @@ export default function EmptyState(props: EmptyStateProps) {
 
   return (
     <div
-      className={`${className} relative block h-full w-full rounded-lg border border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none`}
+      className={`${className} relative block h-full w-full rounded-lg border border-dashed border-gray-300 p-12 text-center`}
     >
       {text && (
         <span className="mt-2 block text-sm font-medium text-gray-600">

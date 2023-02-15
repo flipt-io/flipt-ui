@@ -1,17 +1,21 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { format, parseISO } from 'date-fns';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import EmptyState from '~/components/EmptyState';
 import EmptyStateButton from '~/components/EmptyStateButton';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
+import DeleteTokenPanel from '~/components/settings/tokens/DeleteTokenPanel';
+import ShowTokenPanel from '~/components/settings/tokens/ShowTokenPanel';
+import TokenTable from '~/components/settings/tokens/TokenTable';
 import Slideover from '~/components/Slideover';
-import DeleteTokenPanel from '~/components/tokens/DeleteTokenPanel';
-import ShowTokenPanel from '~/components/tokens/ShowTokenPanel';
 import { listAuthMethods, listTokens } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { IAuthMethod } from '~/types/Auth';
-import { IAuthToken, IAuthTokenSecret } from '~/types/auth/Token';
+import {
+  IAuthToken,
+  IAuthTokenInternal,
+  IAuthTokenSecret
+} from '~/types/auth/Token';
 import TokenForm from './TokenForm';
 
 export default function Tokens() {
@@ -42,7 +46,14 @@ export default function Tokens() {
   const fetchTokens = useCallback(() => {
     listTokens()
       .then((data) => {
-        setTokens(data.authentications);
+        const tokens = data.authentications.map((token: IAuthTokenInternal) => {
+          return {
+            ...token,
+            name: token.metadata['io.flipt.auth.token.name'],
+            description: token.metadata['io.flipt.auth.token.description']
+          };
+        });
+        setTokens(tokens);
         clearError();
       })
       .catch((err) => {
@@ -175,126 +186,7 @@ export default function Tokens() {
                       </button>
                     </div>
                   )} */}
-                    <table className="min-w-full table-fixed divide-y divide-gray-300">
-                      <thead className="bg-gray-50">
-                        <tr>
-                          {/* <th
-                          scope="col"
-                          className="relative w-12 px-6 sm:w-16 sm:px-8"
-                        >
-                          <input
-                            type="checkbox"
-                            className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-violet-600 focus:ring-violet-500 sm:left-6"
-                            ref={checkbox}
-                            checked={checked}
-                            onChange={toggleAll}
-                          />
-                        </th> */}
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Name
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Description
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Created
-                          </th>
-                          <th
-                            scope="col"
-                            className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                          >
-                            Expires
-                          </th>
-                          <th
-                            scope="col"
-                            className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                          >
-                            <span className="sr-only">Edit</span>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200 bg-white">
-                        {tokens.map((token) => (
-                          <tr
-                            key={token.id}
-                            // className={
-                            //   selectedTokens.includes(token)
-                            //     ? 'bg-gray-50'
-                            //     : undefined
-                            // }
-                          >
-                            {/* <td className="relative w-12 px-6 sm:w-16 sm:px-8">
-                            {selectedTokens.includes(token) && (
-                              <div className="absolute inset-y-0 left-0 w-0.5 bg-violet-600" />
-                            )}
-                            <input
-                              type="checkbox"
-                              className="absolute left-4 top-1/2 -mt-2 h-4 w-4 rounded border-gray-300 text-violet-600 focus:ring-violet-500 sm:left-6"
-                              value={token.id}
-                              checked={selectedTokens.includes(token)}
-                              onChange={(e) =>
-                                setSelectedTokens(
-                                  e.target.checked
-                                    ? [...selectedTokens, token]
-                                    : selectedTokens.filter((p) => p !== token)
-                                )
-                              }
-                            />
-                          </td> */}
-                            <td
-                              className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-600"
-                              // className={classNames(
-                              //   'whitespace-nowrap py-4 pr-3 text-sm font-medium',
-                              //   selectedTokens.includes(token)
-                              //     ? 'text-violet-600'
-                              //     : 'text-gray-900'
-                              // )}
-                            >
-                              {token.metadata['io.flipt.auth.token.name']}
-                            </td>
-                            <td className="truncate whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {
-                                token.metadata[
-                                  'io.flipt.auth.token.description'
-                                ]
-                              }
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {format(parseISO(token.createdAt), 'MM/dd/yyyy')}
-                            </td>
-                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {token.expiresAt !== null &&
-                                format(parseISO(token.expiresAt), 'MM/dd/yyyy')}
-                            </td>
-                            <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                              <a
-                                href="#"
-                                className="text-violet-600 hover:text-violet-900"
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  setDeletingToken(token);
-                                  setShowDeleteTokenModal(true);
-                                }}
-                              >
-                                Delete
-                                <span className="sr-only">
-                                  , {token.metadata['io.flipt.auth.token.name']}
-                                </span>
-                              </a>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    <TokenTable tokens={tokens} />
                   </div>
                 </div>
               </div>

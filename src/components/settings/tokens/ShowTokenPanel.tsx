@@ -6,7 +6,7 @@ import 'highlight.js/styles/tokyo-night-dark.css';
 import { useEffect, useState } from 'react';
 import { IAuthTokenSecret } from '~/types/auth/Token';
 import { classNames } from '~/utils/helpers';
-import Button from '../forms/Button';
+import Button from '../../forms/Button';
 
 hljs.registerLanguage('text', text);
 

@@ -1,6 +1,7 @@
 import {
   BookOpenIcon,
   CodeBracketIcon,
+  Cog6ToothIcon,
   FlagIcon,
   UsersIcon
 } from '@heroicons/react/24/outline';
@@ -85,11 +86,11 @@ export default function Nav(props: NavProps) {
   ];
 
   const secondaryNavigation = [
-    // {
-    //   name: "Settings",
-    //   href: "#",
-    //   Icon: Cog6ToothIcon,
-    // },
+    {
+      name: 'Settings',
+      to: 'settings',
+      Icon: Cog6ToothIcon
+    },
     {
       name: 'Documentation',
       to: 'https://flipt.io/docs?utm_source=app',
@@ -100,10 +101,10 @@ export default function Nav(props: NavProps) {
 
   return (
     <nav
-      className={`${className} divide-y divide-gray-300`}
+      className={`${className} flex flex-grow flex-col overflow-y-auto`}
       aria-label="Sidebar"
     >
-      <div className="space-y-1 px-2">
+      <div className="flex flex-grow flex-col space-y-1 px-2">
         {navigation.map((item) => (
           <NavItem
             key={item.name}
@@ -116,7 +117,7 @@ export default function Nav(props: NavProps) {
           />
         ))}
       </div>
-      <div className="mt-4 space-y-1 px-2 pt-4">
+      <div className="flex-shrink-0 space-y-1 px-2">
         {secondaryNavigation.map((item) => (
           <NavItem
             key={item.name}

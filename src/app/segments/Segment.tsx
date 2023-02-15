@@ -76,6 +76,7 @@ export default function Segment() {
   const constraintOperatorToLabel = (o: string) => ConstraintOperators[o];
 
   const constraintFormRef = useRef(null);
+
   return (
     <>
       {/* constraint edit form */}
@@ -90,8 +91,8 @@ export default function Segment() {
           constraint={editingConstraint || undefined}
           setOpen={setShowConstraintForm}
           onSuccess={() => {
-            setShowConstraintForm(false);
             incrementSegmentVersion();
+            setShowConstraintForm(false);
           }}
         />
       </Slideover>
@@ -298,7 +299,7 @@ export default function Segment() {
                 </table>
               ) : (
                 <EmptyState
-                  text="Add Constraint"
+                  text="New Constraint"
                   onClick={() => {
                     setEditingConstraint(null);
                     setShowConstraintForm(true);

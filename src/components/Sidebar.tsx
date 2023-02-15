@@ -106,7 +106,7 @@ export default function Sidebar(props: SidebarProps) {
             </Link>
           </div>
           <div className="flex flex-1 flex-col overflow-y-auto">
-            <Nav className="flex-1 py-4" />
+            <Nav className="py-4" />
           </div>
         </div>
       </div>

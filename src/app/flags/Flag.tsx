@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import DeleteFlagPanel from '~/components/flags/DeleteFlagPanel';
 import Modal from '~/components/Modal';
+import TabBar from '~/components/TabBar';
 import { getFlag } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { IFlag } from '~/types/Flag';
@@ -47,6 +48,17 @@ export default function Flag() {
   const incrementFlagVersion = () => {
     setFlagVersion(flagVersion + 1);
   };
+
+  const tabs = [
+    {
+      name: 'Details',
+      to: `/flags/${flag.key}`
+    },
+    {
+      name: 'Evaluation',
+      to: `/flags/${flag.key}/evaluation`
+    }
+  ];
 
   useEffect(() => {
     fetchFlag();
@@ -95,6 +107,7 @@ export default function Flag() {
           </button>
         </div>
       </div>
+      <TabBar tabs={tabs} />
       <Outlet context={{ flag, onFlagChange: incrementFlagVersion }} />
     </>
   );

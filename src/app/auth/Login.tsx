@@ -11,7 +11,8 @@ import logoFlag from '~/assets/logo-flag.png';
 import { listAuthMethods } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSession } from '~/data/hooks/session';
-import { AuthMethod, AuthMethodOIDC } from '~/types/Auth';
+import { IAuthMethod } from '~/types/Auth';
+import { IAuthMethodOIDC } from '~/types/auth/OIDC';
 
 interface ILoginProvider {
   displayName: string;
@@ -70,8 +71,8 @@ export default function Login() {
         const resp = await listAuthMethods();
         // TODO: support alternative auth methods
         const authOIDC = resp.methods.find(
-          (m: AuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
-        ) as AuthMethodOIDC;
+          (m: IAuthMethod) => m.method === 'METHOD_OIDC' && m.enabled
+        ) as IAuthMethodOIDC;
 
         if (!authOIDC) {
           return;

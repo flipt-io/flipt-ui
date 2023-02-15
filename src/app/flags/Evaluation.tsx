@@ -28,17 +28,11 @@ import Slideover from '~/components/Slideover';
 import { listRules, listSegments, orderRules } from '~/data/api';
 import { IDistribution } from '~/types/Distribution';
 import { IEvaluatable } from '~/types/Evaluatable';
-import { IFlag } from '~/types/Flag';
 import { IRule, IRuleList } from '~/types/Rule';
 import { ISegment, ISegmentList } from '~/types/Segment';
 import { IVariant } from '~/types/Variant';
 import { classNames } from '~/utils/helpers';
-import FlagMenu from './FlagMenu';
-
-type FlagProps = {
-  flag: IFlag;
-  onFlagChange: () => void;
-};
+import { FlagProps } from './FlagProps';
 
 export default function Evaluation() {
   const { flag } = useOutletContext<FlagProps>();
@@ -160,8 +154,6 @@ export default function Evaluation() {
 
   return (
     <>
-      <FlagMenu flag={flag} selected="evaluation" />
-
       {/* rule delete modal */}
       <Modal open={showDeleteRuleModal} setOpen={setShowDeleteRuleModal}>
         <DeleteRulePanel
@@ -281,8 +273,9 @@ export default function Evaluation() {
             </div>
           ) : (
             <EmptyState
-              text="Add Rule"
+              text="New Rule"
               onClick={() => {
+                setEditingRule(null);
                 setShowRuleForm(true);
               }}
             />

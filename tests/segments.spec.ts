@@ -25,7 +25,7 @@ test('can add constraints to segment', async ({ page }) => {
   await page.getByRole('link', { name: 'test-segment' }).click();
 
   await test.step('add constraint', async () => {
-    await page.getByRole('button', { name: 'Add Constraint' }).click();
+    await page.getByRole('button', { name: 'New Constraint' }).click();
     await page.getByLabel('Property').fill('foo');
     await page
       .getByRole('combobox', { name: 'Type' })

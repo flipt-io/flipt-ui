@@ -1,3 +1,4 @@
+import { IAuthTokenBase } from 'types/auth/Token';
 import { IConstraintBase } from 'types/Constraint';
 import { IDistributionBase } from 'types/Distribution';
 import { IFlagBase } from 'types/Flag';
@@ -92,6 +93,18 @@ export async function getAuthSelf() {
 
 export async function expireAuthSelf() {
   return put('/self/expire', {}, authURL);
+}
+
+export async function createToken(values: IAuthTokenBase) {
+  return post('/method/token', values, authURL);
+}
+
+export async function deleteToken(id: string) {
+  return del(`/tokens/${id}`, authURL);
+}
+
+export async function listTokens(method = 'METHOD_TOKEN') {
+  return get(`/tokens?method=${method}`, authURL);
 }
 
 //

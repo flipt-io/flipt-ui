@@ -9,14 +9,8 @@ import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import MoreInfo from '~/components/MoreInfo';
 import Slideover from '~/components/Slideover';
-import { IFlag } from '~/types/Flag';
 import { IVariant } from '~/types/Variant';
-import FlagMenu from './FlagMenu';
-
-type FlagProps = {
-  flag: IFlag;
-  onFlagChange: () => void;
-};
+import { FlagProps } from './FlagProps';
 
 export default function EditFlag() {
   const { flag, onFlagChange } = useOutletContext<FlagProps>();
@@ -28,10 +22,9 @@ export default function EditFlag() {
   const [deletingVariant, setDeletingVariant] = useState<IVariant | null>(null);
 
   const variantFormRef = useRef(null);
+
   return (
     <>
-      <FlagMenu flag={flag} selected="details" />
-
       {/* variant edit form */}
       <Slideover
         open={showVariantForm}
@@ -191,7 +184,7 @@ export default function EditFlag() {
               </table>
             ) : (
               <EmptyState
-                text="Add Variant"
+                text="New Variant"
                 onClick={() => {
                   setEditingVariant(null);
                   setShowVariantForm(true);

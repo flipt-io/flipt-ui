@@ -32,7 +32,7 @@ import { IRule, IRuleList } from '~/types/Rule';
 import { ISegment, ISegmentList } from '~/types/Segment';
 import { IVariant } from '~/types/Variant';
 import { classNames } from '~/utils/helpers';
-import { FlagProps } from './Flag';
+import { FlagProps } from './FlagProps';
 
 export default function Evaluation() {
   const { flag } = useOutletContext<FlagProps>();

@@ -60,7 +60,7 @@ export default function ShowTokenPanel(props: ShowTokenPanelProps) {
               </pre>
               {token?.clientToken && (
                 <button
-                  className=""
+                  className="hidden md:block"
                   onClick={() => {
                     copyTextToClipboard(token?.clientToken);
                     setCopied(true);

@@ -11,7 +11,7 @@ import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
 import Segment, { segmentLoader } from './app/segments/Segment';
 import Settings from './app/settings/Settings';
-import Tokens, { tokenLoader } from './app/settings/Tokens';
+import Tokens from './app/settings/Tokens';
 import SessionProvider from './components/SessionProvider';
 
 const Flags = loadable(() => import('./app/flags/Flags'));
@@ -80,13 +80,11 @@ const router = createHashRouter([
         children: [
           {
             element: <Tokens />,
-            index: true,
-            loader: tokenLoader
+            index: true
           },
           {
             path: 'tokens',
-            element: <Tokens />,
-            loader: tokenLoader
+            element: <Tokens />
           }
         ]
       }

@@ -1,7 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { format, parseISO } from 'date-fns';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import EmptyState from '~/components/EmptyState';
 import EmptyStateButton from '~/components/EmptyStateButton';
 import Button from '~/components/forms/Button';
@@ -12,23 +11,14 @@ import ShowTokenPanel from '~/components/tokens/ShowTokenPanel';
 import { listAuthMethods, listTokens } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { IAuthMethod } from '~/types/Auth';
-import {
-  IAuthToken,
-  IAuthTokenList,
-  IAuthTokenSecret
-} from '~/types/auth/Token';
+import { IAuthToken, IAuthTokenSecret } from '~/types/auth/Token';
 import TokenForm from './TokenForm';
-
-export async function tokenLoader(): Promise<IAuthTokenList> {
-  return listTokens();
-}
 
 export default function Tokens() {
   // const checkbox = useRef();
-  const data = useLoaderData() as IAuthTokenList;
   const [tokenAuthEnabled, setTokenAuthEnabled] = useState<boolean>(false);
 
-  const [tokens, setTokens] = useState<IAuthToken[]>(data.authentications);
+  const [tokens, setTokens] = useState<IAuthToken[]>([]);
 
   const [tokensVersion, setTokensVersion] = useState(0);
 
@@ -42,11 +32,12 @@ export default function Tokens() {
         );
 
         setTokenAuthEnabled(!!authToken);
+        clearError();
       })
       .catch((err) => {
         setError(err);
       });
-  }, [setError]);
+  }, [clearError, setError]);
 
   const fetchTokens = useCallback(() => {
     listTokens()

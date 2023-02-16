@@ -12,7 +12,7 @@ test('can create token', async ({ page }) => {
   await page.getByLabel('Name').press('Tab');
   await page.getByLabel('Description').fill('xyz');
   await page.getByRole('button', { name: 'Create' }).click();
-  await page.getByRole('button', { name: 'Copy' });
+  await page.getByRole('button', { name: 'Copy' }).click();
   await expect(page.locator('pre')).toContainText('Copied to clipboard');
   await page.getByRole('button', { name: 'Close' }).click();
   await page.getByRole('cell', { name: 'abcdef', exact: true }).click();

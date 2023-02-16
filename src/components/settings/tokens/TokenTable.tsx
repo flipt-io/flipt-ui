@@ -3,10 +3,7 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
-  PaginationState,
   Row,
   SortingState,
   useReactTable
@@ -48,14 +45,16 @@ type TokenTableProps = {
 export default function TokenTable(props: TokenTableProps) {
   const { tokens, setDeletingToken, setShowDeleteTokenModal } = props;
 
-  const pageSize = 20;
-  const searchThreshold = 10;
+  // const pageSize = 20;
+  // const searchThreshold = 10;
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 20
-  });
+  // const [pagination, setPagination] = useState<PaginationState>({
+  //   pageIndex: 0,
+  //   pageSize
+  // });
+
+  // const [filter, setFilter] = useState<string>('');
 
   const columnHelper = createColumnHelper<IAuthToken>();
 
@@ -122,16 +121,16 @@ export default function TokenTable(props: TokenTableProps) {
     data: tokens,
     columns,
     state: {
-      sorting,
-      pagination
+      sorting
     },
-    globalFilterFn: 'includesString',
+    // globalFilterFn: 'includesString',
     onSortingChange: setSorting,
-    onPaginationChange: setPagination,
+    // onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel()
+    // getPaginationRowModel: getPaginationRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
+    debugTable: true
   });
 
   return (
@@ -146,13 +145,9 @@ export default function TokenTable(props: TokenTableProps) {
                   scope="col"
                   className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
                 >
-                  <a
-                    href="#"
-                    className="group inline-flex"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      header.column.getToggleSortingHandler();
-                    }}
+                  <div
+                    className="group inline-flex cursor-pointer"
+                    onClick={header.column.getToggleSortingHandler()}
                   >
                     {header.isPlaceholder
                       ? null
@@ -176,7 +171,7 @@ export default function TokenTable(props: TokenTableProps) {
                         )
                       }[header.column.getIsSorted() as string] ?? null}
                     </span>
-                  </a>
+                  </div>
                 </th>
               ) : (
                 <th

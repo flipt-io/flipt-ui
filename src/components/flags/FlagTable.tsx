@@ -34,6 +34,7 @@ export default function FlagTable(props: FlagTableProps) {
     pageIndex: 0,
     pageSize
   });
+
   const [filter, setFilter] = useState<string>('');
 
   const columnHelper = createColumnHelper<IFlag>();
@@ -156,9 +157,8 @@ export default function FlagTable(props: FlagTableProps) {
                     scope="col"
                     className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
                   >
-                    <a
-                      href="#"
-                      className="group inline-flex"
+                    <div
+                      className="group inline-flex cursor-pointer"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       {header.isPlaceholder
@@ -183,7 +183,7 @@ export default function FlagTable(props: FlagTableProps) {
                           )
                         }[header.column.getIsSorted() as string] ?? null}
                       </span>
-                    </a>
+                    </div>
                   </th>
                 ) : (
                   <th

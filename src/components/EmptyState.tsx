@@ -1,19 +1,37 @@
+import { PlusCircleIcon } from '@heroicons/react/24/outline';
+import { Icon } from 'types/Icon';
+
 type EmptyStateProps = {
   className?: string;
   text?: string;
   secondaryText?: string;
-  children?: React.ReactNode;
+  Icon?: Icon;
+  onClick?: () => void;
 };
 
 export default function EmptyState(props: EmptyStateProps) {
-  const { text, secondaryText, className = '', children } = props;
+  const {
+    text,
+    secondaryText,
+    className = '',
+    Icon = PlusCircleIcon,
+    onClick
+  } = props;
 
   return (
-    <div
-      className={`${className} relative block h-full w-full rounded-lg border border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none`}
+    <button
+      className={`${className} relative block h-full w-full rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none`}
+      disabled={!onClick}
+      onClick={onClick}
     >
+      {Icon && onClick && (
+        <Icon
+          className="mx-auto h-12 w-12 text-violet-200"
+          aria-hidden="true"
+        />
+      )}
       {text && (
-        <span className="mt-2 block text-sm font-medium text-gray-600">
+        <span className="mt-2 block text-sm font-medium text-gray-900">
           {text}
         </span>
       )}
@@ -22,7 +40,6 @@ export default function EmptyState(props: EmptyStateProps) {
           {secondaryText}
         </span>
       )}
-      {children}
-    </div>
+    </button>
   );
 }

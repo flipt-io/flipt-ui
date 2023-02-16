@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import * as Yup from 'yup';
-import EmptyStateButton from '~/components/EmptyStateButton';
+import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Combobox, { ISelectable } from '~/components/forms/Combobox';
 import Input from '~/components/forms/Input';
@@ -203,7 +203,7 @@ export default function Console() {
               )}
               {!response && (
                 <div className="p-2 md:h-full">
-                  <EmptyStateButton secondaryText="Enter a flag key, entity ID, and optional context to evaluate" />
+                  <EmptyState secondaryText="Enter a flag key, entity ID, and optional context to evaluate" />
                 </div>
               )}
             </div>
@@ -211,7 +211,7 @@ export default function Console() {
         )}
         {flags.length === 0 && (
           <div className="mt-12 w-full">
-            <EmptyStateButton
+            <EmptyState
               text="Create Flag"
               secondaryText="At least one flag must exist to use the console"
               onClick={() => navigate('/flags/new')}

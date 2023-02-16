@@ -16,7 +16,7 @@ import {
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import { useCallback, useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import EmptyStateButton from '~/components/EmptyStateButton';
+import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import DeleteRulePanel from '~/components/rules/DeleteRulePanel';
@@ -272,7 +272,7 @@ export default function Evaluation() {
               </DndContext>
             </div>
           ) : (
-            <EmptyStateButton
+            <EmptyState
               text="New Rule"
               onClick={() => {
                 setEditingRule(null);

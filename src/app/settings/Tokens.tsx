@@ -1,13 +1,13 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { format, parseISO } from 'date-fns';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import EmptyState from '~/components/EmptyState';
-import EmptyStateButton from '~/components/EmptyStateButton';
+import { default as EmptyStateButton } from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import Slideover from '~/components/Slideover';
 import DeleteTokenPanel from '~/components/tokens/DeleteTokenPanel';
 import ShowTokenPanel from '~/components/tokens/ShowTokenPanel';
+import Well from '~/components/Well';
 import { listAuthMethods, listTokens } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { IAuthMethod } from '~/types/Auth';
@@ -308,19 +308,22 @@ export default function Tokens() {
             )}
           </div>
         ) : (
-          <div className="mt-8 flex flex-col">
-            <EmptyState text="Token Authentication Disabled">
+          <div className="mt-8 flex flex-col text-center">
+            <Well>
+              <p className="text-sm text-gray-600">
+                Token Authentication Disabled
+              </p>
               <p className="mt-4 text-sm text-gray-500">
-                See the{' '}
+                See the configuration{' '}
                 <a
                   className="text-violet-500"
                   href="https://www.flipt.io/docs/configuration/authentication"
                 >
-                  configuration documentation
+                  documentation
                 </a>{' '}
                 for more information.
               </p>
-            </EmptyState>
+            </Well>
           </div>
         )}
       </div>

@@ -7,6 +7,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   PaginationState,
+  Row,
   SortingState,
   useReactTable
 } from '@tanstack/react-table';
@@ -14,12 +15,38 @@ import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
 import { IAuthToken } from '~/types/auth/Token';
 
+type TokenRowActionsProps = {
+  row: Row<IAuthToken>;
+  setDeletingToken: (token: IAuthToken) => void;
+  setShowDeleteTokenModal: (show: boolean) => void;
+};
+
+function TokenRowActions(props: TokenRowActionsProps) {
+  const { row, setDeletingToken, setShowDeleteTokenModal } = props;
+  return (
+    <a
+      href="#"
+      className="text-violet-600 hover:text-violet-900"
+      onClick={(e) => {
+        e.preventDefault();
+        setDeletingToken(row.original);
+        setShowDeleteTokenModal(true);
+      }}
+    >
+      Delete
+      <span className="sr-only">, {row.original.name}</span>
+    </a>
+  );
+}
+
 type TokenTableProps = {
   tokens: IAuthToken[];
+  setDeletingToken: (token: IAuthToken) => void;
+  setShowDeleteTokenModal: (show: boolean) => void;
 };
 
 export default function TokenTable(props: TokenTableProps) {
-  const { tokens } = props;
+  const { tokens, setDeletingToken, setShowDeleteTokenModal } = props;
 
   const pageSize = 20;
   const searchThreshold = 10;
@@ -73,7 +100,22 @@ export default function TokenTable(props: TokenTableProps) {
             'truncate whitespace-nowrap px-3 py-4 text-sm text-gray-500'
         }
       }
-    )
+    ),
+    columnHelper.display({
+      id: 'actions',
+      cell: (props) => (
+        <TokenRowActions
+          // eslint-disable-next-line react/prop-types
+          row={props.row}
+          setDeletingToken={setDeletingToken}
+          setShowDeleteTokenModal={setShowDeleteTokenModal}
+        />
+      ),
+      meta: {
+        className:
+          'whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'
+      }
+    })
   ];
 
   const table = useReactTable({

@@ -186,7 +186,11 @@ export default function Tokens() {
                       </button>
                     </div>
                   )} */}
-                    <TokenTable tokens={tokens} />
+                    <TokenTable
+                      tokens={tokens}
+                      setDeletingToken={setDeletingToken}
+                      setShowDeleteTokenModal={setShowDeleteTokenModal}
+                    />
                   </div>
                 </div>
               </div>

@@ -60,6 +60,7 @@ export default function ShowTokenPanel(props: ShowTokenPanelProps) {
               </pre>
               {token?.clientToken && (
                 <button
+                  aria-label="Copy"
                   className="hidden md:block"
                   onClick={() => {
                     copyTextToClipboard(token?.clientToken);

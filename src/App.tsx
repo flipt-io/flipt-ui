@@ -10,14 +10,14 @@ import Layout from './app/Layout';
 import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
 import Segment, { segmentLoader } from './app/segments/Segment';
-import Settings from './app/settings/Settings';
-import Tokens, { tokenLoader } from './app/settings/Tokens';
 import SessionProvider from './components/SessionProvider';
 
 const Flags = loadable(() => import('./app/flags/Flags'));
 const Segments = loadable(() => import('./app/segments/Segments'));
 const Console = loadable(() => import('./app/console/Console'));
 const Login = loadable(() => import('./app/auth/Login'));
+const Settings = loadable(() => import('./app/settings/Settings'));
+const Tokens = loadable(() => import('./app/settings/Tokens'));
 
 const router = createHashRouter([
   {
@@ -80,13 +80,11 @@ const router = createHashRouter([
         children: [
           {
             element: <Tokens />,
-            index: true,
-            loader: tokenLoader
+            index: true
           },
           {
             path: 'tokens',
-            element: <Tokens />,
-            loader: tokenLoader
+            element: <Tokens />
           }
         ]
       }

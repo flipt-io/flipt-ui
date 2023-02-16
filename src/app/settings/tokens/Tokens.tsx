@@ -1,6 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { default as EmptyStateButton } from '~/components/EmptyState';
+import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import DeleteTokenPanel from '~/components/settings/tokens/DeleteTokenPanel';
@@ -191,7 +191,7 @@ export default function Tokens() {
                 </div>
               </div>
             ) : (
-              <EmptyStateButton
+              <EmptyState
                 text="New Token"
                 onClick={() => {
                   setShowTokenForm(true);

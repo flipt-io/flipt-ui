@@ -3,6 +3,7 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   Row,
   SortingState,
@@ -10,6 +11,7 @@ import {
 } from '@tanstack/react-table';
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
+import Searchbox from '~/components/Searchbox';
 import { IAuthToken } from '~/types/auth/Token';
 
 type TokenRowActionsProps = {
@@ -45,16 +47,11 @@ type TokenTableProps = {
 export default function TokenTable(props: TokenTableProps) {
   const { tokens, setDeletingToken, setShowDeleteTokenModal } = props;
 
-  // const pageSize = 20;
-  // const searchThreshold = 10;
+  const searchThreshold = 10;
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  // const [pagination, setPagination] = useState<PaginationState>({
-  //   pageIndex: 0,
-  //   pageSize
-  // });
 
-  // const [filter, setFilter] = useState<string>('');
+  const [filter, setFilter] = useState<string>('');
 
   const columnHelper = createColumnHelper<IAuthToken>();
 
@@ -121,90 +118,102 @@ export default function TokenTable(props: TokenTableProps) {
     data: tokens,
     columns,
     state: {
+      globalFilter: filter,
       sorting
     },
-    // globalFilterFn: 'includesString',
+    globalFilterFn: 'includesString',
     onSortingChange: setSorting,
-    // onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
-    // getFilteredRowModel: getFilteredRowModel(),
-    debugTable: true
+    getFilteredRowModel: getFilteredRowModel()
   });
 
   return (
-    <table className="min-w-full table-fixed divide-y divide-gray-300">
-      <thead className="bg-gray-50">
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) =>
-              header.column.getCanSort() ? (
-                <th
-                  key={header.id}
-                  scope="col"
-                  className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
-                >
-                  <div
-                    className="group inline-flex cursor-pointer"
-                    onClick={header.column.getToggleSortingHandler()}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
+    <>
+      {tokens.length >= searchThreshold && (
+        <Searchbox className="mb-6" value={filter ?? ''} onChange={setFilter} />
+      )}
+      <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+          <div className="relative overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md">
+            <table className="min-w-full table-fixed divide-y divide-gray-300">
+              <thead className="bg-gray-50">
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) =>
+                      header.column.getCanSort() ? (
+                        <th
+                          key={header.id}
+                          scope="col"
+                          className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                        >
+                          <div
+                            className="group inline-flex cursor-pointer"
+                            onClick={header.column.getToggleSortingHandler()}
+                          >
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                            <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
+                              {{
+                                asc: (
+                                  <ChevronUpIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                ),
+                                desc: (
+                                  <ChevronDownIcon
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                )
+                              }[header.column.getIsSorted() as string] ?? null}
+                            </span>
+                          </div>
+                        </th>
+                      ) : (
+                        <th
+                          key={header.id}
+                          scope="col"
+                          className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </th>
+                      )
+                    )}
+                  </tr>
+                ))}
+              </thead>
+              <tbody className="divide-y divide-gray-200 bg-white">
+                {table.getRowModel().rows.map((row) => (
+                  <tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        className={cell.column.columnDef?.meta?.className}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                    <span className="ml-2 flex-none rounded text-gray-400 group-hover:visible group-focus:visible">
-                      {{
-                        asc: (
-                          <ChevronUpIcon
-                            className="h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        ),
-                        desc: (
-                          <ChevronDownIcon
-                            className="h-5 w-5"
-                            aria-hidden="true"
-                          />
-                        )
-                      }[header.column.getIsSorted() as string] ?? null}
-                    </span>
-                  </div>
-                </th>
-              ) : (
-                <th
-                  key={header.id}
-                  scope="col"
-                  className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              )
-            )}
-          </tr>
-        ))}
-      </thead>
-      <tbody className="divide-y divide-gray-200 bg-white">
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td
-                key={cell.id}
-                className={cell.column.columnDef?.meta?.className}
-              >
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

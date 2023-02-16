@@ -2,7 +2,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
-import EmptyStateButton from '~/components/EmptyStateButton';
+import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import SegmentTable from '~/components/segments/SegmentTable';
 import { useError } from '~/data/hooks/error';
@@ -49,7 +49,7 @@ export default function Segments() {
         {segments && segments.length > 0 ? (
           <SegmentTable segments={segments} />
         ) : (
-          <EmptyStateButton
+          <EmptyState
             text="Create Segment"
             onClick={() => navigate('/segments/new')}
           />

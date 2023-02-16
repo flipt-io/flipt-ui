@@ -6,7 +6,7 @@ import {
   useLoaderData,
   useNavigate
 } from 'react-router-dom';
-import EmptyStateButton from '~/components/EmptyStateButton';
+import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import MoreInfo from '~/components/MoreInfo';
@@ -298,7 +298,7 @@ export default function Segment() {
                   </tbody>
                 </table>
               ) : (
-                <EmptyStateButton
+                <EmptyState
                   text="New Constraint"
                   onClick={() => {
                     setEditingConstraint(null);

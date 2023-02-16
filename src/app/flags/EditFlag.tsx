@@ -1,7 +1,7 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import EmptyStateButton from '~/components/EmptyStateButton';
+import EmptyState from '~/components/EmptyState';
 import DeleteVariantPanel from '~/components/flags/DeleteVariantPanel';
 import FlagForm from '~/components/flags/FlagForm';
 import VariantForm from '~/components/flags/VariantForm';
@@ -10,7 +10,7 @@ import Modal from '~/components/Modal';
 import MoreInfo from '~/components/MoreInfo';
 import Slideover from '~/components/Slideover';
 import { IVariant } from '~/types/Variant';
-import { FlagProps } from './Flag';
+import { FlagProps } from './FlagProps';
 
 export default function EditFlag() {
   const { flag, onFlagChange } = useOutletContext<FlagProps>();
@@ -183,7 +183,7 @@ export default function EditFlag() {
                 </tbody>
               </table>
             ) : (
-              <EmptyStateButton
+              <EmptyState
                 text="New Variant"
                 onClick={() => {
                   setEditingVariant(null);

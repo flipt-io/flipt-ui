@@ -2,7 +2,7 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useSWR from 'swr';
-import EmptyStateButton from '~/components/EmptyStateButton';
+import EmptyState from '~/components/EmptyState';
 import FlagTable from '~/components/flags/FlagTable';
 import Button from '~/components/forms/Button';
 import { useError } from '~/data/hooks/error';
@@ -49,7 +49,7 @@ export default function Flags() {
         {flags && flags.length > 0 ? (
           <FlagTable flags={flags} />
         ) : (
-          <EmptyStateButton
+          <EmptyState
             text="Create Flag"
             onClick={() => navigate('/flags/new')}
           />

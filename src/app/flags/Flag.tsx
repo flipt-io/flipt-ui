@@ -23,11 +23,6 @@ export async function flagLoader({
   return Promise.reject(new Error('No flag key provided'));
 }
 
-export type FlagProps = {
-  flag: IFlag;
-  onFlagChange: () => void;
-};
-
 export default function Flag() {
   const initialFlag = useLoaderData() as IFlag;
   const [flag, setFlag] = useState<IFlag>(initialFlag);

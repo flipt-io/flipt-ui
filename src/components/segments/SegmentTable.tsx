@@ -32,8 +32,9 @@ export default function SegmentTable(props: SegmentTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 20
+    pageSize
   });
+
   const [filter, setFilter] = useState<string>('');
 
   const columnHelper = createColumnHelper<ISegment>();
@@ -149,9 +150,8 @@ export default function SegmentTable(props: SegmentTableProps) {
                     scope="col"
                     className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
                   >
-                    <a
-                      href="#"
-                      className="group inline-flex"
+                    <div
+                      className="group inline-flex cursor-pointer"
                       onClick={header.column.getToggleSortingHandler()}
                     >
                       {header.isPlaceholder
@@ -176,7 +176,7 @@ export default function SegmentTable(props: SegmentTableProps) {
                           )
                         }[header.column.getIsSorted() as string] ?? null}
                       </span>
-                    </a>
+                    </div>
                   </th>
                 ) : (
                   <th

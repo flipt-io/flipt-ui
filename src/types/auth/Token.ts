@@ -5,12 +5,12 @@ export interface IAuthMethodTokenMetadata {
   'io.flipt.auth.token.description': string;
 }
 
-export interface IAuthToken extends IAuth {
+export interface IAuthTokenInternal extends IAuth {
   metadata: IAuthMethodTokenMetadata;
 }
 
-export interface IAuthTokenList {
-  authentications: IAuthToken[];
+export interface IAuthTokenInternalList {
+  authentications: IAuthTokenInternal[];
 }
 
 export interface IAuthTokenBase {
@@ -19,7 +19,13 @@ export interface IAuthTokenBase {
   expiresAt?: string;
 }
 
+export interface IAuthToken extends IAuthTokenBase {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface IAuthTokenSecret {
   clientToken: string;
-  authentication: IAuthToken;
+  authentication: IAuthTokenInternal;
 }

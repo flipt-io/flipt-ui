@@ -20,6 +20,6 @@ export interface IAuthMethodOIDCMetadata {
   'io.flipt.auth.oidc.provider': string;
 }
 
-export interface IAuthOIDC extends IAuth {
+export interface IAuthOIDCInternal extends IAuth {
   metadata: IAuthMethodOIDCMetadata;
 }

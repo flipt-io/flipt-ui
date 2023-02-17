@@ -6,7 +6,7 @@ import 'highlight.js/styles/tokyo-night-dark.css';
 import { useEffect, useState } from 'react';
 import { IAuthTokenSecret } from '~/types/auth/Token';
 import { classNames } from '~/utils/helpers';
-import Button from '../forms/Button';
+import Button from '../../forms/Button';
 
 hljs.registerLanguage('text', text);
 
@@ -60,6 +60,7 @@ export default function ShowTokenPanel(props: ShowTokenPanelProps) {
               </pre>
               {token?.clientToken && (
                 <button
+                  aria-label="Copy"
                   className="hidden md:block"
                   onClick={() => {
                     copyTextToClipboard(token?.clientToken);

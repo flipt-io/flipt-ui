@@ -17,7 +17,7 @@ const Segments = loadable(() => import('./app/segments/Segments'));
 const Console = loadable(() => import('./app/console/Console'));
 const Login = loadable(() => import('./app/auth/Login'));
 const Settings = loadable(() => import('./app/settings/Settings'));
-const Tokens = loadable(() => import('./app/settings/Tokens'));
+const Tokens = loadable(() => import('./app/settings/tokens/Tokens'));
 
 const router = createHashRouter([
   {

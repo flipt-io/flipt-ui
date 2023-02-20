@@ -17,7 +17,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@headlessui/react": "^1.7.11",
-    "@heroicons/react": "^2.0.15",
+    "@heroicons/react": "^2.0.16",
     "@loadable/component": "^5.15.3",
     "@tanstack/react-table": "^8.7.9",
     "buffer": "^6.0.3",

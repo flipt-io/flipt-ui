@@ -12,7 +12,6 @@ import { useSuccess } from '~/data/hooks/success';
 import { IEvaluatable } from '~/types/Evaluatable';
 import { ISegment } from '~/types/Segment';
 import { IVariant } from '~/types/Variant';
-import Loading from '../Loading';
 
 type RuleFormProps = {
   setOpen: (open: boolean) => void;
@@ -89,7 +88,7 @@ export default function EditRuleForm(props: RuleFormProps) {
           });
       }}
     >
-      {(formik) => {
+      {(_formik) => {
         return (
           <Form className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
             <div className="flex-1">
@@ -141,7 +140,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                 <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                   <div>
                     <label
-                      htmlFor="segmentKey"
+                      htmlFor="ruleType"
                       className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                     >
                       Type
@@ -280,15 +279,8 @@ export default function EditRuleForm(props: RuleFormProps) {
             <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
               <div className="flex justify-end space-x-3">
                 <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button
-                  primary
-                  type="submit"
-                  disabled={
-                    !(formik.dirty && formik.isValid && !formik.isSubmitting)
-                  }
-                  className="min-w-[80px]"
-                >
-                  {formik.isSubmitting ? <Loading isPrimary /> : 'Update'}
+                <Button primary type="submit" className="min-w-[80px]">
+                  Update
                 </Button>
               </div>
             </div>

@@ -47,3 +47,20 @@ test('can create rule', async ({ page }) => {
     await expect(page.getByText('Successfully created rule')).toBeVisible();
   });
 });
+
+test('can update rule', async ({ page }) => {
+  await page.getByRole('link', { name: 'test-rule' }).click();
+  await page.getByRole('link', { name: 'Evaluation' }).click();
+  await page.getByRole('link', { name: 'Edit |' }).click();
+  await page
+    .getByRole('dialog', { name: 'Edit Rule' })
+    .getByText('123')
+    .click();
+
+  await page.locator('input[name="\\31 23"]').click();
+  await page.locator('input[name="\\31 23"]').fill('40');
+  await page.locator('input[name="\\31 23"]').press('Tab');
+  await page.locator('input[name="\\34 56"]').fill('60');
+  await page.getByRole('button', { name: 'Update' }).click();
+  await page.getByText('Successfully updated rule').click();
+});

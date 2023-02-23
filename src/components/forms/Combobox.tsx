@@ -64,14 +64,20 @@ export default function Combobox<T extends ISelectable>(
           placeholder={placeholder}
           disabled={disabled}
         />
-        <C.Button className="absolute -inset-y-0 right-0 items-center rounded-r-md px-2 focus:outline-none">
+        <C.Button
+          className="absolute -inset-y-0 right-0 items-center rounded-r-md px-2 focus:outline-none"
+          id={`${id}-select-button`}
+        >
           <ChevronUpDownIcon
             className="h-5 w-5 text-gray-400"
             aria-hidden="true"
           />
         </C.Button>
       </div>
-      <C.Options className="z-10 mt-1 flex max-h-60 w-full flex-col overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+      <C.Options
+        className="z-10 mt-1 flex max-h-60 w-full flex-col overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+        id={`${id}-select-options`}
+      >
         {filteredValues &&
           filteredValues.map((v) => (
             <C.Option

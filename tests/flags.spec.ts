@@ -7,22 +7,22 @@ test.beforeEach(async ({ page }) => {
 
 test('can create flag', async ({ page }) => {
   await page.getByRole('button', { name: 'New Flag' }).click();
-  await page.getByLabel('Name').fill('Hello Test');
+  await page.getByLabel('Name').fill('Test Flag');
   await page.getByLabel('Description').click();
   await page.getByRole('button', { name: 'Create' }).click();
   await expect(page.getByText('Successfully created flag')).toBeVisible();
 });
 
 test('can update flag', async ({ page }) => {
-  await page.getByRole('link', { name: 'hello-test' }).click();
+  await page.getByRole('link', { name: 'test-flag' }).click();
   await page.getByLabel('Description').click();
-  await page.getByLabel('Description').fill("i'm a test");
+  await page.getByLabel('Description').fill('Test flag description');
   await page.getByRole('button', { name: 'Update' }).click();
   await expect(page.getByText('Successfully updated flag')).toBeVisible();
 });
 
 test('can add variants to flag', async ({ page }) => {
-  await page.getByRole('link', { name: 'hello-test' }).click();
+  await page.getByRole('link', { name: 'test-flag' }).click();
 
   await test.step('add variant', async () => {
     await page.getByRole('button', { name: 'New Variant' }).click();

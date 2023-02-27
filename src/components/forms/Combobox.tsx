@@ -129,6 +129,11 @@ export default function Combobox<T extends ISelectable>(
               )}
             </C.Option>
           ))}
+        {!filteredValues?.length && (
+          <div className="w-full py-2 text-center text-gray-500">
+            No results found
+          </div>
+        )}
       </C.Options>
     </C>
   );

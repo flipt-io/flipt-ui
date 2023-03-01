@@ -7,10 +7,10 @@ import {
   useLoaderData,
   useNavigate
 } from 'react-router-dom';
-import DeleteFlagPanel from '~/components/flags/DeleteFlagPanel';
+import DeletePanel from '~/components/DeletePanel';
 import Modal from '~/components/Modal';
 import TabBar from '~/components/TabBar';
-import { getFlag } from '~/data/api';
+import { deleteFlag, getFlag } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { IFlag } from '~/types/Flag';
 
@@ -68,9 +68,17 @@ export default function Flag() {
     <>
       {/* flag delete modal */}
       <Modal open={showDeleteFlagModal} setOpen={setShowDeleteFlagModal}>
-        <DeleteFlagPanel
-          flagKey={flag.key}
+        <DeletePanel
+          panelMessage={
+            <>
+              Are you sure you want to delete the flag{' '}
+              <span className="font-medium text-violet-500">{flag.key}</span>?
+              This action cannot be undone.
+            </>
+          }
+          panelType="Flag"
           setOpen={setShowDeleteFlagModal}
+          handleDelete={() => deleteFlag(flag.key)}
           onSuccess={() => {
             setShowDeleteFlagModal(false);
             navigate('/');

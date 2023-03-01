@@ -6,16 +6,15 @@ import {
   useLoaderData,
   useNavigate
 } from 'react-router-dom';
+import DeletePanel from '~/components/DeletePanel';
 import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import MoreInfo from '~/components/MoreInfo';
 import ConstraintForm from '~/components/segments/ConstraintForm';
-import DeleteConstraintPanel from '~/components/segments/DeleteConstraintPanel';
-import DeleteSegmentPanel from '~/components/segments/DeleteSegmentPanel';
 import SegmentForm from '~/components/segments/SegmentForm';
 import Slideover from '~/components/Slideover';
-import { getSegment } from '~/data/api';
+import { deleteConstraint, deleteSegment, getSegment } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import {
   ComparisonType,
@@ -102,10 +101,21 @@ export default function Segment() {
         open={showDeleteConstraintModal}
         setOpen={setShowDeleteConstraintModal}
       >
-        <DeleteConstraintPanel
-          segmentKey={segment.key}
-          constraint={deletingConstraint}
+        <DeletePanel
+          panelMessage={
+            <>
+              Are you sure you want to delete the constraint for{' '}
+              <span className="font-medium text-violet-500">
+                {deletingConstraint?.property}
+              </span>
+              ? This action cannot be undone.
+            </>
+          }
+          panelType="Constraint"
           setOpen={setShowDeleteConstraintModal}
+          handleDelete={
+            () => deleteConstraint(segment.key, deletingConstraint?.id ?? '') // TODO: Determine impact of blank ID param
+          }
           onSuccess={() => {
             incrementSegmentVersion();
             setShowDeleteConstraintModal(false);
@@ -115,10 +125,19 @@ export default function Segment() {
 
       {/* segment delete modal */}
       <Modal open={showDeleteSegmentModal} setOpen={setShowDeleteSegmentModal}>
-        <DeleteSegmentPanel
-          segmentKey={segment.key}
+        <DeletePanel
+          panelMessage={
+            <>
+              Are you sure you want to delete the segment{' '}
+              <span className="font-medium text-violet-500">{segment.key}</span>
+              ? This action cannot be undone.
+            </>
+          }
+          panelType="Segment"
           setOpen={setShowDeleteSegmentModal}
+          handleDelete={() => deleteSegment(segment.key)}
           onSuccess={() => {
+            setShowDeleteSegmentModal(false);
             navigate('/segments');
           }}
         />

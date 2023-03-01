@@ -1,14 +1,14 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import DeletePanel from '~/components/DeletePanel';
 import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
-import DeleteTokenPanel from '~/components/settings/tokens/DeleteTokenPanel';
 import ShowTokenPanel from '~/components/settings/tokens/ShowTokenPanel';
 import TokenTable from '~/components/settings/tokens/TokenTable';
 import Slideover from '~/components/Slideover';
 import Well from '~/components/Well';
-import { listAuthMethods, listTokens } from '~/data/api';
+import { deleteToken, listAuthMethods, listTokens } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { IAuthMethod } from '~/types/Auth';
 import {
@@ -130,9 +130,19 @@ export default function Tokens() {
 
       {/* token delete modal */}
       <Modal open={showDeleteTokenModal} setOpen={setShowDeleteTokenModal}>
-        <DeleteTokenPanel
-          token={deletingToken}
+        <DeletePanel
+          panelMessage={
+            <>
+              Are you sure you want to delete the token{' '}
+              <span className="font-medium text-violet-500">
+                {deletingToken?.name}
+              </span>
+              ? This action cannot be undone.
+            </>
+          }
+          panelType="Token"
           setOpen={setShowDeleteTokenModal}
+          handleDelete={() => deleteToken(deletingToken?.id ?? '')} // TODO: Determine impact of blank ID param
           onSuccess={() => {
             incrementTokensVersion();
             setShowDeleteTokenModal(false);

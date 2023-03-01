@@ -1,25 +1,22 @@
 import { Dialog } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Button from '~/components/forms/Button';
-import { deleteVariant } from '~/data/api';
 import { useError } from '~/data/hooks/error';
-import { IVariant } from '~/types/Variant';
 
-type DeleteVariantPanelProps = {
+type DeletePanelProps = {
+  panelMessage: string | React.ReactNode;
   setOpen: (open: boolean) => void;
-  flagKey: string;
-  variant: IVariant | null;
+  handleDelete: (...args: string[]) => Promise<any>;
+  panelType: string;
   onSuccess: () => void;
 };
 
-export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
-  const { setOpen, flagKey, variant, onSuccess } = props;
+export default function DeletePanel(props: DeletePanelProps) {
+  const { setOpen, panelType, panelMessage, onSuccess, handleDelete } = props;
   const { setError, clearError } = useError();
 
   const handleSubmit = () => {
-    if (variant) {
-      return deleteVariant(flagKey, variant.id);
-    }
+    return handleDelete();
   };
 
   return (
@@ -36,16 +33,10 @@ export default function DeleteVariantPanel(props: DeleteVariantPanelProps) {
             as="h3"
             className="text-lg font-medium leading-6 text-gray-900"
           >
-            Delete Variant
+            Delete {panelType}
           </Dialog.Title>
           <div className="mt-2">
-            <p className="text-sm text-gray-500">
-              Are you sure you want to delete the variant{' '}
-              <span className="font-medium text-violet-500">
-                {variant?.key}
-              </span>
-              ? This action cannot be undone.
-            </p>
+            <p className="text-sm text-gray-500">{panelMessage}</p>
           </div>
         </div>
       </div>

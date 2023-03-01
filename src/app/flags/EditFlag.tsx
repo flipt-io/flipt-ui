@@ -1,14 +1,15 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import DeletePanel from '~/components/DeletePanel';
 import EmptyState from '~/components/EmptyState';
-import DeleteVariantPanel from '~/components/flags/DeleteVariantPanel';
 import FlagForm from '~/components/flags/FlagForm';
 import VariantForm from '~/components/flags/VariantForm';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import MoreInfo from '~/components/MoreInfo';
 import Slideover from '~/components/Slideover';
+import { deleteVariant } from '~/data/api';
 import { IVariant } from '~/types/Variant';
 import { FlagProps } from './FlagProps';
 
@@ -45,10 +46,21 @@ export default function EditFlag() {
 
       {/* variant delete modal */}
       <Modal open={showDeleteVariantModal} setOpen={setShowDeleteVariantModal}>
-        <DeleteVariantPanel
-          flagKey={flag.key}
-          variant={deletingVariant}
+        <DeletePanel
+          panelMessage={
+            <>
+              Are you sure you want to delete the variant{' '}
+              <span className="font-medium text-violet-500">
+                {deletingVariant?.key}
+              </span>
+              ? This action cannot be undone.
+            </>
+          }
+          panelType="Variant"
           setOpen={setShowDeleteVariantModal}
+          handleDelete={
+            () => deleteVariant(flag.key, deletingVariant?.id ?? '') // TODO: Determine impact of blank ID param
+          }
           onSuccess={() => {
             setShowDeleteVariantModal(false);
             onFlagChange();

@@ -16,16 +16,16 @@ import {
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import { useCallback, useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import DeletePanel from '~/components/DeletePanel';
 import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
-import DeleteRulePanel from '~/components/rules/DeleteRulePanel';
 import EditRuleForm from '~/components/rules/EditRuleForm';
 import Rule from '~/components/rules/Rule';
 import RuleForm from '~/components/rules/RuleForm';
 import SortableRule from '~/components/rules/SortableRule';
 import Slideover from '~/components/Slideover';
-import { listRules, listSegments, orderRules } from '~/data/api';
+import { deleteRule, listRules, listSegments, orderRules } from '~/data/api';
 import { IDistribution } from '~/types/Distribution';
 import { IEvaluatable } from '~/types/Evaluatable';
 import { IRule, IRuleList } from '~/types/Rule';
@@ -156,10 +156,20 @@ export default function Evaluation() {
     <>
       {/* rule delete modal */}
       <Modal open={showDeleteRuleModal} setOpen={setShowDeleteRuleModal}>
-        <DeleteRulePanel
-          flagKey={flag.key}
-          rule={deletingRule}
+        <DeletePanel
+          panelMessage={
+            <>
+              Are you sure you want to delete this rule at
+              <span className="font-medium text-violet-500">
+                {' '}
+                position {deletingRule?.rank}
+              </span>
+              ? This action cannot be undone.
+            </>
+          }
+          panelType="Rule"
           setOpen={setShowDeleteRuleModal}
+          handleDelete={() => deleteRule(flag.key, deletingRule?.id ?? '')}
           onSuccess={() => {
             incrementRulesVersion();
             setShowDeleteRuleModal(false);

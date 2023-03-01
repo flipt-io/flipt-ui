@@ -128,7 +128,7 @@ export default function RuleForm(props: RuleFormProps) {
 
     rulesChanged();
     clearError();
-    setSuccess('Successfully created new rule');
+    setSuccess('Successfully created rule');
     setOpen(false);
   };
 

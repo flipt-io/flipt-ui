@@ -42,6 +42,8 @@ export default function Combobox<T extends ISelectable>(
     v.filterValue.toLowerCase().includes(query.toLowerCase())
   );
 
+  console.log(disabled);
+
   return (
     <C
       as="div"
@@ -51,6 +53,7 @@ export default function Combobox<T extends ISelectable>(
         setSelected && setSelected(v);
         field.onChange({ target: { value: v?.key, id } });
       }}
+      disabled={disabled}
       nullable
     >
       <div className="relative flex w-full flex-row">
@@ -62,7 +65,6 @@ export default function Combobox<T extends ISelectable>(
           }}
           displayValue={(v: T) => v?.key}
           placeholder={placeholder}
-          disabled={disabled}
         />
         <C.Button
           className="absolute -inset-y-0 right-0 items-center rounded-r-md px-2 focus:outline-none"

@@ -42,8 +42,6 @@ export default function Combobox<T extends ISelectable>(
     v.filterValue.toLowerCase().includes(query.toLowerCase())
   );
 
-  console.log(disabled);
-
   return (
     <C
       as="div"

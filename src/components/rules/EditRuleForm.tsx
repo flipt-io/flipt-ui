@@ -2,16 +2,17 @@ import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Form, Formik } from 'formik';
 import { cloneDeep } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '~/components/forms/Button';
 import Combobox, { ISelectable } from '~/components/forms/Combobox';
 import MoreInfo from '~/components/MoreInfo';
 import { updateDistribution } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSuccess } from '~/data/hooks/success';
-import { IEvaluatable } from '~/types/Evaluatable';
+import { IEvaluatable, IRollout } from '~/types/Evaluatable';
 import { ISegment } from '~/types/Segment';
 import { IVariant } from '~/types/Variant';
+import Loading from '../Loading';
 
 type RuleFormProps = {
   setOpen: (open: boolean) => void;
@@ -32,6 +33,14 @@ const distTypes = [
   }
 ];
 
+const validRollout = (rollouts: IRollout[]): boolean => {
+  const sum = rollouts.reduce(function (acc, d) {
+    return acc + Number(d.distribution.rollout);
+  }, 0);
+
+  return sum <= 100;
+};
+
 type SelectableSegment = ISegment & ISelectable;
 
 type SelectableVariant = IVariant & ISelectable;
@@ -41,11 +50,21 @@ export default function EditRuleForm(props: RuleFormProps) {
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
 
+  const [distributionsValid, setDistributionsValid] = useState<boolean>(true);
+
   const [editingRule, setEditingRule] = useState<IEvaluatable>(cloneDeep(rule));
 
   const [ruleType, setRuleType] = useState(
     editingRule.rollouts.length > 1 ? 'multi' : 'single'
   );
+
+  useEffect(() => {
+    if (ruleType === 'multi' && !validRollout(editingRule.rollouts)) {
+      setDistributionsValid(false);
+    } else {
+      setDistributionsValid(true);
+    }
+  }, [editingRule, ruleType]);
 
   const handleSubmit = async () =>
     // update distributions that changed
@@ -272,6 +291,12 @@ export default function EditRuleForm(props: RuleFormProps) {
                         </div>
                       </div>
                     ))}
+                    {!distributionsValid && (
+                      <p className="mt-1 px-4 text-center text-sm text-gray-500 sm:px-6 sm:py-5">
+                        Multi-variant rules must have distributions that add up
+                        to 100% or less.
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
@@ -279,8 +304,13 @@ export default function EditRuleForm(props: RuleFormProps) {
             <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
               <div className="flex justify-end space-x-3">
                 <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button primary type="submit" className="min-w-[80px]">
-                  Update
+                <Button
+                  primary
+                  type="submit"
+                  disabled={!(distributionsValid && !_formik.isSubmitting)}
+                  className="min-w-[80px]"
+                >
+                  {_formik.isSubmitting ? <Loading isPrimary /> : 'Update'}
                 </Button>
               </div>
             </div>

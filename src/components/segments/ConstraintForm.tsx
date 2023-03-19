@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Form, Formik, useField, useFormikContext } from 'formik';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
@@ -42,6 +42,9 @@ const constraintOperators = (c: string) => {
     case ComparisonType.BOOLEAN_COMPARISON_TYPE:
       opts = ConstraintBooleanOperators;
       break;
+    case ComparisonType.DATETIME_COMPARISON_TYPE:
+      opts = ConstraintNumberOperators;
+      break;
   }
   return Object.entries(opts).map(([k, v]) => ({
     value: k,
@@ -54,11 +57,15 @@ type InputProps = {
   id: string;
 };
 
-function ConstraintOperatorSelect(props: InputProps) {
-  const {
-    values: { type },
-    setFieldValue
-  } = useFormikContext<{ type: string }>();
+type ConstraintOperatorSelectProps = InputProps & {
+  onChange: (e: any) => void;
+  type: string;
+};
+
+function ConstraintOperatorSelect(props: ConstraintOperatorSelectProps) {
+  const { onChange, type } = props;
+
+  const { setFieldValue } = useFormikContext();
 
   const [field] = useField(props);
 
@@ -69,44 +76,21 @@ function ConstraintOperatorSelect(props: InputProps) {
       {...props}
       handleChange={(e) => {
         setFieldValue(field.name, e.target.value);
+        onChange(e);
       }}
       options={constraintOperators(type)}
     />
   );
 }
 
-function ConstraintValueField(props: InputProps) {
-  const [show, setShow] = useState(true);
-  const {
-    values: { type, operator },
-    dirty
-  } = useFormikContext<{ type: string; operator: string }>();
-
+function ConstraintValueInput(props: InputProps) {
   const [field] = useField({
     ...props,
     validate: (value) => {
-      if (!show) {
-        return undefined;
-      }
-
       // value is required only if shown
       return value ? undefined : 'Value is required';
     }
   });
-
-  // show/hide value field based on operator
-  useEffect(() => {
-    if (type === 'BOOLEAN_COMPARISON_TYPE') {
-      setShow(false);
-      return;
-    }
-    const noValue = NoValueOperators.includes(operator);
-    setShow(!noValue);
-  }, [type, operator, field.name, dirty]);
-
-  if (!show) {
-    return <></>;
-  }
 
   return (
     <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
@@ -125,6 +109,35 @@ function ConstraintValueField(props: InputProps) {
   );
 }
 
+function ConstraintValueDateTimeInput(props: InputProps) {
+  // const [field] = useField({
+  //   ...props,
+  //   validate: (value) => {
+  //     // value is required only if shown
+  //     return value ? undefined : 'Value is required';
+  //   }
+  // });
+
+  return (
+    <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+      <div>
+        <label
+          htmlFor="value"
+          className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+        >
+          Value
+        </label>
+      </div>
+      <div className="sm:col-span-1">
+        <Input type="date" {...props} />
+      </div>
+      <div className="sm:col-span-1">
+        <Input type="time" {...props} />
+      </div>
+    </div>
+  );
+}
+
 type ConstraintFormProps = {
   setOpen: (open: boolean) => void;
   segmentKey: string;
@@ -136,6 +149,11 @@ const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
   const { setOpen, segmentKey, constraint, onSuccess } = props;
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
+
+  const [hasValue, setHasValue] = useState(true);
+  const [type, setType] = useState(
+    constraint?.type || 'STRING_COMPARISON_TYPE'
+  );
 
   const isNew = constraint === undefined;
   const submitPhrase = isNew ? 'Create' : 'Update';
@@ -235,11 +253,14 @@ const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
                     options={constraintComparisonTypes()}
                     handleChange={(e) => {
                       formik.setFieldValue('type', e.target.value);
+                      setType(e.target.value);
 
                       if (e.target.value === 'BOOLEAN_COMPARISON_TYPE') {
                         formik.setFieldValue('operator', 'true');
+                        setHasValue(false);
                       } else {
                         formik.setFieldValue('operator', 'eq');
+                        setHasValue(true);
                       }
                     }}
                   />
@@ -255,10 +276,23 @@ const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
                   </label>
                 </div>
                 <div className="sm:col-span-2">
-                  <ConstraintOperatorSelect id="operator" name="operator" />
+                  <ConstraintOperatorSelect
+                    id="operator"
+                    name="operator"
+                    type={type}
+                    onChange={(e) => {
+                      const noValue = NoValueOperators.includes(e.target.value);
+                      setHasValue(!noValue);
+                    }}
+                  />
                 </div>
               </div>
-              <ConstraintValueField name="value" id="value" />
+              {hasValue && type != 'DATETIME_COMPARISON_TYPE' && (
+                <ConstraintValueInput name="value" id="value" />
+              )}
+              {hasValue && type === 'DATETIME_COMPARISON_TYPE' && (
+                <ConstraintValueDateTimeInput name="value" id="value" />
+              )}
             </div>
           </div>
           <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">

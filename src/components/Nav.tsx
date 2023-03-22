@@ -7,6 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { NavLink } from 'react-router-dom';
 import { classNames } from '~/utils/helpers';
+import Listbox from './forms/Listbox';
 
 type Icon = (props: React.SVGProps<SVGSVGElement>) => any;
 
@@ -104,6 +105,9 @@ export default function Nav(props: NavProps) {
       className={`${className} flex flex-grow flex-col overflow-y-auto`}
       aria-label="Sidebar"
     >
+      <div className="mb-4 flex flex-shrink-0 flex-col space-y-1 px-2">
+        <Listbox />
+      </div>
       <div className="flex flex-grow flex-col space-y-1 px-2">
         {navigation.map((item) => (
           <NavItem

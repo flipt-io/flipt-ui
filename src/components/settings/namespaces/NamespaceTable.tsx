@@ -22,7 +22,9 @@ type NamespaceRowActionsProps = {
 
 function NamespaceRowActions(props: NamespaceRowActionsProps) {
   const { row, setDeletingNamespace, setShowDeleteNamespaceModal } = props;
-  return (
+  return row.original.protected ? (
+    <span className="text-gray-400">Delete</span>
+  ) : (
     <a
       href="#"
       className="text-violet-600 hover:text-violet-900"

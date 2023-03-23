@@ -3,6 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import ErrorNotification from '~/components/ErrorNotification';
 import Footer from '~/components/Footer';
 import Header from '~/components/Header';
+import { NamespaceProvider } from '~/components/NamespaceProvider';
 import { NotificationProvider } from '~/components/NotificationProvider';
 import Sidebar from '~/components/Sidebar';
 import SuccessNotification from '~/components/SuccessNotification';
@@ -35,10 +36,12 @@ function InnerLayout() {
 
 export default function Layout() {
   return (
-    <NotificationProvider>
-      <InnerLayout />
-      <ErrorNotification />
-      <SuccessNotification />
-    </NotificationProvider>
+    <NamespaceProvider>
+      <NotificationProvider>
+        <InnerLayout />
+        <ErrorNotification />
+        <SuccessNotification />
+      </NotificationProvider>
+    </NamespaceProvider>
   );
 }

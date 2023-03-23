@@ -7,7 +7,7 @@ export interface INamespaceBase {
 }
 
 export interface INamespace extends INamespaceBase {
-  id: string;
+  protected: boolean;
   createdAt: string;
   updatedAt: string;
 }

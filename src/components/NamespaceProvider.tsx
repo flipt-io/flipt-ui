@@ -1,18 +1,22 @@
 import { createContext, useState } from 'react';
-import { INamespace } from '~/types/Namespace';
+
+interface Namespace {
+  key: string;
+  name: string;
+}
 
 interface NamespaceContextType {
-  namespace: INamespace | null;
-  setNamespace(namespace: INamespace | null): void;
+  namespace: Namespace | null;
+  setNamespace(namespace: Namespace | null): void;
 }
 
 export const NamespaceContext = createContext<NamespaceContextType>({
-  namespace: null as INamespace | null,
-  setNamespace(_namespace: INamespace | null) {}
+  namespace: null as Namespace | null,
+  setNamespace(_namespace: Namespace | null) {}
 });
 
 export function NamespaceProvider({ children }: { children: React.ReactNode }) {
-  const [namespace, setNamespace] = useState<INamespace | null>(null);
+  const [namespace, setNamespace] = useState<Namespace | null>(null);
 
   return (
     <NamespaceContext.Provider

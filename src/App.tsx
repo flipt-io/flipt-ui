@@ -17,6 +17,9 @@ const Segments = loadable(() => import('./app/segments/Segments'));
 const Console = loadable(() => import('./app/console/Console'));
 const Login = loadable(() => import('./app/auth/Login'));
 const Settings = loadable(() => import('./app/settings/Settings'));
+const Namespaces = loadable(
+  () => import('./app/settings/namespaces/Namespaces')
+);
 const Tokens = loadable(() => import('./app/settings/tokens/Tokens'));
 
 const router = createHashRouter([
@@ -79,8 +82,12 @@ const router = createHashRouter([
         element: <Settings />,
         children: [
           {
-            element: <Tokens />,
+            element: <Namespaces />,
             index: true
+          },
+          {
+            path: 'namespaces',
+            element: <Namespaces />
           },
           {
             path: 'tokens',

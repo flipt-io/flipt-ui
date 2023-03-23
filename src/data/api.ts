@@ -108,6 +108,16 @@ export async function listTokens(method = 'METHOD_TOKEN') {
 }
 
 //
+// namespaces
+export async function listNamespaces() {
+  return get('/namespaces');
+}
+
+export async function getNamespace(key: string) {
+  return get(`/namespaces/${key}`);
+}
+
+//
 // flags
 export async function listFlags() {
   return get('/flags');

@@ -6,7 +6,7 @@ import {
   UsersIcon
 } from '@heroicons/react/24/outline';
 import { NavLink } from 'react-router-dom';
-import { classNames } from '../utils/helpers';
+import { classNames } from '~/utils/helpers';
 
 type Icon = (props: React.SVGProps<SVGSVGElement>) => any;
 

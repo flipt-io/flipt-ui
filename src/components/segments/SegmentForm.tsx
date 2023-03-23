@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
+import Loading from '~/components/Loading';
 import { createSegment, updateSegment } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSuccess } from '~/data/hooks/success';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { ISegment, ISegmentBase, SegmentMatchType } from '~/types/Segment';
 import { stringAsKey } from '~/utils/helpers';
-import Loading from '../Loading';
 
 const segmentMatchTypes = [
   {

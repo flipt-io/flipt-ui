@@ -5,6 +5,7 @@ import { cloneDeep } from 'lodash';
 import { useEffect, useState } from 'react';
 import Button from '~/components/forms/Button';
 import Combobox, { ISelectable } from '~/components/forms/Combobox';
+import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { updateDistribution } from '~/data/api';
 import { useError } from '~/data/hooks/error';
@@ -12,7 +13,6 @@ import { useSuccess } from '~/data/hooks/success';
 import { IEvaluatable, IRollout } from '~/types/Evaluatable';
 import { ISegment } from '~/types/Segment';
 import { IVariant } from '~/types/Variant';
-import Loading from '../Loading';
 
 type RuleFormProps = {
   setOpen: (open: boolean) => void;

@@ -5,7 +5,6 @@ import Loading from '~/components//Loading';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import Toggle from '~/components/forms/Toggle';
-import Loading from '~/components/Loading';
 import { createFlag, updateFlag } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSuccess } from '~/data/hooks/success';

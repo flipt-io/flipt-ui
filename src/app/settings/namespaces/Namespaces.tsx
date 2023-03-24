@@ -57,6 +57,7 @@ export default function Namespaces(): JSX.Element {
           setOpen={setShowNamespaceForm}
           onSuccess={() => {
             setShowNamespaceForm(false);
+            setEditingNamespace(null);
             incrementNamespacesVersion();
           }}
         />
@@ -84,6 +85,7 @@ export default function Namespaces(): JSX.Element {
           }
           onSuccess={() => {
             setShowDeleteNamespaceModal(false);
+            setDeletingNamespace(null);
             incrementNamespacesVersion();
           }}
         />
@@ -99,7 +101,13 @@ export default function Namespaces(): JSX.Element {
             </p>
           </div>
           <div className="mt-4">
-            <Button primary onClick={() => setShowNamespaceForm(true)}>
+            <Button
+              primary
+              onClick={() => {
+                setEditingNamespace(null);
+                setShowNamespaceForm(true);
+              }}
+            >
               <PlusIcon
                 className="-ml-1.5 mr-1 h-5 w-5 text-white"
                 aria-hidden="true"
@@ -122,6 +130,7 @@ export default function Namespaces(): JSX.Element {
             <EmptyState
               text="New Namespace"
               onClick={() => {
+                setEditingNamespace(null);
                 setShowNamespaceForm(true);
               }}
             />

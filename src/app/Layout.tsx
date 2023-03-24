@@ -3,11 +3,21 @@ import { Navigate, Outlet } from 'react-router-dom';
 import ErrorNotification from '~/components/ErrorNotification';
 import Footer from '~/components/Footer';
 import Header from '~/components/Header';
-import { NamespaceProvider } from '~/components/NamespaceProvider';
 import { NotificationProvider } from '~/components/NotificationProvider';
 import Sidebar from '~/components/Sidebar';
 import SuccessNotification from '~/components/SuccessNotification';
 import { useSession } from '~/data/hooks/session';
+
+const namespaces = [
+  {
+    key: 'default',
+    name: 'Default'
+  },
+  {
+    key: 'test',
+    name: 'Test'
+  }
+];
 
 function InnerLayout() {
   const { session } = useSession();
@@ -19,7 +29,11 @@ function InnerLayout() {
 
   return (
     <>
-      <Sidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+      <Sidebar
+        namespaces={namespaces}
+        setSidebarOpen={setSidebarOpen}
+        sidebarOpen={sidebarOpen}
+      />
       <div className="flex min-h-screen flex-col bg-white md:pl-64">
         <Header setSidebarOpen={setSidebarOpen} />
 
@@ -36,12 +50,10 @@ function InnerLayout() {
 
 export default function Layout() {
   return (
-    <NamespaceProvider>
-      <NotificationProvider>
-        <InnerLayout />
-        <ErrorNotification />
-        <SuccessNotification />
-      </NotificationProvider>
-    </NamespaceProvider>
+    <NotificationProvider>
+      <InnerLayout />
+      <ErrorNotification />
+      <SuccessNotification />
+    </NotificationProvider>
   );
 }

@@ -12,6 +12,7 @@ import { useError } from '~/data/hooks/error';
 import { useSuccess } from '~/data/hooks/success';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { INamespace, INamespaceBase } from '~/types/Namespace';
+import { stringAsKey } from '~/utils/helpers';
 
 type NamespaceFormProps = {
   setOpen: (open: boolean) => void;
@@ -89,6 +90,39 @@ const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                 <div>
                   <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                  >
+                    Name
+                  </label>
+                </div>
+                <div className="sm:col-span-2">
+                  <Input
+                    name="name"
+                    id="name"
+                    forwardRef={ref}
+                    autoFocus={isNew}
+                    handleChange={(e) => {
+                      // check if the name and key are currently in sync
+                      // we do this so we don't override a custom key value
+                      if (
+                        isNew &&
+                        (formik.values.key === '' ||
+                          formik.values.key === stringAsKey(formik.values.name))
+                      ) {
+                        formik.setFieldValue(
+                          'key',
+                          stringAsKey(e.target.value)
+                        );
+                      }
+                      formik.handleChange(e);
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+                <div>
+                  <label
                     htmlFor="key"
                     className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                   >
@@ -99,22 +133,12 @@ const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
                   <Input
                     name="key"
                     id="key"
-                    forwardRef={ref}
                     disabled={!isNew}
+                    handleChange={(e) => {
+                      const formatted = stringAsKey(e.target.value);
+                      formik.setFieldValue('key', formatted);
+                    }}
                   />
-                </div>
-              </div>
-              <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                  >
-                    Name
-                  </label>
-                </div>
-                <div className="sm:col-span-2">
-                  <Input name="name" id="name" />
                 </div>
               </div>
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">

@@ -1,5 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import {
+  CellContext,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
@@ -14,13 +15,37 @@ import { useState } from 'react';
 import Searchbox from '~/components/Searchbox';
 import { INamespace } from '~/types/Namespace';
 
-type NamespaceRowActionsProps = {
+type NamespaceEditActionProps = {
+  cell: CellContext<INamespace, string>;
+  setEditingNamespace: (token: INamespace) => void;
+  setShowEditNamespaceModal: (show: boolean) => void;
+};
+
+function NamespaceEditAction(props: NamespaceEditActionProps) {
+  const { cell, setEditingNamespace, setShowEditNamespaceModal } = props;
+
+  return (
+    <a
+      href="#"
+      className="text-violet-600 hover:text-violet-900"
+      onClick={(e) => {
+        e.preventDefault();
+        setEditingNamespace(cell.row.original);
+        setShowEditNamespaceModal(true);
+      }}
+    >
+      {cell.getValue()}
+    </a>
+  );
+}
+
+type NamespaceDeleteActionProps = {
   row: Row<INamespace>;
   setDeletingNamespace: (token: INamespace) => void;
   setShowDeleteNamespaceModal: (show: boolean) => void;
 };
 
-function NamespaceRowActions(props: NamespaceRowActionsProps) {
+function NamespaceDeleteAction(props: NamespaceDeleteActionProps) {
   const { row, setDeletingNamespace, setShowDeleteNamespaceModal } = props;
   return row.original.protected ? (
     <span className="text-gray-400">Delete</span>
@@ -42,13 +67,20 @@ function NamespaceRowActions(props: NamespaceRowActionsProps) {
 
 type NamespaceTableProps = {
   namespaces: INamespace[];
+  setEditingNamespace: (namespace: INamespace) => void;
+  setShowEditNamespaceModal: (show: boolean) => void;
   setDeletingNamespace: (namespace: INamespace) => void;
   setShowDeleteNamespaceModal: (show: boolean) => void;
 };
 
 export default function NamespaceTable(props: NamespaceTableProps) {
-  const { namespaces, setDeletingNamespace, setShowDeleteNamespaceModal } =
-    props;
+  const {
+    namespaces,
+    setEditingNamespace,
+    setShowEditNamespaceModal,
+    setDeletingNamespace,
+    setShowDeleteNamespaceModal
+  } = props;
 
   const searchThreshold = 10;
 
@@ -69,7 +101,14 @@ export default function NamespaceTable(props: NamespaceTableProps) {
     }),
     columnHelper.accessor('name', {
       header: 'Name',
-      cell: (info) => info.getValue(),
+      cell: (info) => (
+        <NamespaceEditAction
+          // eslint-disable-next-line react/prop-types
+          cell={info}
+          setEditingNamespace={setEditingNamespace}
+          setShowEditNamespaceModal={setShowEditNamespaceModal}
+        />
+      ),
       meta: {
         className:
           'truncate whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500'
@@ -111,7 +150,7 @@ export default function NamespaceTable(props: NamespaceTableProps) {
     columnHelper.display({
       id: 'actions',
       cell: (props) => (
-        <NamespaceRowActions
+        <NamespaceDeleteAction
           // eslint-disable-next-line react/prop-types
           row={props.row}
           setDeletingNamespace={setDeletingNamespace}

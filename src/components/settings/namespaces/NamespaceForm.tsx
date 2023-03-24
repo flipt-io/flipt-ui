@@ -7,21 +7,20 @@ import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
-// import { createNamespace, updateNamespace } from '~/data/api';
+import { createNamespace, updateNamespace } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSuccess } from '~/data/hooks/success';
-import { jsonValidation, keyValidation } from '~/data/validations';
+import { keyValidation, requiredValidation } from '~/data/validations';
 import { INamespace, INamespaceBase } from '~/types/Namespace';
 
 type NamespaceFormProps = {
   setOpen: (open: boolean) => void;
-  flagKey: string;
   namespace?: INamespace;
   onSuccess: () => void;
 };
 
 const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
-  const { setOpen, flagKey, namespace, onSuccess } = props;
+  const { setOpen, namespace, onSuccess } = props;
   const isNew = namespace === undefined;
   const title = isNew ? 'New Namespace' : 'Edit Namespace';
   const submitPhrase = isNew ? 'Create' : 'Update';
@@ -30,10 +29,10 @@ const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
 
   const handleSubmit = async (values: INamespaceBase) => {
     if (isNew) {
-      return createNamespace(flagKey, values);
+      return createNamespace(values);
     }
 
-    return updateNamespace(flagKey, namespace?.id, values);
+    return updateNamespace(namespace.key, values);
   };
 
   return (
@@ -58,7 +57,7 @@ const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
       }}
       validationSchema={Yup.object({
         key: keyValidation,
-        attachment: jsonValidation
+        name: requiredValidation
       })}
     >
       {(formik) => (
@@ -97,7 +96,12 @@ const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
                   </label>
                 </div>
                 <div className="sm:col-span-2">
-                  <Input name="key" id="key" forwardRef={ref} />
+                  <Input
+                    name="key"
+                    id="key"
+                    forwardRef={ref}
+                    disabled={!isNew}
+                  />
                 </div>
               </div>
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">

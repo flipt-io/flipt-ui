@@ -1,4 +1,4 @@
-import { IAuth } from '../Auth';
+import { IAuth } from '~/types/Auth';
 
 export interface IAuthMethodTokenMetadata {
   'io.flipt.auth.token.name': string;

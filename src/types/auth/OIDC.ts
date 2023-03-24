@@ -1,4 +1,4 @@
-import { IAuth, IAuthMethod } from '../Auth';
+import { IAuth, IAuthMethod } from '~/types/Auth';
 
 interface AuthMethodOIDCMetadataProvider {
   authorize_url: string;

@@ -6,13 +6,13 @@ import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import TextArea from '~/components/forms/TextArea';
+import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { createVariant, updateVariant } from '~/data/api';
 import { useError } from '~/data/hooks/error';
 import { useSuccess } from '~/data/hooks/success';
 import { jsonValidation, keyValidation } from '~/data/validations';
 import { IVariant, IVariantBase } from '~/types/Variant';
-import Loading from '../Loading';
 
 type VariantFormProps = {
   setOpen: (open: boolean) => void;

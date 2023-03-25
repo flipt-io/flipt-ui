@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import ErrorNotification from '~/components/ErrorNotification';
+import Footer from '~/components/Footer';
+import Header from '~/components/Header';
+import { NotificationProvider } from '~/components/NotificationProvider';
+import Sidebar from '~/components/Sidebar';
 import SuccessNotification from '~/components/SuccessNotification';
 import { useSession } from '~/data/hooks/session';
-import ErrorNotification from '../components/ErrorNotification';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import { NotificationProvider } from '../components/NotificationProvider';
-import Sidebar from '../components/Sidebar';
 
 function InnerLayout() {
   const { session } = useSession();

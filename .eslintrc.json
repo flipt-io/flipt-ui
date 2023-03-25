@@ -17,7 +17,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["react", "import", "prettier"],
+  "plugins": ["react", "import", "prettier", "no-relative-import-paths"],
   "ignorePatterns": ["**/*.config.cjs", "**/*.config.ts"],
   "rules": {
     "prettier/prettier": [
@@ -26,6 +26,10 @@
         "singleQuote": true,
         "semi": true
       }
+    ],
+    "no-relative-import-paths/no-relative-import-paths": [
+      "warn",
+      { "allowSameFolder": true, "rootDir": "src", "prefix": "~" }
     ],
     "@typescript-eslint/comma-dangle": ["error", "never"],
     "@typescript-eslint/no-shadow": "off",

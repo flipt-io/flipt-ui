@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import Select from '~/components/forms/Select';
+import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { createConstraint, updateConstraint } from '~/data/api';
 import { useError } from '~/data/hooks/error';
@@ -20,7 +21,6 @@ import {
   IConstraintBase,
   NoValueOperators
 } from '~/types/Constraint';
-import Loading from '../Loading';
 
 const constraintComparisonTypes = () =>
   (Object.keys(ComparisonType) as Array<keyof typeof ComparisonType>).map(

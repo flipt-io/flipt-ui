@@ -26,6 +26,8 @@ import RuleForm from '~/components/rules/RuleForm';
 import SortableRule from '~/components/rules/SortableRule';
 import Slideover from '~/components/Slideover';
 import { deleteRule, listRules, listSegments, orderRules } from '~/data/api';
+import { useError } from '~/data/hooks/error';
+import { useSuccess } from '~/data/hooks/success';
 import { IDistribution } from '~/types/Distribution';
 import { IEvaluatable } from '~/types/Evaluatable';
 import { IRule, IRuleList } from '~/types/Rule';
@@ -51,6 +53,9 @@ export default function Evaluation() {
   const [showDeleteRuleModal, setShowDeleteRuleModal] =
     useState<boolean>(false);
   const [deletingRule, setDeletingRule] = useState<IEvaluatable | null>(null);
+
+  const { setError, clearError } = useError();
+  const { setSuccess } = useSuccess();
 
   const loadData = useCallback(async () => {
     const segmentList = (await listSegments()) as ISegmentList;
@@ -113,9 +118,15 @@ export default function Evaluation() {
     orderRules(
       flag.key,
       rules.map((rule) => rule.id)
-    ).then(() => {
-      incrementRulesVersion();
-    });
+    )
+      .then(() => {
+        incrementRulesVersion();
+        clearError();
+        setSuccess('Successfully reordered rules');
+      })
+      .catch((err) => {
+        setError(err);
+      });
   };
 
   // disabling eslint due to this being a third-party event type

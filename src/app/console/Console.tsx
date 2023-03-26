@@ -70,7 +70,7 @@ export default function Console() {
   };
 
   useEffect(() => {
-    hljs.initHighlighting();
+    hljs.highlightAll();
   }, [response]);
 
   useEffect(() => {

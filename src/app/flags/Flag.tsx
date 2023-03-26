@@ -36,7 +36,7 @@ export default function Flag() {
 
   const fetchFlag = useCallback(() => {
     getFlag(flag.key)
-      .then((flag) => {
+      .then((flag: IFlag) => {
         setFlag(flag);
         clearError();
       })

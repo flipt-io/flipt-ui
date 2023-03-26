@@ -52,7 +52,7 @@ export default function Segment() {
 
   const fetchSegment = useCallback(() => {
     getSegment(segment.key)
-      .then((segment) => {
+      .then((segment: ISegment) => {
         setSegment(segment);
         clearError();
       })

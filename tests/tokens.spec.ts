@@ -7,6 +7,7 @@ test.beforeEach(async ({ page }) => {
 
 test('can create token', async ({ page }) => {
   await page.getByRole('link', { name: 'Settings' }).click();
+  await page.getByRole('link', { name: 'API Tokens' }).click();
   await page.getByRole('button', { name: 'New Token' }).nth(0).click();
   await page.getByLabel('Name').fill('abcdef');
   await page.getByLabel('Name').press('Tab');
@@ -20,6 +21,7 @@ test('can create token', async ({ page }) => {
 
 test('can delete token', async ({ page }) => {
   await page.getByRole('link', { name: 'Settings' }).click();
+  await page.getByRole('link', { name: 'API Tokens' }).click();
   await page.getByRole('link', { name: 'Delete , abcdef' }).click();
   await page.getByRole('button', { name: 'Delete' }).click();
 });

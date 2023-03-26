@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
-import Combobox from '~/components/forms/Combobox';
+import Combobox, { ISelectable } from '~/components/forms/Combobox';
 import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { createDistribution, createRule } from '~/data/api';
@@ -14,7 +14,7 @@ import { useSuccess } from '~/data/hooks/success';
 import { keyValidation } from '~/data/validations';
 import { IDistributionVariant } from '~/types/Distribution';
 import { IFlag } from '~/types/Flag';
-import { ISegment, SelectableSegment } from '~/types/Segment';
+import { ISegment } from '~/types/Segment';
 import { SelectableVariant } from '~/types/Variant';
 import { truncateKey } from '~/utils/helpers';
 import MultiDistributionFormInputs from './distributions/MultiDistributionForm';
@@ -64,6 +64,8 @@ const validRollout = (distributions: IDistributionVariant[]): boolean => {
 
   return sum <= 100;
 };
+
+type SelectableSegment = ISegment & ISelectable;
 
 export default function RuleForm(props: RuleFormProps) {
   const { setOpen, rulesChanged, flag, rank, segments } = props;

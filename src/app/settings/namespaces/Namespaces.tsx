@@ -8,7 +8,7 @@ import NamespaceForm from '~/components/settings/namespaces/NamespaceForm';
 import NamespaceTable from '~/components/settings/namespaces/NamespaceTable';
 import Slideover from '~/components/Slideover';
 import { deleteNamespace, listNamespaces } from '~/data/api';
-import { INamespace } from '~/types/Namespace';
+import { INamespace, INamespaceList } from '~/types/Namespace';
 
 export default function Namespaces(): JSX.Element {
   const [namespaces, setNamespaces] = useState<INamespace[]>([]);
@@ -28,7 +28,7 @@ export default function Namespaces(): JSX.Element {
   const [namespacesVersion, setNamespacesVersion] = useState(0);
 
   const fetchNamespaces = useCallback(() => {
-    listNamespaces().then((resp) => {
+    listNamespaces().then((resp: INamespaceList) => {
       setNamespaces(resp.namespaces);
     });
   }, []);

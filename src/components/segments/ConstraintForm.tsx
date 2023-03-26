@@ -1,7 +1,8 @@
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Form, Formik, useField, useFormikContext } from 'formik';
-import { forwardRef, useState } from 'react';
+import moment from 'moment';
+import { forwardRef, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
@@ -110,13 +111,37 @@ function ConstraintValueInput(props: InputProps) {
 }
 
 function ConstraintValueDateTimeInput(props: InputProps) {
-  // const [field] = useField({
-  //   ...props,
-  //   validate: (value) => {
-  //     // value is required only if shown
-  //     return value ? undefined : 'Value is required';
-  //   }
-  // });
+  const { setFieldValue } = useFormikContext();
+  const [field] = useField({
+    ...props,
+    validate: (value) => {
+      let m = moment(value);
+      return m.isValid() ? undefined : 'Value is not a valid date';
+    }
+  });
+  const [fieldDate, setFieldDate] = useState(field.value?.split('T')[0] || '');
+  const [fieldTime, setFieldTime] = useState(
+    field.value?.split('T')[1]?.slice(0, 5) || ''
+  );
+
+  useEffect(() => {
+    if (
+      fieldDate &&
+      fieldDate.trim() !== '' &&
+      fieldTime &&
+      fieldTime.trim() !== ''
+    ) {
+      const m = moment(`${fieldDate} ${fieldTime}`, 'YYYY-MM-DD HH:mm');
+      setFieldValue(field.name, m.isValid() ? m.format() : '');
+      return;
+    }
+
+    if (fieldDate && fieldDate.trim() !== '') {
+      const m = moment(fieldDate, 'YYYY-MM-DD');
+      setFieldValue(field.name, m.isValid() ? m.format() : '');
+      return;
+    }
+  }, [field.name, fieldDate, fieldTime, setFieldValue]);
 
   return (
     <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
@@ -129,11 +154,28 @@ function ConstraintValueDateTimeInput(props: InputProps) {
         </label>
       </div>
       <div className="sm:col-span-1">
-        <Input type="date" {...props} />
+        <Input
+          type="date"
+          id="valueDate"
+          name="valueDate"
+          value={fieldDate}
+          onChange={(e) => {
+            setFieldDate(e.target.value);
+          }}
+        />
       </div>
       <div className="sm:col-span-1">
-        <Input type="time" {...props} />
+        <Input
+          type="time"
+          id="valueTime"
+          name="valueTime"
+          value={fieldTime}
+          onChange={(e) => {
+            setFieldTime(e.target.value);
+          }}
+        />
       </div>
+      <input type="hidden" {...props} {...field} />
     </div>
   );
 }
@@ -159,7 +201,7 @@ const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
   const submitPhrase = isNew ? 'Create' : 'Update';
   const title = isNew ? 'New Constraint' : 'Edit Constraint';
 
-  const initialValues: IConstraintBase = {
+  const initialValues = {
     property: constraint?.property || '',
     type: constraint?.type || ('STRING_COMPARISON_TYPE' as ComparisonType),
     operator: constraint?.operator || 'eq',

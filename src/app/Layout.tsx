@@ -8,6 +8,17 @@ import Sidebar from '~/components/Sidebar';
 import SuccessNotification from '~/components/SuccessNotification';
 import { useSession } from '~/data/hooks/session';
 
+const namespaces = [
+  {
+    key: 'default',
+    name: 'Default'
+  },
+  {
+    key: 'test',
+    name: 'Test'
+  }
+];
+
 function InnerLayout() {
   const { session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -18,7 +29,11 @@ function InnerLayout() {
 
   return (
     <>
-      <Sidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+      <Sidebar
+        namespaces={namespaces}
+        setSidebarOpen={setSidebarOpen}
+        sidebarOpen={sidebarOpen}
+      />
       <div className="flex min-h-screen flex-col bg-white md:pl-64">
         <Header setSidebarOpen={setSidebarOpen} />
 

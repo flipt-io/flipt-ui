@@ -116,7 +116,7 @@ function ConstraintValueDateTimeInput(props: InputProps) {
     ...props,
     validate: (value) => {
       let m = moment(value);
-      return m.isValid() ? undefined : 'Value is not a valid date';
+      return m.isValid() ? undefined : 'Value is not a valid datetime';
     }
   });
   const [fieldDate, setFieldDate] = useState(field.value?.split('T')[0] || '');
@@ -125,6 +125,7 @@ function ConstraintValueDateTimeInput(props: InputProps) {
   );
 
   useEffect(() => {
+    // if both date and time are set, then combine, parse, and set the value
     if (
       fieldDate &&
       fieldDate.trim() !== '' &&
@@ -136,6 +137,7 @@ function ConstraintValueDateTimeInput(props: InputProps) {
       return;
     }
 
+    // otherwise, if only date is set, then parse and set the value
     if (fieldDate && fieldDate.trim() !== '') {
       const m = moment(fieldDate, 'YYYY-MM-DD');
       setFieldValue(field.name, m.isValid() ? m.format() : '');

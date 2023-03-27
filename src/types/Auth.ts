@@ -5,6 +5,10 @@ export interface IAuthMethod {
   metadata: { [key: string]: any };
 }
 
+export interface IAuthMethodList {
+  methods: IAuthMethod[];
+}
+
 export interface IAuth {
   id: string;
   method: string;

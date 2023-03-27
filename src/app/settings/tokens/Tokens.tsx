@@ -10,7 +10,7 @@ import Slideover from '~/components/Slideover';
 import Well from '~/components/Well';
 import { deleteToken, listAuthMethods, listTokens } from '~/data/api';
 import { useError } from '~/data/hooks/error';
-import { IAuthMethod } from '~/types/Auth';
+import { IAuthMethod, IAuthMethodList } from '~/types/Auth';
 import {
   IAuthToken,
   IAuthTokenInternal,
@@ -30,7 +30,7 @@ export default function Tokens() {
 
   const checkTokenAuthEnabled = useCallback(() => {
     listAuthMethods()
-      .then((resp) => {
+      .then((resp: IAuthMethodList) => {
         const authToken = resp.methods.find(
           (m: IAuthMethod) => m.method === 'METHOD_TOKEN' && m.enabled
         );

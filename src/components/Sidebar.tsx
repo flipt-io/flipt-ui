@@ -25,7 +25,7 @@ export default function Sidebar(props: SidebarProps) {
   // if the current route is namespaced, we want to allow the namespace nav to be selectable
   let namespaceNavEnabled = matches.some((m) => {
     let r = m.handle as RouteMatches;
-    Boolean(r?.namespaced);
+    return r?.namespaced;
   });
 
   return (

@@ -6,11 +6,17 @@ import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import SegmentTable from '~/components/segments/SegmentTable';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { ISegmentList } from '~/types/Segment';
 
 export default function Segments() {
-  const { data, error } = useSWR<ISegmentList>('/segments');
+  const { currentNamespace } = useNamespace();
+
+  const { data, error } = useSWR<ISegmentList>(
+    `/namespaces/${currentNamespace.key}/segments`
+  );
   const segments = data?.segments;
+
   const navigate = useNavigate();
   const { setError, clearError } = useError();
 

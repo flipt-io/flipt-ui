@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import ErrorNotification from '~/components/ErrorNotification';
 import Footer from '~/components/Footer';
@@ -6,22 +6,30 @@ import Header from '~/components/Header';
 import { NotificationProvider } from '~/components/NotificationProvider';
 import Sidebar from '~/components/Sidebar';
 import SuccessNotification from '~/components/SuccessNotification';
+import { listNamespaces } from '~/data/api';
+import { useError } from '~/data/hooks/error';
 import { useSession } from '~/data/hooks/session';
-
-const namespaces = [
-  {
-    key: 'default',
-    name: 'Default'
-  },
-  {
-    key: 'test',
-    name: 'Test'
-  }
-];
+import { INamespace } from '~/types/Namespace';
 
 function InnerLayout() {
   const { session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [namespaces, setNamespaces] = useState<INamespace[]>([]);
+
+  const { setError, clearError } = useError();
+
+  useEffect(() => {
+    if (!session) return;
+
+    listNamespaces()
+      .then((data) => {
+        setNamespaces(data.namespaces);
+        clearError();
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  }, [clearError, session, setError]);
 
   if (!session) {
     return <Navigate to="/login" />;

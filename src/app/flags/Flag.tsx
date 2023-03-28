@@ -1,49 +1,29 @@
 import { CalendarIcon } from '@heroicons/react/24/outline';
 import { formatDistanceToNowStrict, parseISO } from 'date-fns';
-import { useCallback, useEffect, useState } from 'react';
-import {
-  LoaderFunctionArgs,
-  Outlet,
-  useLoaderData,
-  useNavigate
-} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import DeletePanel from '~/components/DeletePanel';
+import Loading from '~/components/Loading';
 import Modal from '~/components/Modal';
 import TabBar from '~/components/TabBar';
 import { deleteFlag, getFlag } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { IFlag } from '~/types/Flag';
 
-export async function flagLoader({
-  params
-}: LoaderFunctionArgs): Promise<IFlag> {
-  if (params.flagKey) {
-    return getFlag(params.flagKey);
-  }
-  return Promise.reject(new Error('No flag key provided'));
-}
-
 export default function Flag() {
-  const initialFlag = useLoaderData() as IFlag;
-  const [flag, setFlag] = useState<IFlag>(initialFlag);
+  let { flagKey } = useParams();
+
+  const [flag, setFlag] = useState<IFlag | null>(null);
   const [flagVersion, setFlagVersion] = useState(0);
 
   const { setError, clearError } = useError();
   const navigate = useNavigate();
 
+  const { currentNamespace } = useNamespace();
+
   const [showDeleteFlagModal, setShowDeleteFlagModal] =
     useState<boolean>(false);
-
-  const fetchFlag = useCallback(() => {
-    getFlag(flag.key)
-      .then((flag: IFlag) => {
-        setFlag(flag);
-        clearError();
-      })
-      .catch((err) => {
-        setError(err);
-      });
-  }, [clearError, flag.key, setError]);
 
   const incrementFlagVersion = () => {
     setFlagVersion(flagVersion + 1);
@@ -52,17 +32,28 @@ export default function Flag() {
   const tabs = [
     {
       name: 'Details',
-      to: `/flags/${flag.key}`
+      to: `/flags/${flagKey}`
     },
     {
       name: 'Evaluation',
-      to: `/flags/${flag.key}/evaluation`
+      to: `/flags/${flagKey}/evaluation`
     }
   ];
 
   useEffect(() => {
-    fetchFlag();
-  }, [flagVersion, fetchFlag]);
+    if (!flagKey) return;
+
+    getFlag(currentNamespace?.key, flagKey)
+      .then((flag: IFlag) => {
+        setFlag(flag);
+        clearError();
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  }, [flagVersion, flagKey, currentNamespace?.key, clearError, setError]);
+
+  if (!flag) return <Loading />;
 
   return (
     <>
@@ -78,7 +69,7 @@ export default function Flag() {
           }
           panelType="Flag"
           setOpen={setShowDeleteFlagModal}
-          handleDelete={() => deleteFlag(flag.key)}
+          handleDelete={() => deleteFlag(currentNamespace?.key, flag.key)}
           onSuccess={() => {
             setShowDeleteFlagModal(false);
             navigate('/');

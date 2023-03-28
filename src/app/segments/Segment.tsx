@@ -1,14 +1,11 @@
 import { CalendarIcon } from '@heroicons/react/20/solid';
 import { formatDistanceToNowStrict, parseISO } from 'date-fns';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  LoaderFunctionArgs,
-  useLoaderData,
-  useNavigate
-} from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import DeletePanel from '~/components/DeletePanel';
 import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
+import Loading from '~/components/Loading';
 import Modal from '~/components/Modal';
 import MoreInfo from '~/components/MoreInfo';
 import ConstraintForm from '~/components/segments/ConstraintForm';
@@ -16,6 +13,7 @@ import SegmentForm from '~/components/segments/SegmentForm';
 import Slideover from '~/components/Slideover';
 import { deleteConstraint, deleteSegment, getSegment } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import {
   ComparisonType,
   ConstraintOperators,
@@ -23,19 +21,10 @@ import {
 } from '~/types/Constraint';
 import { ISegment } from '~/types/Segment';
 
-export async function segmentLoader({
-  params
-}: LoaderFunctionArgs): Promise<ISegment> {
-  if (params.segmentKey) {
-    return getSegment(params.segmentKey);
-  }
-  return Promise.reject(new Error('No segment key provided'));
-}
-
 export default function Segment() {
-  const navigate = useNavigate();
+  let { segmentKey } = useParams();
 
-  const [segment, setSegment] = useState<ISegment>(useLoaderData() as ISegment);
+  const [segment, setSegment] = useState<ISegment | null>(null);
   const [segmentVersion, setSegmentVersion] = useState(0);
 
   const [showConstraintForm, setShowConstraintForm] = useState<boolean>(false);
@@ -49,9 +38,18 @@ export default function Segment() {
     useState<boolean>(false);
 
   const { setError, clearError } = useError();
+  const navigate = useNavigate();
 
-  const fetchSegment = useCallback(() => {
-    getSegment(segment.key)
+  const { currentNamespace } = useNamespace();
+
+  const incrementSegmentVersion = () => {
+    setSegmentVersion(segmentVersion + 1);
+  };
+
+  useEffect(() => {
+    if (!segmentKey) return;
+
+    getSegment(currentNamespace?.key, segmentKey)
       .then((segment: ISegment) => {
         setSegment(segment);
         clearError();
@@ -59,15 +57,7 @@ export default function Segment() {
       .catch((err) => {
         setError(err);
       });
-  }, [clearError, segment.key, setError]);
-
-  const incrementSegmentVersion = () => {
-    setSegmentVersion(segmentVersion + 1);
-  };
-
-  useEffect(() => {
-    fetchSegment();
-  }, [segmentVersion, fetchSegment]);
+  }, [segmentVersion, currentNamespace?.key, segmentKey, clearError, setError]);
 
   const constraintTypeToLabel = (t: string) =>
     ComparisonType[t as keyof typeof ComparisonType];
@@ -75,6 +65,8 @@ export default function Segment() {
   const constraintOperatorToLabel = (o: string) => ConstraintOperators[o];
 
   const constraintFormRef = useRef(null);
+
+  if (!segment) return <Loading />;
 
   return (
     <>
@@ -114,7 +106,12 @@ export default function Segment() {
           panelType="Constraint"
           setOpen={setShowDeleteConstraintModal}
           handleDelete={
-            () => deleteConstraint(segment.key, deletingConstraint?.id ?? '') // TODO: Determine impact of blank ID param
+            () =>
+              deleteConstraint(
+                currentNamespace?.key,
+                segment.key,
+                deletingConstraint?.id ?? ''
+              ) // TODO: Determine impact of blank ID param
           }
           onSuccess={() => {
             incrementSegmentVersion();
@@ -135,7 +132,7 @@ export default function Segment() {
           }
           panelType="Segment"
           setOpen={setShowDeleteSegmentModal}
-          handleDelete={() => deleteSegment(segment.key)}
+          handleDelete={() => deleteSegment(currentNamespace?.key, segment.key)}
           onSuccess={() => {
             setShowDeleteSegmentModal(false);
             navigate('/segments');

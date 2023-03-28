@@ -6,11 +6,17 @@ import EmptyState from '~/components/EmptyState';
 import FlagTable from '~/components/flags/FlagTable';
 import Button from '~/components/forms/Button';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { IFlagList } from '~/types/Flag';
 
 export default function Flags() {
-  const { data, error } = useSWR<IFlagList>('/flags');
+  const { currentNamespace } = useNamespace();
+
+  const { data, error } = useSWR<IFlagList>(
+    `/namespaces/${currentNamespace.key}/flags`
+  );
   const flags = data?.flags;
+
   const navigate = useNavigate();
   const { setError, clearError } = useError();
 

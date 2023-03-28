@@ -1,19 +1,18 @@
-import { useState } from 'react';
 import Listbox, { ISelectable } from '~/components/forms/Listbox';
-import { INamespaceBase } from '~/types/Namespace';
+import useNamespace from '~/data/hooks/namespace';
+import { INamespace } from '~/types/Namespace';
 
-type SelectableNamespace = INamespaceBase & ISelectable;
+type SelectableNamespace = Pick<INamespace, 'key' | 'name'> & ISelectable;
 
 type NamespaceNavProps = {
-  namespaces: INamespaceBase[];
+  namespaces: INamespace[];
   className?: string;
 };
 
 export default function NamespaceNav(props: NamespaceNavProps) {
   const { namespaces, className } = props;
 
-  const [selectedNamespace, setSelectedNamespace] =
-    useState<SelectableNamespace | null>(null);
+  const { currentNamespace, setCurrentNamespace } = useNamespace();
 
   return (
     <Listbox<SelectableNamespace>
@@ -24,8 +23,11 @@ export default function NamespaceNav(props: NamespaceNavProps) {
         ...n,
         displayValue: n.name
       }))}
-      selected={selectedNamespace}
-      setSelected={setSelectedNamespace}
+      selected={{
+        ...currentNamespace,
+        displayValue: currentNamespace?.name || ''
+      }}
+      setSelected={setCurrentNamespace}
     />
   );
 }

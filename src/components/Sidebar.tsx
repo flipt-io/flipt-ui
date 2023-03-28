@@ -3,12 +3,12 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import logoLight from '~/assets/logo-light.png';
-import { INamespaceBase } from '~/types/Namespace';
+import { INamespace } from '~/types/Namespace';
 import Nav from './Nav';
 import NamespaceNav from './settings/namespaces/NamespaceNav';
 
 type SidebarProps = {
-  namespaces: INamespaceBase[];
+  namespaces: INamespace[];
   sidebarOpen: boolean;
   setSidebarOpen: (sidebarOpen: boolean) => void;
 };

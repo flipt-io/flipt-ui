@@ -10,6 +10,7 @@ import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { createDistribution, createRule } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { keyValidation } from '~/data/validations';
 import { IDistributionVariant } from '~/types/Distribution';
@@ -69,8 +70,12 @@ type SelectableSegment = ISegment & ISelectable;
 
 export default function RuleForm(props: RuleFormProps) {
   const { setOpen, rulesChanged, flag, rank, segments } = props;
+
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
+
+  const { currentNamespace } = useNamespace();
+
   const [distributionsValid, setDistributionsValid] = useState<boolean>(true);
 
   const [ruleType, setRuleType] = useState('single');
@@ -103,7 +108,7 @@ export default function RuleForm(props: RuleFormProps) {
       throw new Error('No segment selected');
     }
 
-    const rule = await createRule(flag.key, {
+    const rule = await createRule(currentNamespace?.key, flag.key, {
       flagKey: flag.key,
       segmentKey: selectedSegment.key,
       rank
@@ -111,7 +116,7 @@ export default function RuleForm(props: RuleFormProps) {
 
     if (ruleType === 'multi') {
       const distPromises = distributions?.map((dist: IDistributionVariant) =>
-        createDistribution(flag.key, rule.id, {
+        createDistribution(currentNamespace?.key, flag.key, rule.id, {
           variantId: dist.variantId,
           rollout: dist.rollout
         })
@@ -121,7 +126,7 @@ export default function RuleForm(props: RuleFormProps) {
       if (selectedVariant) {
         // we allow creating rules without variants
 
-        await createDistribution(flag.key, rule.id, {
+        await createDistribution(currentNamespace?.key, flag.key, rule.id, {
           variantId: selectedVariant.id,
           rollout: 100
         });

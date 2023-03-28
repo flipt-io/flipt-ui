@@ -8,8 +8,8 @@ type ListBoxProps<T extends ISelectable> = {
   name: string;
   placeholder?: string;
   values?: T[];
-  selected: T | null;
-  setSelected?: (v: T | null) => void;
+  selected: T;
+  setSelected?: (v: T) => void;
   disabled?: boolean;
   className?: string;
 };
@@ -29,7 +29,8 @@ export default function Listbox<T extends ISelectable>(props: ListBoxProps<T>) {
       name={name}
       className={className}
       value={selected}
-      onChange={(v: T | null) => {
+      by="key"
+      onChange={(v: T) => {
         setSelected && setSelected(v);
       }}
       disabled={disabled}

@@ -13,6 +13,7 @@ import Input from '~/components/forms/Input';
 import TextArea from '~/components/forms/TextArea';
 import { evaluate, listFlags } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import {
   jsonValidation,
   keyValidation,
@@ -29,11 +30,16 @@ export default function Console() {
   const [flags, setFlags] = useState<SelectableFlag[]>([]);
   const [selectedFlag, setSelectedFlag] = useState<SelectableFlag | null>(null);
   const [response, setResponse] = useState<string | null>(null);
+
   const { setError, clearError } = useError();
   const navigate = useNavigate();
 
+  const { currentNamespace } = useNamespace();
+
   const loadData = useCallback(async () => {
-    const initialFlagList = (await listFlags()) as IFlagList;
+    const initialFlagList = (await listFlags(
+      currentNamespace?.key
+    )) as IFlagList;
     const { flags } = initialFlagList;
 
     setFlags(
@@ -48,7 +54,7 @@ export default function Console() {
         };
       })
     );
-  }, []);
+  }, [currentNamespace?.key]);
 
   const handleSubmit = (values: IConsole) => {
     const { flagKey, entityId, context } = values;
@@ -60,7 +66,7 @@ export default function Console() {
       context: parsed
     };
 
-    evaluate(flagKey, rest)
+    evaluate(currentNamespace?.key, flagKey, rest)
       .then((resp) => {
         setResponse(JSON.stringify(resp, null, 2));
       })

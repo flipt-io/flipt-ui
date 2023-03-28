@@ -26,7 +26,7 @@ export default function NamespaceProvider({
 
   useEffect(() => {
     if (currentNamespace.key === '') {
-      getNamespace('default').then((namespace) => {
+      getNamespace('default').then((namespace: INamespace) => {
         setCurrentNamespace(namespace);
       });
     }

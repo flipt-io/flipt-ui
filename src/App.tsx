@@ -37,11 +37,17 @@ const router = createHashRouter([
     children: [
       {
         element: <Flags />,
+        handle: {
+          namespaced: true
+        },
         index: true
       },
       {
         path: 'flags',
-        element: <Flags />
+        element: <Flags />,
+        handle: {
+          namespaced: true
+        }
       },
       {
         path: 'flags/new',
@@ -63,7 +69,10 @@ const router = createHashRouter([
       },
       {
         path: 'segments',
-        element: <Segments />
+        element: <Segments />,
+        handle: {
+          namespaced: true
+        }
       },
       {
         path: 'segments/new',
@@ -75,7 +84,10 @@ const router = createHashRouter([
       },
       {
         path: 'console',
-        element: <Console />
+        element: <Console />,
+        handle: {
+          namespaced: true
+        }
       },
       {
         path: 'settings',

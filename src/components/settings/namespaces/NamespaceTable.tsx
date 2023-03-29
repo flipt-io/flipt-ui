@@ -48,7 +48,10 @@ type NamespaceDeleteActionProps = {
 function NamespaceDeleteAction(props: NamespaceDeleteActionProps) {
   const { row, setDeletingNamespace, setShowDeleteNamespaceModal } = props;
   return row.original.protected ? (
-    <span className="text-gray-400">Delete</span>
+    <span className="text-gray-400">
+      Delete
+      <span className="sr-only">, {row.original.name}</span>
+    </span>
   ) : (
     <a
       href="#"

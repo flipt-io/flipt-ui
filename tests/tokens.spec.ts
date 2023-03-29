@@ -10,7 +10,6 @@ test('can create token', async ({ page }) => {
   await page.getByRole('link', { name: 'API Tokens' }).click();
   await page.getByRole('button', { name: 'New Token' }).nth(0).click();
   await page.getByLabel('Name').fill('abcdef');
-  await page.getByLabel('Name').press('Tab');
   await page.getByLabel('Description').fill('xyz');
   await page.getByRole('button', { name: 'Create' }).click();
   await page.getByRole('button', { name: 'Copy' }).click();

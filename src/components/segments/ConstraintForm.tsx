@@ -10,6 +10,7 @@ import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { createConstraint, updateConstraint } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { requiredValidation } from '~/data/validations';
 import {
@@ -134,12 +135,15 @@ type ConstraintFormProps = {
 
 const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
   const { setOpen, segmentKey, constraint, onSuccess } = props;
-  const { setError, clearError } = useError();
-  const { setSuccess } = useSuccess();
 
   const isNew = constraint === undefined;
   const submitPhrase = isNew ? 'Create' : 'Update';
   const title = isNew ? 'New Constraint' : 'Edit Constraint';
+
+  const { setError, clearError } = useError();
+  const { setSuccess } = useSuccess();
+
+  const { currentNamespace } = useNamespace();
 
   const initialValues: IConstraintBase = {
     property: constraint?.property || '',
@@ -150,9 +154,14 @@ const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
 
   const handleSubmit = async (values: IConstraintBase) => {
     if (isNew) {
-      return createConstraint(segmentKey, values);
+      return createConstraint(currentNamespace?.key, segmentKey, values);
     }
-    return updateConstraint(segmentKey, constraint?.id, values);
+    return updateConstraint(
+      currentNamespace?.key,
+      segmentKey,
+      constraint?.id,
+      values
+    );
   };
 
   return (

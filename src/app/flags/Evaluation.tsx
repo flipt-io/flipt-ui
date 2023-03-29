@@ -27,6 +27,7 @@ import SortableRule from '~/components/rules/SortableRule';
 import Slideover from '~/components/Slideover';
 import { deleteRule, listRules, listSegments, orderRules } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { IDistribution } from '~/types/Distribution';
 import { IEvaluatable } from '~/types/Evaluatable';
@@ -57,12 +58,19 @@ export default function Evaluation() {
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
 
+  const { currentNamespace } = useNamespace();
+
   const loadData = useCallback(async () => {
-    const segmentList = (await listSegments()) as ISegmentList;
+    const segmentList = (await listSegments(
+      currentNamespace?.key
+    )) as ISegmentList;
     const { segments } = segmentList;
     setSegments(segments);
 
-    const ruleList = (await listRules(flag.key)) as IRuleList;
+    const ruleList = (await listRules(
+      currentNamespace?.key,
+      flag.key
+    )) as IRuleList;
 
     const rules = ruleList.rules.flatMap((rule: IRule) => {
       const rollouts = rule.distributions.flatMap(
@@ -101,7 +109,7 @@ export default function Evaluation() {
     });
 
     setRules(rules);
-  }, [flag]);
+  }, [currentNamespace?.key, flag]);
 
   const incrementRulesVersion = () => {
     setRulesVersion(rulesVersion + 1);
@@ -116,6 +124,7 @@ export default function Evaluation() {
 
   const reorderRules = (rules: IEvaluatable[]) => {
     orderRules(
+      currentNamespace?.key,
       flag.key,
       rules.map((rule) => rule.id)
     )
@@ -180,7 +189,9 @@ export default function Evaluation() {
           }
           panelType="Rule"
           setOpen={setShowDeleteRuleModal}
-          handleDelete={() => deleteRule(flag.key, deletingRule?.id ?? '')}
+          handleDelete={() =>
+            deleteRule(currentNamespace?.key, flag.key, deletingRule?.id ?? '')
+          }
           onSuccess={() => {
             incrementRulesVersion();
             setShowDeleteRuleModal(false);

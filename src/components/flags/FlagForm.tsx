@@ -7,6 +7,7 @@ import Input from '~/components/forms/Input';
 import Toggle from '~/components/forms/Toggle';
 import { createFlag, updateFlag } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { IFlag, IFlagBase } from '~/types/Flag';
@@ -19,17 +20,21 @@ type FlagFormProps = {
 
 export default function FlagForm(props: FlagFormProps) {
   const { flag, flagChanged } = props;
+
   const isNew = flag === undefined;
   const submitPhrase = isNew ? 'Create' : 'Update';
+
   const navigate = useNavigate();
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
 
+  const { currentNamespace } = useNamespace();
+
   const handleSubmit = (values: IFlagBase) => {
     if (isNew) {
-      return createFlag(values);
+      return createFlag(currentNamespace?.key, values);
     }
-    return updateFlag(flag?.key, values);
+    return updateFlag(currentNamespace?.key, flag?.key, values);
   };
 
   const initialValues: IFlagBase = {

@@ -6,6 +6,7 @@ import Input from '~/components/forms/Input';
 import Loading from '~/components/Loading';
 import { createSegment, updateSegment } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { ISegment, ISegmentBase, SegmentMatchType } from '~/types/Segment';
@@ -31,17 +32,21 @@ type SegmentFormProps = {
 
 export default function SegmentForm(props: SegmentFormProps) {
   const { segment, segmentChanged } = props;
+
   const isNew = segment === undefined;
   const submitPhrase = isNew ? 'Create' : 'Update';
+
   const navigate = useNavigate();
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
 
+  const { currentNamespace } = useNamespace();
+
   const handleSubmit = (values: ISegmentBase) => {
     if (isNew) {
-      return createSegment(values);
+      return createSegment(currentNamespace?.key, values);
     }
-    return updateSegment(segment?.key, values);
+    return updateSegment(currentNamespace?.key, segment?.key, values);
   };
 
   const initialValues: ISegmentBase = {

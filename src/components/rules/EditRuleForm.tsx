@@ -9,6 +9,7 @@ import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { updateDistribution } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { IEvaluatable, IRollout } from '~/types/Evaluatable';
 import { ISegment } from '~/types/Segment';
@@ -47,8 +48,11 @@ type SelectableVariant = IVariant & ISelectable;
 
 export default function EditRuleForm(props: RuleFormProps) {
   const { setOpen, rule, onSuccess } = props;
+
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
+
+  const { currentNamespace } = useNamespace();
 
   const [distributionsValid, setDistributionsValid] = useState<boolean>(true);
 
@@ -78,6 +82,7 @@ export default function EditRuleForm(props: RuleFormProps) {
           found.distribution.rollout !== rollout.distribution.rollout
         ) {
           return updateDistribution(
+            currentNamespace?.key,
             rule.flag.key,
             rule.id,
             rollout.distribution.id,

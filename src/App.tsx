@@ -4,13 +4,15 @@ import { SWRConfig } from 'swr';
 import ErrorLayout from './app/ErrorLayout';
 import EditFlag from './app/flags/EditFlag';
 import Evaluation from './app/flags/Evaluation';
-import Flag, { flagLoader } from './app/flags/Flag';
+import Flag from './app/flags/Flag';
 import NewFlag from './app/flags/NewFlag';
 import Layout from './app/Layout';
 import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
-import Segment, { segmentLoader } from './app/segments/Segment';
+import Segment from './app/segments/Segment';
+import NamespaceProvider from './components/NamespaceProvider';
 import SessionProvider from './components/SessionProvider';
+import { request } from './data/api';
 
 const Flags = loadable(() => import('./app/flags/Flags'));
 const Segments = loadable(() => import('./app/segments/Segments'));
@@ -35,11 +37,17 @@ const router = createHashRouter([
     children: [
       {
         element: <Flags />,
+        handle: {
+          namespaced: true
+        },
         index: true
       },
       {
         path: 'flags',
-        element: <Flags />
+        element: <Flags />,
+        handle: {
+          namespaced: true
+        }
       },
       {
         path: 'flags/new',
@@ -48,7 +56,6 @@ const router = createHashRouter([
       {
         path: 'flags/:flagKey',
         element: <Flag />,
-        loader: flagLoader,
         children: [
           {
             path: '',
@@ -62,7 +69,10 @@ const router = createHashRouter([
       },
       {
         path: 'segments',
-        element: <Segments />
+        element: <Segments />,
+        handle: {
+          namespaced: true
+        }
       },
       {
         path: 'segments/new',
@@ -70,12 +80,14 @@ const router = createHashRouter([
       },
       {
         path: 'segments/:segmentKey',
-        element: <Segment />,
-        loader: segmentLoader
+        element: <Segment />
       },
       {
         path: 'console',
-        element: <Console />
+        element: <Console />,
+        handle: {
+          namespaced: true
+        }
       },
       {
         path: 'settings',
@@ -103,56 +115,8 @@ const router = createHashRouter([
   }
 ]);
 
-const apiURL = '/api/v1';
-
 const fetcher = async (uri: String) => {
-  const res = await fetch(apiURL + uri);
-
-  class StatusError extends Error {
-    info: string;
-
-    status: number;
-
-    constructor(message: string, info: string, status: number) {
-      super(message);
-      this.info = info;
-      this.status = status;
-    }
-  }
-
-  // If the status code is not in the range 200-299,
-  // we still try to parse and throw it.
-  if (!res.ok) {
-    if (res.status === 401) {
-      window.localStorage.clear();
-      window.location.reload();
-    }
-
-    const contentType = res.headers.get('content-type');
-
-    if (!contentType || !contentType.includes('application/json')) {
-      const err = new StatusError(
-        'An unexpected error occurred.',
-        await res.text(),
-        res.status
-      );
-      console.log(err);
-      throw err;
-    }
-
-    let info = '';
-    info = await res.json();
-
-    const err = new StatusError(
-      'An error occurred while fetching the data.',
-      info,
-      res.status
-    );
-    console.log(err);
-    throw err;
-  }
-
-  return res.json();
+  return request('GET', '/api/v1' + uri);
 };
 
 export default function App() {
@@ -163,7 +127,9 @@ export default function App() {
       }}
     >
       <SessionProvider>
-        <RouterProvider router={router} />
+        <NamespaceProvider>
+          <RouterProvider router={router} />
+        </NamespaceProvider>
       </SessionProvider>
     </SWRConfig>
   );

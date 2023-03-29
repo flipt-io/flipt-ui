@@ -10,6 +10,7 @@ import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { createVariant, updateVariant } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { jsonValidation, keyValidation } from '~/data/validations';
 import { IVariant, IVariantBase } from '~/types/Variant';
@@ -23,18 +24,22 @@ type VariantFormProps = {
 
 const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
   const { setOpen, flagKey, variant, onSuccess } = props;
+
   const isNew = variant === undefined;
   const title = isNew ? 'New Variant' : 'Edit Variant';
   const submitPhrase = isNew ? 'Create' : 'Update';
+
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
 
+  const { currentNamespace } = useNamespace();
+
   const handleSubmit = async (values: IVariantBase) => {
     if (isNew) {
-      return createVariant(flagKey, values);
+      return createVariant(currentNamespace?.key, flagKey, values);
     }
 
-    return updateVariant(flagKey, variant?.id, values);
+    return updateVariant(currentNamespace?.key, flagKey, variant?.id, values);
   };
 
   return (

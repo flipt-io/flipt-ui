@@ -9,10 +9,20 @@ test('can create namespace', async ({ page }) => {
   await page.getByRole('link', { name: 'Settings' }).click();
   await expect(page.getByRole('heading', { name: 'Namespaces' })).toBeVisible();
   await page.getByRole('button', { name: 'New Namespace' }).click();
-  await page.getByLabel('Name', { exact: true }).fill('test');
-  await page.getByLabel('Description').fill('Test Namespace');
+  await page.getByLabel('Name', { exact: true }).fill('staging');
+  await page.getByLabel('Description').fill('Staging Namespace');
   await page.getByRole('button', { name: 'Create' }).click();
   await expect(page.getByText('Successfully created namespace')).toBeVisible();
+});
+
+test('can update namespace', async ({ page }) => {
+  await page.getByRole('link', { name: 'Settings' }).click();
+  await expect(page.getByRole('heading', { name: 'Namespaces' })).toBeVisible();
+  await page.getByRole('link', { name: 'staging', exact: true }).click();
+  await page.getByLabel('Name', { exact: true }).fill('test');
+  await page.getByLabel('Description').fill('Test Namespace');
+  await page.getByRole('button', { name: 'Update' }).click();
+  await expect(page.getByText('Successfully updated namespace')).toBeVisible();
 });
 
 test('can delete namespace', async ({ page }) => {

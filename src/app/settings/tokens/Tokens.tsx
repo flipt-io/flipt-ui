@@ -145,7 +145,6 @@ export default function Tokens() {
           handleDelete={() => deleteToken(deletingToken?.id ?? '')} // TODO: Determine impact of blank ID param
           onSuccess={() => {
             incrementTokensVersion();
-            setShowDeleteTokenModal(false);
           }}
         />
       </Modal>

@@ -52,6 +52,9 @@ export default function DeletePanel(props: DeletePanelProps) {
               })
               .catch((err) => {
                 setError(err);
+              })
+              .finally(() => {
+                setOpen(false);
               });
           }}
         >

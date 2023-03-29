@@ -71,7 +71,6 @@ export default function Flag() {
           setOpen={setShowDeleteFlagModal}
           handleDelete={() => deleteFlag(currentNamespace?.key, flag.key)}
           onSuccess={() => {
-            setShowDeleteFlagModal(false);
             navigate('/');
           }}
         />

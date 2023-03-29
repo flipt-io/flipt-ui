@@ -70,7 +70,6 @@ export default function EditFlag() {
               ) // TODO: Determine impact of blank ID param
           }
           onSuccess={() => {
-            setShowDeleteVariantModal(false);
             onFlagChange();
           }}
         />

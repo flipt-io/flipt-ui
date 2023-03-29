@@ -168,7 +168,7 @@ const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
     <Formik
       initialValues={initialValues}
       enableReinitialize={true}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values)
           .then(() => {
             clearError();
@@ -179,6 +179,9 @@ const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
           })
           .catch((err) => {
             setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
       validationSchema={Yup.object({

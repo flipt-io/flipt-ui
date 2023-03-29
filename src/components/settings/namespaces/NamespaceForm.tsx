@@ -43,7 +43,7 @@ const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
         name: namespace?.name || '',
         description: namespace?.description || ''
       }}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values)
           .then(() => {
             clearError();
@@ -54,6 +54,9 @@ const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
           })
           .catch((err) => {
             setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
       validationSchema={Yup.object({

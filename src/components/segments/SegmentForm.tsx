@@ -60,7 +60,7 @@ export default function SegmentForm(props: SegmentFormProps) {
     <Formik
       enableReinitialize
       initialValues={initialValues}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values)
           .then(() => {
             clearError();
@@ -76,6 +76,9 @@ export default function SegmentForm(props: SegmentFormProps) {
           })
           .catch((err) => {
             setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
       validationSchema={Yup.object({

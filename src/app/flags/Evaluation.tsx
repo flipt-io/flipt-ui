@@ -194,7 +194,6 @@ export default function Evaluation() {
           }
           onSuccess={() => {
             incrementRulesVersion();
-            setShowDeleteRuleModal(false);
           }}
         />
       </Modal>

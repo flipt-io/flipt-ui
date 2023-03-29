@@ -132,11 +132,6 @@ export default function RuleForm(props: RuleFormProps) {
         });
       }
     }
-
-    rulesChanged();
-    clearError();
-    setSuccess('Successfully created rule');
-    setOpen(false);
   };
 
   return (
@@ -147,10 +142,20 @@ export default function RuleForm(props: RuleFormProps) {
       validationSchema={Yup.object({
         segmentKey: keyValidation
       })}
-      onSubmit={() => {
-        handleSubmit().catch((err) => {
-          setError(err);
-        });
+      onSubmit={(_, { setSubmitting }) => {
+        handleSubmit()
+          .then(() => {
+            rulesChanged();
+            clearError();
+            setSuccess('Successfully created rule');
+            setOpen(false);
+          })
+          .catch((err) => {
+            setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
       }}
     >
       {(formik) => {

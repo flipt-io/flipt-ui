@@ -100,7 +100,7 @@ export default function EditRuleForm(props: RuleFormProps) {
       initialValues={{
         segmentKey: rule.segment.key || ''
       }}
-      onSubmit={() => {
+      onSubmit={(_, { setSubmitting }) => {
         handleSubmit()
           ?.then(() => {
             clearError();
@@ -109,10 +109,13 @@ export default function EditRuleForm(props: RuleFormProps) {
           })
           .catch((err) => {
             setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
     >
-      {(_formik) => {
+      {(formik) => {
         return (
           <Form className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
             <div className="flex-1">
@@ -312,10 +315,10 @@ export default function EditRuleForm(props: RuleFormProps) {
                 <Button
                   primary
                   type="submit"
-                  disabled={!(distributionsValid && !_formik.isSubmitting)}
+                  disabled={!(distributionsValid && !formik.isSubmitting)}
                   className="min-w-[80px]"
                 >
-                  {_formik.isSubmitting ? <Loading isPrimary /> : 'Update'}
+                  {formik.isSubmitting ? <Loading isPrimary /> : 'Update'}
                 </Button>
               </div>
             </div>

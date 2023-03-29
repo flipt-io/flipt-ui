@@ -16,7 +16,7 @@ function InnerLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [namespaces, setNamespaces] = useState<INamespace[]>([]);
 
-  const { setError, clearError } = useError();
+  const { setError } = useError();
 
   useEffect(() => {
     if (!session) return;
@@ -24,12 +24,11 @@ function InnerLayout() {
     listNamespaces()
       .then((data) => {
         setNamespaces(data.namespaces);
-        clearError();
       })
       .catch((err) => {
         setError(err);
       });
-  }, [clearError, session, setError]);
+  }, [session, setError]);
 
   if (!session) {
     return <Navigate to="/login" />;

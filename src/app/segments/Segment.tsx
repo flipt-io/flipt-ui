@@ -115,7 +115,6 @@ export default function Segment() {
           }
           onSuccess={() => {
             incrementSegmentVersion();
-            setShowDeleteConstraintModal(false);
           }}
         />
       </Modal>
@@ -134,7 +133,6 @@ export default function Segment() {
           setOpen={setShowDeleteSegmentModal}
           handleDelete={() => deleteSegment(currentNamespace?.key, segment.key)}
           onSuccess={() => {
-            setShowDeleteSegmentModal(false);
             navigate('/segments');
           }}
         />

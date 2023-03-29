@@ -84,8 +84,6 @@ export default function Namespaces(): JSX.Element {
             () => deleteNamespace(deletingNamespace?.key ?? '') // TODO: Determine impact of blank ID param
           }
           onSuccess={() => {
-            setShowDeleteNamespaceModal(false);
-            setDeletingNamespace(null);
             incrementNamespacesVersion();
           }}
         />

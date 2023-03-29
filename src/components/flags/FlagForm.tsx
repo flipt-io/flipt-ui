@@ -48,7 +48,7 @@ export default function FlagForm(props: FlagFormProps) {
     <Formik
       enableReinitialize
       initialValues={initialValues}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values)
           .then(() => {
             clearError();
@@ -63,8 +63,10 @@ export default function FlagForm(props: FlagFormProps) {
             flagChanged && flagChanged();
           })
           .catch((err) => {
-            console.log(err);
             setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
       validationSchema={Yup.object({

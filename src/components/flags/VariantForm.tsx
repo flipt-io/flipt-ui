@@ -50,7 +50,7 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
         description: variant?.description || '',
         attachment: variant?.attachment || ''
       }}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values)
           .then(() => {
             clearError();
@@ -61,6 +61,9 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
           })
           .catch((err) => {
             setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
       validationSchema={Yup.object({

@@ -14,6 +14,9 @@ import { INamespace } from '~/types/Namespace';
 function InnerLayout() {
   const { session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // TODO: replace with a proper state management solution like Redux
+  // instead of passing around via context
   const [namespaces, setNamespaces] = useState<INamespace[]>([]);
 
   const { setError } = useError();
@@ -46,7 +49,7 @@ function InnerLayout() {
 
         <main className="flex px-6 py-10">
           <div className="w-full overflow-x-auto px-4 sm:px-6 lg:px-8">
-            <Outlet />
+            <Outlet context={{ namespaces, setNamespaces }} />
           </div>
         </main>
         <Footer />

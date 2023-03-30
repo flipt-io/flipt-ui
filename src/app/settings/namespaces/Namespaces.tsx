@@ -1,5 +1,6 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import DeletePanel from '~/components/DeletePanel';
 import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
@@ -8,10 +9,17 @@ import NamespaceForm from '~/components/settings/namespaces/NamespaceForm';
 import NamespaceTable from '~/components/settings/namespaces/NamespaceTable';
 import Slideover from '~/components/Slideover';
 import { deleteNamespace, listNamespaces } from '~/data/api';
+import { useError } from '~/data/hooks/error';
 import { INamespace, INamespaceList } from '~/types/Namespace';
 
+type NamespaceContextType = {
+  namespaces: INamespace[];
+  setNamespaces: (namespaces: INamespace[]) => void;
+};
+
 export default function Namespaces(): JSX.Element {
-  const [namespaces, setNamespaces] = useState<INamespace[]>([]);
+  const { namespaces, setNamespaces } =
+    useOutletContext<NamespaceContextType>();
 
   const [showNamespaceForm, setShowNamespaceForm] = useState<boolean>(false);
 
@@ -27,11 +35,17 @@ export default function Namespaces(): JSX.Element {
 
   const [namespacesVersion, setNamespacesVersion] = useState(0);
 
+  const { setError } = useError();
+
   const fetchNamespaces = useCallback(() => {
-    listNamespaces().then((resp: INamespaceList) => {
-      setNamespaces(resp.namespaces);
-    });
-  }, []);
+    listNamespaces()
+      .then((resp: INamespaceList) => {
+        setNamespaces(resp.namespaces);
+      })
+      .catch((err) => {
+        setError(err);
+      });
+  }, [setError, setNamespaces]);
 
   const incrementNamespacesVersion = () => {
     setNamespacesVersion(namespacesVersion + 1);

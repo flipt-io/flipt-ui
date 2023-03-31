@@ -43,7 +43,7 @@ export default function FlagTable(props: FlagTableProps) {
     columnHelper.accessor('key', {
       header: 'Key',
       cell: (info) => (
-        <Link to={`/flags/${info.getValue()}`} className="text-violet-500">
+        <Link to={info.getValue()} className="text-violet-500">
           {truncateKey(info.getValue())}
         </Link>
       ),

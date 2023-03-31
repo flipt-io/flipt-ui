@@ -69,7 +69,9 @@ export default function SegmentForm(props: SegmentFormProps) {
             );
 
             if (isNew) {
-              navigate(`/segments/${values.key}`);
+              navigate(
+                `/namespaces/${currentNamespace.key}/segments/${values.key}`
+              );
               return;
             }
             segmentChanged && segmentChanged();

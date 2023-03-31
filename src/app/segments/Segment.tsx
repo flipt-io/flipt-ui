@@ -131,9 +131,9 @@ export default function Segment() {
           }
           panelType="Segment"
           setOpen={setShowDeleteSegmentModal}
-          handleDelete={() => deleteSegment(currentNamespace?.key, segment.key)}
+          handleDelete={() => deleteSegment(currentNamespace.key, segment.key)}
           onSuccess={() => {
-            navigate('/segments');
+            navigate(`/namespaces/${currentNamespace.key}/segments`);
           }}
         />
       </Modal>

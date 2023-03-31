@@ -284,6 +284,7 @@ export default function Evaluation() {
                       rules.map((rule) => (
                         <SortableRule
                           key={rule.id}
+                          namespace={currentNamespace}
                           rule={rule}
                           onEdit={() => {
                             setEditingRule(rule);
@@ -298,7 +299,9 @@ export default function Evaluation() {
                   </ul>
                 </SortableContext>
                 <DragOverlay>
-                  {activeRule ? <Rule rule={activeRule} /> : null}
+                  {activeRule ? (
+                    <Rule namespace={currentNamespace} rule={activeRule} />
+                  ) : null}
                 </DragOverlay>
               </DndContext>
             </div>

@@ -40,7 +40,7 @@ export default function Segments() {
           </p>
         </div>
         <div className="mt-4">
-          <Link to="/segments/new">
+          <Link to="new">
             <Button primary>
               <PlusIcon
                 className="-ml-1.5 mr-1 h-5 w-5 text-white"
@@ -55,10 +55,7 @@ export default function Segments() {
         {segments && segments.length > 0 ? (
           <SegmentTable segments={segments} />
         ) : (
-          <EmptyState
-            text="Create Segment"
-            onClick={() => navigate('/segments/new')}
-          />
+          <EmptyState text="Create Segment" onClick={() => navigate('new')} />
         )}
       </div>
     </>

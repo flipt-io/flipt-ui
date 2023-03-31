@@ -56,7 +56,9 @@ export default function FlagForm(props: FlagFormProps) {
               `Successfully ${submitPhrase.toLocaleLowerCase()}d flag`
             );
             if (isNew) {
-              navigate(`/flags/${values.key}`);
+              navigate(
+                `/namespaces/${currentNamespace.key}/flags/${values.key}`
+              );
               return;
             }
 

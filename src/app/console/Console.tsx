@@ -220,7 +220,9 @@ export default function Console() {
             <EmptyState
               text="Create Flag"
               secondaryText="At least one flag must exist to use the console"
-              onClick={() => navigate('/flags/new')}
+              onClick={() =>
+                navigate(`/namespaces/${currentNamespace.key}/flags/new`)
+              }
             />
           </div>
         )}

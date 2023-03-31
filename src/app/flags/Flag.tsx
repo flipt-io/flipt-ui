@@ -32,18 +32,18 @@ export default function Flag() {
   const tabs = [
     {
       name: 'Details',
-      to: `/flags/${flagKey}`
+      to: ''
     },
     {
       name: 'Evaluation',
-      to: `/flags/${flagKey}/evaluation`
+      to: 'evaluation'
     }
   ];
 
   useEffect(() => {
     if (!flagKey) return;
 
-    getFlag(currentNamespace?.key, flagKey)
+    getFlag(currentNamespace.key, flagKey)
       .then((flag: IFlag) => {
         setFlag(flag);
         clearError();
@@ -51,7 +51,7 @@ export default function Flag() {
       .catch((err) => {
         setError(err);
       });
-  }, [flagVersion, flagKey, currentNamespace?.key, clearError, setError]);
+  }, [flagVersion, flagKey, currentNamespace.key, clearError, setError]);
 
   if (!flag) return <Loading />;
 
@@ -69,9 +69,9 @@ export default function Flag() {
           }
           panelType="Flag"
           setOpen={setShowDeleteFlagModal}
-          handleDelete={() => deleteFlag(currentNamespace?.key, flag.key)}
+          handleDelete={() => deleteFlag(currentNamespace.key, flag.key)}
           onSuccess={() => {
-            navigate('/');
+            navigate(`/namespaces/${currentNamespace.key}/flags`);
           }}
         />
       </Modal>

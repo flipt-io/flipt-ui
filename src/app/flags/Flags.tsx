@@ -40,7 +40,7 @@ export default function Flags() {
           </p>
         </div>
         <div className="mt-4">
-          <Link to="/flags/new">
+          <Link to="new">
             <Button primary>
               <PlusIcon
                 className="-ml-1.5 mr-1 h-5 w-5 text-white"
@@ -55,10 +55,7 @@ export default function Flags() {
         {flags && flags.length > 0 ? (
           <FlagTable flags={flags} />
         ) : (
-          <EmptyState
-            text="Create Flag"
-            onClick={() => navigate('/flags/new')}
-          />
+          <EmptyState text="Create Flag" onClick={() => navigate('new')} />
         )}
       </div>
     </>

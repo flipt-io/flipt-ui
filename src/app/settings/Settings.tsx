@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useOutletContext } from 'react-router-dom';
 import TabBar from '~/components/TabBar';
 
 export default function Settings() {
@@ -23,7 +23,7 @@ export default function Settings() {
         </div>
       </div>
       <TabBar tabs={tabs} />
-      <Outlet />
+      <Outlet context={useOutletContext()} />
     </>
   );
 }

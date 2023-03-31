@@ -10,7 +10,6 @@ import Layout from './app/Layout';
 import NotFoundLayout from './app/NotFoundLayout';
 import NewSegment from './app/segments/NewSegment';
 import Segment from './app/segments/Segment';
-import NamespaceProvider from './components/NamespaceProvider';
 import SessionProvider from './components/SessionProvider';
 import { request } from './data/api';
 
@@ -24,6 +23,63 @@ const Namespaces = loadable(
 );
 const Tokens = loadable(() => import('./app/settings/tokens/Tokens'));
 
+const namespacesRoutes = [
+  {
+    element: <Flags />,
+    handle: {
+      namespaced: true
+    },
+    index: true
+  },
+  {
+    path: 'flags',
+    element: <Flags />,
+    handle: {
+      namespaced: true
+    }
+  },
+  {
+    path: 'flags/new',
+    element: <NewFlag />
+  },
+  {
+    path: 'flags/:flagKey',
+    element: <Flag />,
+    children: [
+      {
+        path: '',
+        element: <EditFlag />
+      },
+      {
+        path: 'evaluation',
+        element: <Evaluation />
+      }
+    ]
+  },
+  {
+    path: 'segments',
+    element: <Segments />,
+    handle: {
+      namespaced: true
+    }
+  },
+  {
+    path: 'segments/new',
+    element: <NewSegment />
+  },
+  {
+    path: 'segments/:segmentKey',
+    element: <Segment />
+  },
+  {
+    path: 'console',
+    element: <Console />,
+    handle: {
+      namespaced: true
+    }
+  }
+];
+
 const router = createHashRouter([
   {
     path: '/login',
@@ -36,58 +92,8 @@ const router = createHashRouter([
     errorElement: <ErrorLayout />,
     children: [
       {
-        element: <Flags />,
-        handle: {
-          namespaced: true
-        },
-        index: true
-      },
-      {
-        path: 'flags',
-        element: <Flags />,
-        handle: {
-          namespaced: true
-        }
-      },
-      {
-        path: 'flags/new',
-        element: <NewFlag />
-      },
-      {
-        path: 'flags/:flagKey',
-        element: <Flag />,
-        children: [
-          {
-            path: '',
-            element: <EditFlag />
-          },
-          {
-            path: 'evaluation',
-            element: <Evaluation />
-          }
-        ]
-      },
-      {
-        path: 'segments',
-        element: <Segments />,
-        handle: {
-          namespaced: true
-        }
-      },
-      {
-        path: 'segments/new',
-        element: <NewSegment />
-      },
-      {
-        path: 'segments/:segmentKey',
-        element: <Segment />
-      },
-      {
-        path: 'console',
-        element: <Console />,
-        handle: {
-          namespaced: true
-        }
+        path: 'namespaces/:namespaceKey',
+        children: namespacesRoutes
       },
       {
         path: 'settings',
@@ -106,7 +112,8 @@ const router = createHashRouter([
             element: <Tokens />
           }
         ]
-      }
+      },
+      ...namespacesRoutes
     ]
   },
   {
@@ -127,9 +134,7 @@ export default function App() {
       }}
     >
       <SessionProvider>
-        <NamespaceProvider>
-          <RouterProvider router={router} />
-        </NamespaceProvider>
+        <RouterProvider router={router} />
       </SessionProvider>
     </SWRConfig>
   );

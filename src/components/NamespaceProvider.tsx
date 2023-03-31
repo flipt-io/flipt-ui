@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { getNamespace } from '~/data/api';
 import { INamespace } from '~/types/Namespace';
 
@@ -6,12 +7,10 @@ type PartialNamespace = Pick<INamespace, 'name' | 'key'>;
 
 interface NamespaceContextType {
   currentNamespace: PartialNamespace;
-  setCurrentNamespace: (namespace: PartialNamespace) => void;
 }
 
 export const NamespaceContext = createContext({
-  currentNamespace: {} as PartialNamespace,
-  setCurrentNamespace: (_namespace: PartialNamespace) => {}
+  currentNamespace: {} as PartialNamespace
 } as NamespaceContextType);
 
 export default function NamespaceProvider({
@@ -19,24 +18,32 @@ export default function NamespaceProvider({
 }: {
   children: React.ReactNode;
 }) {
+  let { namespaceKey } = useParams();
+
   const [currentNamespace, setCurrentNamespace] = useState<PartialNamespace>({
     name: '',
     key: ''
   });
 
   useEffect(() => {
-    if (currentNamespace.key === '') {
+    if (namespaceKey === '') {
       getNamespace('default').then((namespace: INamespace) => {
         setCurrentNamespace(namespace);
       });
+      return;
     }
-  }, [currentNamespace.key]);
+
+    if (namespaceKey !== undefined && namespaceKey !== currentNamespace.key) {
+      getNamespace(namespaceKey).then((namespace: INamespace) => {
+        setCurrentNamespace(namespace);
+      });
+    }
+  }, [currentNamespace.key, namespaceKey]);
 
   return (
     <NamespaceContext.Provider
       value={{
-        currentNamespace,
-        setCurrentNamespace
+        currentNamespace
       }}
     >
       {children}

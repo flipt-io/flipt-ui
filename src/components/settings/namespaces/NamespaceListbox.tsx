@@ -4,13 +4,13 @@ import { INamespace } from '~/types/Namespace';
 
 type SelectableNamespace = Pick<INamespace, 'key' | 'name'> & ISelectable;
 
-type NamespaceNavProps = {
+type NamespaceLisboxProps = {
   disabled: boolean;
   namespaces: INamespace[];
   className?: string;
 };
 
-export default function NamespaceNav(props: NamespaceNavProps) {
+export default function NamespaceListbox(props: NamespaceLisboxProps) {
   const { disabled, namespaces, className } = props;
 
   const { currentNamespace, setCurrentNamespace } = useNamespace();

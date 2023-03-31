@@ -1,11 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment } from 'react';
-import { Link, useMatches } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logoLight from '~/assets/logo-light.png';
 import { INamespace } from '~/types/Namespace';
 import Nav from './Nav';
-import NamespaceNav from './settings/namespaces/NamespaceNav';
 
 type SidebarProps = {
   namespaces: INamespace[];
@@ -13,20 +12,8 @@ type SidebarProps = {
   setSidebarOpen: (sidebarOpen: boolean) => void;
 };
 
-// allows us to add custom properties to the route object
-interface RouteMatches {
-  namespaced: boolean;
-}
-
 export default function Sidebar(props: SidebarProps) {
   const { namespaces, sidebarOpen, setSidebarOpen } = props;
-
-  let matches = useMatches();
-  // if the current route is namespaced, we want to allow the namespace nav to be selectable
-  let namespaceNavEnabled = matches.some((m) => {
-    let r = m.handle as RouteMatches;
-    return r?.namespaced;
-  });
 
   return (
     <>
@@ -92,15 +79,10 @@ export default function Sidebar(props: SidebarProps) {
                   />
                 </div>
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
-                  <div className="mb-4 flex flex-shrink-0 flex-col space-y-1 px-2">
-                    <NamespaceNav
-                      disabled={!namespaceNavEnabled}
-                      namespaces={namespaces}
-                    />
-                  </div>
                   <Nav
                     sidebarOpen={sidebarOpen}
                     setSidebarOpen={setSidebarOpen}
+                    namespaces={namespaces}
                   />
                 </div>
               </Dialog.Panel>
@@ -127,12 +109,7 @@ export default function Sidebar(props: SidebarProps) {
             </Link>
           </div>
           <div className="flex flex-1 flex-col overflow-y-auto">
-            <NamespaceNav
-              disabled={!namespaceNavEnabled}
-              namespaces={namespaces}
-              className="flex flex-col px-2 pt-2"
-            />
-            <Nav className="py-2" />
+            <Nav className="py-4" namespaces={namespaces} />
           </div>
         </div>
       </div>

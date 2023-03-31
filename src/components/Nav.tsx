@@ -5,8 +5,10 @@ import {
   FlagIcon,
   UsersIcon
 } from '@heroicons/react/24/outline';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useMatches } from 'react-router-dom';
+import { INamespace } from '~/types/Namespace';
 import { classNames } from '~/utils/helpers';
+import NamespaceListbox from './settings/namespaces/NamespaceListbox';
 
 type Icon = (props: React.SVGProps<SVGSVGElement>) => any;
 
@@ -62,10 +64,23 @@ type NavProps = {
   className?: string;
   sidebarOpen?: boolean;
   setSidebarOpen?: (open: boolean) => void;
+  namespaces: INamespace[];
 };
 
+// allows us to add custom properties to the route object
+interface RouteMatches {
+  namespaced: boolean;
+}
+
 export default function Nav(props: NavProps) {
-  const { className, sidebarOpen, setSidebarOpen } = props;
+  const { className, sidebarOpen, setSidebarOpen, namespaces } = props;
+
+  let matches = useMatches();
+  // if the current route is namespaced, we want to allow the namespace nav to be selectable
+  let namespaceNavEnabled = matches.some((m) => {
+    let r = m.handle as RouteMatches;
+    return r?.namespaced;
+  });
 
   const navigation = [
     {
@@ -104,6 +119,12 @@ export default function Nav(props: NavProps) {
       className={`${className} flex flex-grow flex-col overflow-y-auto`}
       aria-label="Sidebar"
     >
+      <div className="mb-4 flex flex-shrink-0 flex-col px-2">
+        <NamespaceListbox
+          namespaces={namespaces}
+          disabled={!namespaceNavEnabled}
+        />
+      </div>
       <div className="flex flex-grow flex-col space-y-1 px-2">
         {navigation.map((item) => (
           <NavItem

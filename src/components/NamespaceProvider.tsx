@@ -11,6 +11,8 @@ export const NamespaceContext = createContext({
   currentNamespace: {} as INamespace
 } as NamespaceContextType);
 
+const defaultNamespace = 'default';
+
 export default function NamespaceProvider({
   children
 }: {
@@ -23,8 +25,8 @@ export default function NamespaceProvider({
   );
 
   useEffect(() => {
-    if (namespaceKey === '') {
-      getNamespace('default').then((namespace: INamespace) => {
+    if (namespaceKey === '' || namespaceKey === undefined) {
+      getNamespace(defaultNamespace).then((namespace: INamespace) => {
         setCurrentNamespace(namespace);
       });
       return;

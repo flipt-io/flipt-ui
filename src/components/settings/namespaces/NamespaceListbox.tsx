@@ -24,7 +24,7 @@ export default function NamespaceListbox(props: NamespaceLisboxProps) {
 
     const path = location.pathname.split('/');
 
-    // if path does not begin with /namespaces/:namespaceKey, prepend it
+    // if path does not begin with namespaces/:namespaceKey, prepend it
     if (path[1] !== 'namespaces') {
       path.unshift('namespaces');
     }

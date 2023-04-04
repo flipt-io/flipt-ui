@@ -12,9 +12,10 @@ import { IFlagList } from '~/types/Flag';
 export default function Flags() {
   const { currentNamespace } = useNamespace();
 
-  const { data, error } = useSWR<IFlagList>(
-    `/namespaces/${currentNamespace.key}/flags`
-  );
+  const path = `/namespaces/${currentNamespace.key}/flags`;
+
+  const { data, error } = useSWR<IFlagList>(path);
+
   const flags = data?.flags;
 
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function Flags() {
           </p>
         </div>
         <div className="mt-4">
-          <Link to="new">
+          <Link to={`${path}/new`}>
             <Button primary>
               <PlusIcon
                 className="-ml-1.5 mr-1 h-5 w-5 text-white"
@@ -55,7 +56,10 @@ export default function Flags() {
         {flags && flags.length > 0 ? (
           <FlagTable flags={flags} />
         ) : (
-          <EmptyState text="Create Flag" onClick={() => navigate('new')} />
+          <EmptyState
+            text="Create Flag"
+            onClick={() => navigate(`${path}/new`)}
+          />
         )}
       </div>
     </>

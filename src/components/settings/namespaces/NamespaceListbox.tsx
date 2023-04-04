@@ -26,7 +26,7 @@ export default function NamespaceListbox(props: NamespaceLisboxProps) {
 
     // if path does not begin with namespaces/:namespaceKey, prepend it
     if (path[1] !== 'namespaces') {
-      path.unshift('namespaces');
+      path[1] = 'namespaces';
     }
 
     path[2] = namespace.key;

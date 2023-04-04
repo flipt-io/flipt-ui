@@ -15,6 +15,13 @@ test('can create namespace', async ({ page }) => {
   await expect(page.getByText('Successfully created namespace')).toBeVisible();
 });
 
+test('can switch to newly created namespace', async ({ page }) => {
+  await page.getByRole('link', { name: 'logo' }).click();
+  await page.getByRole('button', { name: 'Default' }).click();
+  await page.getByText('staging').click();
+  await expect(page.getByRole('heading', { name: 'Flags' })).toBeVisible();
+});
+
 test('can update namespace', async ({ page }) => {
   await page.getByRole('link', { name: 'Settings' }).click();
   await expect(page.getByRole('heading', { name: 'Namespaces' })).toBeVisible();
@@ -40,7 +47,7 @@ test('cannot delete default namespace', async ({ page }) => {
   await page.getByRole('cell', { name: 'default' }).first().click();
 });
 
-test('cannot change namespace while on settings page', async ({ page }) => {
+test('cannot switch namespace while on settings page', async ({ page }) => {
   await page.getByRole('button', { name: 'default' }).click();
   await page.getByRole('button', { name: 'default' }).click();
   await page.getByRole('link', { name: 'Settings' }).click();

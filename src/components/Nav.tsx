@@ -85,20 +85,22 @@ export default function Nav(props: NavProps) {
     return r?.namespaced;
   });
 
+  const path = `/namespaces/${currentNamespace.key}`;
+
   const navigation = [
     {
       name: 'Flags',
-      to: `/namespaces/${currentNamespace.key}/flags`,
+      to: `${path}/flags`,
       Icon: FlagIcon
     },
     {
       name: 'Segments',
-      to: `/namespaces/${currentNamespace.key}/segments`,
+      to: `${path}/segments`,
       Icon: UsersIcon
     },
     {
       name: 'Console',
-      to: `/namespaces/${currentNamespace.key}/console`,
+      to: `${path}/console`,
       Icon: CodeBracketIcon
     }
   ];

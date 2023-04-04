@@ -54,7 +54,7 @@ export default function Segments() {
       </div>
       <div className="mt-4 flex flex-col">
         {segments && segments.length > 0 ? (
-          <SegmentTable segments={segments} />
+          <SegmentTable namespace={currentNamespace} segments={segments} />
         ) : (
           <EmptyState
             text="Create Segment"

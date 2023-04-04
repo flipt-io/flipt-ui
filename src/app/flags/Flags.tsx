@@ -54,7 +54,7 @@ export default function Flags() {
       </div>
       <div className="mt-4 flex flex-col">
         {flags && flags.length > 0 ? (
-          <FlagTable flags={flags} />
+          <FlagTable namespace={currentNamespace} flags={flags} />
         ) : (
           <EmptyState
             text="Create Flag"

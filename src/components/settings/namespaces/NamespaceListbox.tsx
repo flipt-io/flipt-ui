@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Listbox, { ISelectable } from '~/components/forms/Listbox';
 import useNamespace from '~/data/hooks/namespace';
 import { INamespace } from '~/types/Namespace';
+import { addNamespaceToPath } from '~/utils/helpers';
 
 type SelectableNamespace = Pick<INamespace, 'key' | 'name'> & ISelectable;
 
@@ -21,17 +22,7 @@ export default function NamespaceListbox(props: NamespaceLisboxProps) {
   const setCurrentNamespace = (namespace: SelectableNamespace) => {
     // navigate to the current location.path with the new namespace prependend
     // e.g. /namespaces/default/segments -> /namespaces/namespaceKey/segments
-
-    const path = location.pathname.split('/');
-
-    // if path does not begin with namespaces/:namespaceKey, prepend it
-    if (path[1] !== 'namespaces') {
-      path[1] = 'namespaces';
-    }
-
-    path[2] = namespace.key;
-
-    const newPath = path.join('/');
+    const newPath = addNamespaceToPath(location.pathname, namespace.key);
     navigate(newPath);
   };
 

@@ -52,14 +52,11 @@ export async function request(method: string, uri: string, body?: any) {
 
     if (!contentType || !contentType.includes('application/json')) {
       const err = new APIError('An unexpected error occurred.', res.status);
-      console.log(err);
       throw err;
     }
 
     let err = await res.json();
-    err = new APIError(err.message, res.status);
-    console.log(err);
-    throw err;
+    throw new APIError(err.message, res.status);
   }
 
   return res.json();
@@ -356,14 +353,11 @@ export async function getInfo() {
 
     if (!contentType || !contentType.includes('application/json')) {
       const err = new APIError('An unexpected error occurred.', res.status);
-      console.log(err);
       throw err;
     }
 
     let err = await res.json();
-    err = new APIError(err.message, res.status);
-    console.log(err);
-    throw err;
+    throw new APIError(err.message, res.status);
   }
 
   const token = res.headers.get(csrfTokenHeaderKey);

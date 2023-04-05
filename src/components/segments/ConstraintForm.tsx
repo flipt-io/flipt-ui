@@ -154,10 +154,10 @@ const ConstraintForm = forwardRef((props: ConstraintFormProps, ref: any) => {
 
   const handleSubmit = async (values: IConstraintBase) => {
     if (isNew) {
-      return createConstraint(currentNamespace?.key, segmentKey, values);
+      return createConstraint(currentNamespace.key, segmentKey, values);
     }
     return updateConstraint(
-      currentNamespace?.key,
+      currentNamespace.key,
       segmentKey,
       constraint?.id,
       values

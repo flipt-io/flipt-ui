@@ -64,7 +64,7 @@ export default function EditFlag() {
           handleDelete={
             () =>
               deleteVariant(
-                currentNamespace?.key,
+                currentNamespace.key,
                 flag.key,
                 deletingVariant?.id ?? ''
               ) // TODO: Determine impact of blank ID param
@@ -108,7 +108,7 @@ export default function EditFlag() {
               </p>
             </div>
             {flag.variants && flag.variants.length > 0 && (
-              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+              <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                 <Button
                   primary
                   type="button"

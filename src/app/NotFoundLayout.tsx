@@ -67,7 +67,7 @@ export default function NotFoundLayout() {
             </h2>
             <ul
               role="list"
-              className="mt-4 divide-y divide-gray-200 border-t border-b border-gray-200"
+              className="mt-4 divide-y divide-gray-200 border-b border-t border-gray-200"
             >
               {links.map((link, linkIdx) => (
                 <li

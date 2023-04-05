@@ -49,7 +49,7 @@ export default function Segment() {
   useEffect(() => {
     if (!segmentKey) return;
 
-    getSegment(currentNamespace?.key, segmentKey)
+    getSegment(currentNamespace.key, segmentKey)
       .then((segment: ISegment) => {
         setSegment(segment);
         clearError();
@@ -57,7 +57,7 @@ export default function Segment() {
       .catch((err) => {
         setError(err);
       });
-  }, [segmentVersion, currentNamespace?.key, segmentKey, clearError, setError]);
+  }, [segmentVersion, currentNamespace.key, segmentKey, clearError, setError]);
 
   const constraintTypeToLabel = (t: string) =>
     ComparisonType[t as keyof typeof ComparisonType];
@@ -108,7 +108,7 @@ export default function Segment() {
           handleDelete={
             () =>
               deleteConstraint(
-                currentNamespace?.key,
+                currentNamespace.key,
                 segment.key,
                 deletingConstraint?.id ?? ''
               ) // TODO: Determine impact of blank ID param
@@ -160,7 +160,7 @@ export default function Segment() {
         <div className="flex flex-none">
           <button
             type="button"
-            className="mt-5 mb-1 inline-flex items-center justify-center rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-400 focus:outline-none enabled:hover:bg-red-50 sm:mt-0"
+            className="mb-1 mt-5 inline-flex items-center justify-center rounded-md border border-red-200 px-4 py-2 text-sm font-medium text-red-400 focus:outline-none enabled:hover:bg-red-50 sm:mt-0"
             onClick={() => {
               setShowDeleteSegmentModal(true);
             }}
@@ -210,7 +210,7 @@ export default function Segment() {
                 </p>
               </div>
               {segment.constraints && segment.constraints.length > 0 && (
-                <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                   <Button
                     primary
                     type="button"

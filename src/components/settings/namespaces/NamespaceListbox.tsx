@@ -1,6 +1,8 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import Listbox, { ISelectable } from '~/components/forms/Listbox';
 import useNamespace from '~/data/hooks/namespace';
 import { INamespace } from '~/types/Namespace';
+import { addNamespaceToPath } from '~/utils/helpers';
 
 type SelectableNamespace = Pick<INamespace, 'key' | 'name'> & ISelectable;
 
@@ -13,7 +15,16 @@ type NamespaceLisboxProps = {
 export default function NamespaceListbox(props: NamespaceLisboxProps) {
   const { disabled, namespaces, className } = props;
 
-  const { currentNamespace, setCurrentNamespace } = useNamespace();
+  const { currentNamespace } = useNamespace();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const setCurrentNamespace = (namespace: SelectableNamespace) => {
+    // navigate to the current location.path with the new namespace prependend
+    // e.g. /namespaces/default/segments -> /namespaces/namespaceKey/segments
+    const newPath = addNamespaceToPath(location.pathname, namespace.key);
+    navigate(newPath);
+  };
 
   return (
     <Listbox<SelectableNamespace>
@@ -27,7 +38,7 @@ export default function NamespaceListbox(props: NamespaceLisboxProps) {
       }))}
       selected={{
         ...currentNamespace,
-        displayValue: currentNamespace?.name || ''
+        displayValue: currentNamespace.name || ''
       }}
       setSelected={setCurrentNamespace}
     />

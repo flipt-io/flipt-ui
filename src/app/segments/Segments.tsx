@@ -12,9 +12,10 @@ import { ISegmentList } from '~/types/Segment';
 export default function Segments() {
   const { currentNamespace } = useNamespace();
 
-  const { data, error } = useSWR<ISegmentList>(
-    `/namespaces/${currentNamespace.key}/segments`
-  );
+  const path = `/namespaces/${currentNamespace.key}/segments`;
+
+  const { data, error } = useSWR<ISegmentList>(path);
+
   const segments = data?.segments;
 
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function Segments() {
           </p>
         </div>
         <div className="mt-4">
-          <Link to="/segments/new">
+          <Link to={`${path}/new`}>
             <Button primary>
               <PlusIcon
                 className="-ml-1.5 mr-1 h-5 w-5 text-white"
@@ -53,11 +54,11 @@ export default function Segments() {
       </div>
       <div className="mt-4 flex flex-col">
         {segments && segments.length > 0 ? (
-          <SegmentTable segments={segments} />
+          <SegmentTable namespace={currentNamespace} segments={segments} />
         ) : (
           <EmptyState
             text="Create Segment"
-            onClick={() => navigate('/segments/new')}
+            onClick={() => navigate(`${path}/new`)}
           />
         )}
       </div>

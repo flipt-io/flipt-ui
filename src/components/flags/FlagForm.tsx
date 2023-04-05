@@ -32,9 +32,9 @@ export default function FlagForm(props: FlagFormProps) {
 
   const handleSubmit = (values: IFlagBase) => {
     if (isNew) {
-      return createFlag(currentNamespace?.key, values);
+      return createFlag(currentNamespace.key, values);
     }
-    return updateFlag(currentNamespace?.key, flag?.key, values);
+    return updateFlag(currentNamespace.key, flag?.key, values);
   };
 
   const initialValues: IFlagBase = {
@@ -56,7 +56,9 @@ export default function FlagForm(props: FlagFormProps) {
               `Successfully ${submitPhrase.toLocaleLowerCase()}d flag`
             );
             if (isNew) {
-              navigate(`/flags/${values.key}`);
+              navigate(
+                `/namespaces/${currentNamespace.key}/flags/${values.key}`
+              );
               return;
             }
 

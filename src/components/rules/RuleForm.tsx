@@ -108,7 +108,7 @@ export default function RuleForm(props: RuleFormProps) {
       throw new Error('No segment selected');
     }
 
-    const rule = await createRule(currentNamespace?.key, flag.key, {
+    const rule = await createRule(currentNamespace.key, flag.key, {
       flagKey: flag.key,
       segmentKey: selectedSegment.key,
       rank
@@ -116,7 +116,7 @@ export default function RuleForm(props: RuleFormProps) {
 
     if (ruleType === 'multi') {
       const distPromises = distributions?.map((dist: IDistributionVariant) =>
-        createDistribution(currentNamespace?.key, flag.key, rule.id, {
+        createDistribution(currentNamespace.key, flag.key, rule.id, {
           variantId: dist.variantId,
           rollout: dist.rollout
         })
@@ -126,7 +126,7 @@ export default function RuleForm(props: RuleFormProps) {
       if (selectedVariant) {
         // we allow creating rules without variants
 
-        await createDistribution(currentNamespace?.key, flag.key, rule.id, {
+        await createDistribution(currentNamespace.key, flag.key, rule.id, {
           variantId: selectedVariant.id,
           rollout: 100
         });
@@ -285,7 +285,7 @@ export default function RuleForm(props: RuleFormProps) {
                 {(!flag.variants || flag.variants?.length == 0) && (
                   <p className="mt-1 px-4 text-center text-sm text-gray-500 sm:px-6 sm:py-5">
                     Flag{' '}
-                    <Link to={`/flags/${flag.key}`} className="text-violet-500">
+                    <Link to=".." className="text-violet-500">
                       {truncateKey(flag.key)}
                     </Link>{' '}
                     has no variants. You can add variants in the details

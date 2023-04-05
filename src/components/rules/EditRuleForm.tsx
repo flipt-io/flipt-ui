@@ -82,7 +82,7 @@ export default function EditRuleForm(props: RuleFormProps) {
           found.distribution.rollout !== rollout.distribution.rollout
         ) {
           return updateDistribution(
-            currentNamespace?.key,
+            currentNamespace.key,
             rule.flag.key,
             rule.id,
             rollout.distribution.id,
@@ -262,7 +262,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                         <div>
                           <label
                             htmlFor={dist.variant.key}
-                            className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
+                            className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pr-2 sm:pt-2"
                           >
                             {dist.variant.key}
                           </label>

@@ -7,8 +7,10 @@ import {
 import { forwardRef, Ref } from 'react';
 import { Link } from 'react-router-dom';
 import { IEvaluatable } from '~/types/Evaluatable';
+import { INamespace } from '~/types/Namespace';
 
 type RuleProps = {
+  namespace: INamespace;
   rule: IEvaluatable;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -18,7 +20,7 @@ type RuleProps = {
 
 const Rule = forwardRef(
   (
-    { rule, onEdit, onDelete, style, className, ...rest }: RuleProps,
+    { namespace, rule, onEdit, onDelete, style, className, ...rest }: RuleProps,
     ref: Ref<HTMLLIElement>
   ) => (
     <li
@@ -45,7 +47,7 @@ const Rule = forwardRef(
             </p>
             <p className="mt-1 truncate text-sm text-gray-500">
               <Link
-                to={`/segments/${rule.segment.key}`}
+                to={`/namespaces/${namespace.key}/segments/${rule.segment.key}`}
                 className="text-violet-500"
               >
                 {rule.segment.name}

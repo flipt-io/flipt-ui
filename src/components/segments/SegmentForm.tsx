@@ -44,9 +44,9 @@ export default function SegmentForm(props: SegmentFormProps) {
 
   const handleSubmit = (values: ISegmentBase) => {
     if (isNew) {
-      return createSegment(currentNamespace?.key, values);
+      return createSegment(currentNamespace.key, values);
     }
-    return updateSegment(currentNamespace?.key, segment?.key, values);
+    return updateSegment(currentNamespace.key, segment?.key, values);
   };
 
   const initialValues: ISegmentBase = {
@@ -69,7 +69,9 @@ export default function SegmentForm(props: SegmentFormProps) {
             );
 
             if (isNew) {
-              navigate(`/segments/${values.key}`);
+              navigate(
+                `/namespaces/${currentNamespace.key}/segments/${values.key}`
+              );
               return;
             }
             segmentChanged && segmentChanged();

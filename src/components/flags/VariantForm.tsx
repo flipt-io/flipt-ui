@@ -36,10 +36,10 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
 
   const handleSubmit = async (values: IVariantBase) => {
     if (isNew) {
-      return createVariant(currentNamespace?.key, flagKey, values);
+      return createVariant(currentNamespace.key, flagKey, values);
     }
 
-    return updateVariant(currentNamespace?.key, flagKey, variant?.id, values);
+    return updateVariant(currentNamespace.key, flagKey, variant?.id, values);
   };
 
   return (

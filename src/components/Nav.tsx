@@ -6,6 +6,7 @@ import {
   UsersIcon
 } from '@heroicons/react/24/outline';
 import { NavLink, useMatches } from 'react-router-dom';
+import useNamespace from '~/data/hooks/namespace';
 import { INamespace } from '~/types/Namespace';
 import { classNames } from '~/utils/helpers';
 import NamespaceListbox from './settings/namespaces/NamespaceListbox';
@@ -76,26 +77,30 @@ export default function Nav(props: NavProps) {
   const { className, sidebarOpen, setSidebarOpen, namespaces } = props;
 
   let matches = useMatches();
+  const { currentNamespace } = useNamespace();
+
   // if the current route is namespaced, we want to allow the namespace nav to be selectable
   let namespaceNavEnabled = matches.some((m) => {
     let r = m.handle as RouteMatches;
     return r?.namespaced;
   });
 
+  const path = `/namespaces/${currentNamespace.key}`;
+
   const navigation = [
     {
       name: 'Flags',
-      to: '/',
+      to: `${path}/flags`,
       Icon: FlagIcon
     },
     {
       name: 'Segments',
-      to: 'segments',
+      to: `${path}/segments`,
       Icon: UsersIcon
     },
     {
       name: 'Console',
-      to: 'console',
+      to: `${path}/console`,
       Icon: CodeBracketIcon
     }
   ];

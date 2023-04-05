@@ -1,42 +1,48 @@
 import { createContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { getNamespace } from '~/data/api';
 import { INamespace } from '~/types/Namespace';
 
-type PartialNamespace = Pick<INamespace, 'name' | 'key'>;
-
 interface NamespaceContextType {
-  currentNamespace: PartialNamespace;
-  setCurrentNamespace: (namespace: PartialNamespace) => void;
+  currentNamespace: INamespace;
 }
 
 export const NamespaceContext = createContext({
-  currentNamespace: {} as PartialNamespace,
-  setCurrentNamespace: (_namespace: PartialNamespace) => {}
+  currentNamespace: {} as INamespace
 } as NamespaceContextType);
+
+const defaultNamespace = 'default';
 
 export default function NamespaceProvider({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const [currentNamespace, setCurrentNamespace] = useState<PartialNamespace>({
-    name: '',
-    key: ''
-  });
+  let { namespaceKey } = useParams();
+
+  const [currentNamespace, setCurrentNamespace] = useState<INamespace>(
+    {} as INamespace
+  );
 
   useEffect(() => {
-    if (currentNamespace.key === '') {
-      getNamespace('default').then((namespace: INamespace) => {
+    if (namespaceKey === '' || namespaceKey === undefined) {
+      getNamespace(defaultNamespace).then((namespace: INamespace) => {
+        setCurrentNamespace(namespace);
+      });
+      return;
+    }
+
+    if (namespaceKey !== undefined && namespaceKey !== currentNamespace.key) {
+      getNamespace(namespaceKey).then((namespace: INamespace) => {
         setCurrentNamespace(namespace);
       });
     }
-  }, [currentNamespace.key]);
+  }, [currentNamespace.key, namespaceKey]);
 
   return (
     <NamespaceContext.Provider
       value={{
-        currentNamespace,
-        setCurrentNamespace
+        currentNamespace
       }}
     >
       {children}

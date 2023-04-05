@@ -133,7 +133,7 @@ export default function TokenTable(props: TokenTableProps) {
       {tokens.length >= searchThreshold && (
         <Searchbox className="mb-6" value={filter ?? ''} onChange={setFilter} />
       )}
-      <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
           <div className="relative overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-md">
             <table className="min-w-full table-fixed divide-y divide-gray-300">
@@ -145,7 +145,7 @@ export default function TokenTable(props: TokenTableProps) {
                         <th
                           key={header.id}
                           scope="col"
-                          className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                         >
                           <div
                             className="group inline-flex cursor-pointer"
@@ -179,7 +179,7 @@ export default function TokenTable(props: TokenTableProps) {
                         <th
                           key={header.id}
                           scope="col"
-                          className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                         >
                           {header.isPlaceholder
                             ? null

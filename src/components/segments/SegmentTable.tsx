@@ -16,15 +16,19 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Pagination from '~/components/Pagination';
 import Searchbox from '~/components/Searchbox';
+import { INamespace } from '~/types/Namespace';
 import { ISegment, SegmentMatchType } from '~/types/Segment';
 import { truncateKey } from '~/utils/helpers';
 
 type SegmentTableProps = {
+  namespace: INamespace;
   segments: ISegment[];
 };
 
 export default function SegmentTable(props: SegmentTableProps) {
-  const { segments } = props;
+  const { namespace, segments } = props;
+
+  const path = `/namespaces/${namespace.key}/segments`;
 
   const pageSize = 20;
   const searchThreshold = 10;
@@ -43,7 +47,7 @@ export default function SegmentTable(props: SegmentTableProps) {
     columnHelper.accessor('key', {
       header: 'Key',
       cell: (info) => (
-        <Link to={info.getValue()} className="text-violet-500">
+        <Link to={`${path}/${info.getValue()}`} className="text-violet-500">
           {truncateKey(info.getValue())}
         </Link>
       ),
@@ -148,7 +152,7 @@ export default function SegmentTable(props: SegmentTableProps) {
                   <th
                     key={header.id}
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
                     <div
                       className="group inline-flex cursor-pointer"
@@ -182,7 +186,7 @@ export default function SegmentTable(props: SegmentTableProps) {
                   <th
                     key={header.id}
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
                     {header.isPlaceholder
                       ? null

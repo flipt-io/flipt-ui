@@ -62,13 +62,13 @@ export default function Evaluation() {
 
   const loadData = useCallback(async () => {
     const segmentList = (await listSegments(
-      currentNamespace?.key
+      currentNamespace.key
     )) as ISegmentList;
     const { segments } = segmentList;
     setSegments(segments);
 
     const ruleList = (await listRules(
-      currentNamespace?.key,
+      currentNamespace.key,
       flag.key
     )) as IRuleList;
 
@@ -109,7 +109,7 @@ export default function Evaluation() {
     });
 
     setRules(rules);
-  }, [currentNamespace?.key, flag]);
+  }, [currentNamespace.key, flag]);
 
   const incrementRulesVersion = () => {
     setRulesVersion(rulesVersion + 1);
@@ -124,7 +124,7 @@ export default function Evaluation() {
 
   const reorderRules = (rules: IEvaluatable[]) => {
     orderRules(
-      currentNamespace?.key,
+      currentNamespace.key,
       flag.key,
       rules.map((rule) => rule.id)
     )
@@ -190,7 +190,7 @@ export default function Evaluation() {
           panelType="Rule"
           setOpen={setShowDeleteRuleModal}
           handleDelete={() =>
-            deleteRule(currentNamespace?.key, flag.key, deletingRule?.id ?? '')
+            deleteRule(currentNamespace.key, flag.key, deletingRule?.id ?? '')
           }
           onSuccess={() => {
             incrementRulesVersion();
@@ -235,7 +235,7 @@ export default function Evaluation() {
             </p>
           </div>
           {rules && rules.length > 0 && (
-            <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+            <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
               <Button
                 primary
                 type="button"
@@ -284,6 +284,7 @@ export default function Evaluation() {
                       rules.map((rule) => (
                         <SortableRule
                           key={rule.id}
+                          namespace={currentNamespace}
                           rule={rule}
                           onEdit={() => {
                             setEditingRule(rule);
@@ -298,7 +299,9 @@ export default function Evaluation() {
                   </ul>
                 </SortableContext>
                 <DragOverlay>
-                  {activeRule ? <Rule rule={activeRule} /> : null}
+                  {activeRule ? (
+                    <Rule namespace={currentNamespace} rule={activeRule} />
+                  ) : null}
                 </DragOverlay>
               </DndContext>
             </div>

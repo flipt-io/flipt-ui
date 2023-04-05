@@ -5,6 +5,7 @@ import EmptyState from '~/components/EmptyState';
 import Button from '~/components/forms/Button';
 import Modal from '~/components/Modal';
 import ShowTokenPanel from '~/components/settings/tokens/ShowTokenPanel';
+import TokenForm from '~/components/settings/tokens/TokenForm';
 import TokenTable from '~/components/settings/tokens/TokenTable';
 import Slideover from '~/components/Slideover';
 import Well from '~/components/Well';
@@ -16,7 +17,6 @@ import {
   IAuthTokenInternal,
   IAuthTokenSecret
 } from '~/types/auth/Token';
-import TokenForm from './TokenForm';
 
 export default function Tokens() {
   // const checkbox = useRef();
@@ -27,6 +27,19 @@ export default function Tokens() {
   const [tokensVersion, setTokensVersion] = useState(0);
 
   const { setError, clearError } = useError();
+
+  const [createdToken, setCreatedToken] = useState<IAuthTokenSecret | null>(
+    null
+  );
+  const [showCreatedTokenModal, setShowCreatedTokenModal] = useState(false);
+
+  const [showTokenForm, setShowTokenForm] = useState<boolean>(false);
+
+  const [showDeleteTokenModal, setShowDeleteTokenModal] =
+    useState<boolean>(false);
+  const [deletingToken, setDeletingToken] = useState<IAuthToken | null>(null);
+
+  const tokenFormRef = useRef(null);
 
   const checkTokenAuthEnabled = useCallback(() => {
     listAuthMethods()
@@ -79,17 +92,6 @@ export default function Tokens() {
   //   []
   // );
 
-  const [createdToken, setCreatedToken] = useState<IAuthTokenSecret | null>(
-    null
-  );
-  const [showCreatedTokenModal, setShowCreatedTokenModal] = useState(false);
-
-  const [showTokenForm, setShowTokenForm] = useState<boolean>(false);
-
-  const [showDeleteTokenModal, setShowDeleteTokenModal] =
-    useState<boolean>(false);
-  const [deletingToken, setDeletingToken] = useState<IAuthToken | null>(null);
-
   // useLayoutEffect(() => {
   //   const isIndeterminate =
   //     selectedTokens.length > 0 && selectedTokens.length < tokens.length;
@@ -105,8 +107,6 @@ export default function Tokens() {
   //   setChecked(!checked && !indeterminate);
   //   setIndeterminate(false);
   // };
-
-  const tokenFormRef = useRef(null);
 
   return (
     <>
@@ -145,7 +145,6 @@ export default function Tokens() {
           handleDelete={() => deleteToken(deletingToken?.id ?? '')} // TODO: Determine impact of blank ID param
           onSuccess={() => {
             incrementTokensVersion();
-            setShowDeleteTokenModal(false);
           }}
         />
       </Modal>

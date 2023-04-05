@@ -122,7 +122,7 @@ export default function Notifications(props: NotificationsProps) {
         className="without-ring relative rounded-full text-violet-100"
       >
         {newNotifications && (
-          <span className="absolute top-0 right-0 flex h-2 w-2">
+          <span className="absolute right-0 top-0 flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
             <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-100"></span>
           </span>

@@ -1,5 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import {
+  CellContext,
   createColumnHelper,
   flexRender,
   getCoreRowModel,
@@ -12,24 +13,53 @@ import {
 import { format, parseISO } from 'date-fns';
 import { useState } from 'react';
 import Searchbox from '~/components/Searchbox';
-import { IAuthToken } from '~/types/auth/Token';
+import { INamespace } from '~/types/Namespace';
 
-type TokenRowActionsProps = {
-  row: Row<IAuthToken>;
-  setDeletingToken: (token: IAuthToken) => void;
-  setShowDeleteTokenModal: (show: boolean) => void;
+type NamespaceEditActionProps = {
+  cell: CellContext<INamespace, string>;
+  setEditingNamespace: (token: INamespace) => void;
+  setShowEditNamespaceModal: (show: boolean) => void;
 };
 
-function TokenRowActions(props: TokenRowActionsProps) {
-  const { row, setDeletingToken, setShowDeleteTokenModal } = props;
+function NamespaceEditAction(props: NamespaceEditActionProps) {
+  const { cell, setEditingNamespace, setShowEditNamespaceModal } = props;
+
   return (
     <a
       href="#"
       className="text-violet-600 hover:text-violet-900"
       onClick={(e) => {
         e.preventDefault();
-        setDeletingToken(row.original);
-        setShowDeleteTokenModal(true);
+        setEditingNamespace(cell.row.original);
+        setShowEditNamespaceModal(true);
+      }}
+    >
+      {cell.getValue()}
+    </a>
+  );
+}
+
+type NamespaceDeleteActionProps = {
+  row: Row<INamespace>;
+  setDeletingNamespace: (token: INamespace) => void;
+  setShowDeleteNamespaceModal: (show: boolean) => void;
+};
+
+function NamespaceDeleteAction(props: NamespaceDeleteActionProps) {
+  const { row, setDeletingNamespace, setShowDeleteNamespaceModal } = props;
+  return row.original.protected ? (
+    <span className="text-gray-400">
+      Delete
+      <span className="sr-only">, {row.original.name}</span>
+    </span>
+  ) : (
+    <a
+      href="#"
+      className="text-violet-600 hover:text-violet-900"
+      onClick={(e) => {
+        e.preventDefault();
+        setDeletingNamespace(row.original);
+        setShowDeleteNamespaceModal(true);
       }}
     >
       Delete
@@ -38,14 +68,22 @@ function TokenRowActions(props: TokenRowActionsProps) {
   );
 }
 
-type TokenTableProps = {
-  tokens: IAuthToken[];
-  setDeletingToken: (token: IAuthToken) => void;
-  setShowDeleteTokenModal: (show: boolean) => void;
+type NamespaceTableProps = {
+  namespaces: INamespace[];
+  setEditingNamespace: (namespace: INamespace) => void;
+  setShowEditNamespaceModal: (show: boolean) => void;
+  setDeletingNamespace: (namespace: INamespace) => void;
+  setShowDeleteNamespaceModal: (show: boolean) => void;
 };
 
-export default function TokenTable(props: TokenTableProps) {
-  const { tokens, setDeletingToken, setShowDeleteTokenModal } = props;
+export default function NamespaceTable(props: NamespaceTableProps) {
+  const {
+    namespaces,
+    setEditingNamespace,
+    setShowEditNamespaceModal,
+    setDeletingNamespace,
+    setShowDeleteNamespaceModal
+  } = props;
 
   const searchThreshold = 10;
 
@@ -53,15 +91,30 @@ export default function TokenTable(props: TokenTableProps) {
 
   const [filter, setFilter] = useState<string>('');
 
-  const columnHelper = createColumnHelper<IAuthToken>();
+  const columnHelper = createColumnHelper<INamespace>();
 
   const columns = [
-    columnHelper.accessor('name', {
-      header: 'Name',
+    columnHelper.accessor('key', {
+      header: 'Key',
       cell: (info) => info.getValue(),
       meta: {
         className:
-          'truncate whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-600'
+          'truncate whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900'
+      }
+    }),
+    columnHelper.accessor('name', {
+      header: 'Name',
+      cell: (info) => (
+        <NamespaceEditAction
+          // eslint-disable-next-line react/prop-types
+          cell={info}
+          setEditingNamespace={setEditingNamespace}
+          setShowEditNamespaceModal={setShowEditNamespaceModal}
+        />
+      ),
+      meta: {
+        className:
+          'truncate whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-500'
       }
     }),
     columnHelper.accessor('description', {
@@ -83,14 +136,14 @@ export default function TokenTable(props: TokenTableProps) {
     ),
     columnHelper.accessor(
       (row) => {
-        if (!row.expiresAt) {
+        if (!row.updatedAt) {
           return '';
         }
-        return format(parseISO(row.expiresAt), 'MM/dd/yyyy');
+        return format(parseISO(row.updatedAt), 'MM/dd/yyyy');
       },
       {
-        header: 'Expires',
-        id: 'expiresAt',
+        header: 'Updated',
+        id: 'updatedAt',
         meta: {
           className:
             'truncate whitespace-nowrap px-3 py-4 text-sm text-gray-500'
@@ -100,11 +153,11 @@ export default function TokenTable(props: TokenTableProps) {
     columnHelper.display({
       id: 'actions',
       cell: (props) => (
-        <TokenRowActions
+        <NamespaceDeleteAction
           // eslint-disable-next-line react/prop-types
           row={props.row}
-          setDeletingToken={setDeletingToken}
-          setShowDeleteTokenModal={setShowDeleteTokenModal}
+          setDeletingNamespace={setDeletingNamespace}
+          setShowDeleteNamespaceModal={setShowDeleteNamespaceModal}
         />
       ),
       meta: {
@@ -115,7 +168,7 @@ export default function TokenTable(props: TokenTableProps) {
   ];
 
   const table = useReactTable({
-    data: tokens,
+    data: namespaces,
     columns,
     state: {
       globalFilter: filter,
@@ -130,7 +183,7 @@ export default function TokenTable(props: TokenTableProps) {
 
   return (
     <>
-      {tokens.length >= searchThreshold && (
+      {namespaces.length >= searchThreshold && (
         <Searchbox className="mb-6" value={filter ?? ''} onChange={setFilter} />
       )}
       <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">

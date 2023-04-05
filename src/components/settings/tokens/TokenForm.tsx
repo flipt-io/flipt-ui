@@ -40,7 +40,7 @@ const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
         name: requiredValidation,
         description: requiredValidation
       })}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting }) => {
         let token: IAuthTokenBase = {
           name: values.name,
           description: values.description
@@ -58,8 +58,10 @@ const TokenForm = forwardRef((props: TokenFormProps, ref: any) => {
             clearError();
           })
           .catch((err) => {
-            console.log(err);
             setError(err.message);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
     >

@@ -1,12 +1,13 @@
 import { Form, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import Loading from '~/components//Loading';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
 import Toggle from '~/components/forms/Toggle';
-import Loading from '~/components/Loading';
 import { createFlag, updateFlag } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { keyValidation, requiredValidation } from '~/data/validations';
 import { IFlag, IFlagBase } from '~/types/Flag';
@@ -19,17 +20,21 @@ type FlagFormProps = {
 
 export default function FlagForm(props: FlagFormProps) {
   const { flag, flagChanged } = props;
+
   const isNew = flag === undefined;
   const submitPhrase = isNew ? 'Create' : 'Update';
+
   const navigate = useNavigate();
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
 
+  const { currentNamespace } = useNamespace();
+
   const handleSubmit = (values: IFlagBase) => {
     if (isNew) {
-      return createFlag(values);
+      return createFlag(currentNamespace.key, values);
     }
-    return updateFlag(flag?.key, values);
+    return updateFlag(currentNamespace.key, flag?.key, values);
   };
 
   const initialValues: IFlagBase = {
@@ -43,7 +48,7 @@ export default function FlagForm(props: FlagFormProps) {
     <Formik
       enableReinitialize
       initialValues={initialValues}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values)
           .then(() => {
             clearError();
@@ -51,15 +56,19 @@ export default function FlagForm(props: FlagFormProps) {
               `Successfully ${submitPhrase.toLocaleLowerCase()}d flag`
             );
             if (isNew) {
-              navigate(`/flags/${values.key}`);
+              navigate(
+                `/namespaces/${currentNamespace.key}/flags/${values.key}`
+              );
               return;
             }
 
             flagChanged && flagChanged();
           })
           .catch((err) => {
-            console.log(err);
             setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
       validationSchema={Yup.object({

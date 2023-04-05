@@ -1,4 +1,4 @@
-import { Form, Formik } from 'formik';
+import { Form, Formik, useFormikContext } from 'formik';
 import hljs from 'highlight.js';
 import javascript from 'highlight.js/lib/languages/json';
 import 'highlight.js/styles/tokyo-night-dark.css';
@@ -13,6 +13,7 @@ import Input from '~/components/forms/Input';
 import TextArea from '~/components/forms/TextArea';
 import { evaluate, listFlags } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import {
   jsonValidation,
   keyValidation,
@@ -20,20 +21,36 @@ import {
 } from '~/data/validations';
 import { IConsole } from '~/types/Console';
 import { IFlag, IFlagList } from '~/types/Flag';
+import { INamespace } from '~/types/Namespace';
 
 hljs.registerLanguage('json', javascript);
 
 type SelectableFlag = IFlag & ISelectable;
 
+function ResetOnNamespaceChange({ namespace }: { namespace: INamespace }) {
+  const { resetForm } = useFormikContext();
+
+  useEffect(() => {
+    resetForm();
+  }, [namespace, resetForm]);
+
+  return null;
+}
+
 export default function Console() {
   const [flags, setFlags] = useState<SelectableFlag[]>([]);
   const [selectedFlag, setSelectedFlag] = useState<SelectableFlag | null>(null);
   const [response, setResponse] = useState<string | null>(null);
+
   const { setError, clearError } = useError();
   const navigate = useNavigate();
 
+  const { currentNamespace } = useNamespace();
+
   const loadData = useCallback(async () => {
-    const initialFlagList = (await listFlags()) as IFlagList;
+    const initialFlagList = (await listFlags(
+      currentNamespace.key
+    )) as IFlagList;
     const { flags } = initialFlagList;
 
     setFlags(
@@ -48,7 +65,7 @@ export default function Console() {
         };
       })
     );
-  }, []);
+  }, [currentNamespace.key]);
 
   const handleSubmit = (values: IConsole) => {
     const { flagKey, entityId, context } = values;
@@ -60,7 +77,7 @@ export default function Console() {
       context: parsed
     };
 
-    evaluate(flagKey, rest)
+    evaluate(currentNamespace.key, flagKey, rest)
       .then((resp) => {
         setResponse(JSON.stringify(resp, null, 2));
       })
@@ -189,6 +206,7 @@ export default function Console() {
                         </Button>
                       </div>
                     </div>
+                    <ResetOnNamespaceChange namespace={currentNamespace} />
                   </Form>
                 )}
               </Formik>
@@ -214,7 +232,9 @@ export default function Console() {
             <EmptyState
               text="Create Flag"
               secondaryText="At least one flag must exist to use the console"
-              onClick={() => navigate('/flags/new')}
+              onClick={() =>
+                navigate(`/namespaces/${currentNamespace.key}/flags/new`)
+              }
             />
           </div>
         )}

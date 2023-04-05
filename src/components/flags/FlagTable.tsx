@@ -17,14 +17,18 @@ import { Link } from 'react-router-dom';
 import Pagination from '~/components/Pagination';
 import Searchbox from '~/components/Searchbox';
 import { IFlag } from '~/types/Flag';
+import { INamespace } from '~/types/Namespace';
 import { truncateKey } from '~/utils/helpers';
 
 type FlagTableProps = {
+  namespace: INamespace;
   flags: IFlag[];
 };
 
 export default function FlagTable(props: FlagTableProps) {
-  const { flags } = props;
+  const { namespace, flags } = props;
+
+  const path = `/namespaces/${namespace.key}/flags`;
 
   const pageSize = 20;
   const searchThreshold = 10;
@@ -43,7 +47,7 @@ export default function FlagTable(props: FlagTableProps) {
     columnHelper.accessor('key', {
       header: 'Key',
       cell: (info) => (
-        <Link to={`/flags/${info.getValue()}`} className="text-violet-500">
+        <Link to={`${path}/${info.getValue()}`} className="text-violet-500">
           {truncateKey(info.getValue())}
         </Link>
       ),
@@ -155,7 +159,7 @@ export default function FlagTable(props: FlagTableProps) {
                   <th
                     key={header.id}
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
                     <div
                       className="group inline-flex cursor-pointer"
@@ -189,7 +193,7 @@ export default function FlagTable(props: FlagTableProps) {
                   <th
                     key={header.id}
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
                     {header.isPlaceholder
                       ? null

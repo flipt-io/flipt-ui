@@ -20,3 +20,19 @@ export function stringAsKey(str: string) {
 export function truncateKey(str: string, len: number = 25): string {
   return str.length > len ? str.substring(0, len) + '...' : str;
 }
+
+const namespaces = '/namespaces/';
+export function addNamespaceToPath(path: string, key: string): string {
+  if (path.startsWith(namespaces)) {
+    // [0] before slash ('')
+    // [1] /namespaces/
+    // [2] namespace key
+    // [...] after slash
+    const [, , existingKey, ...parts] = path.split('/');
+    if (existingKey === key) {
+      return path;
+    }
+    return `${namespaces}${key}/${parts.join('/')}`;
+  }
+  return `${namespaces}${key}${path}`;
+}

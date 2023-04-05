@@ -5,57 +5,50 @@ import { forwardRef } from 'react';
 import * as Yup from 'yup';
 import Button from '~/components/forms/Button';
 import Input from '~/components/forms/Input';
-import TextArea from '~/components/forms/TextArea';
 import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
-import { createVariant, updateVariant } from '~/data/api';
+import { createNamespace, updateNamespace } from '~/data/api';
 import { useError } from '~/data/hooks/error';
-import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
-import { jsonValidation, keyValidation } from '~/data/validations';
-import { IVariant, IVariantBase } from '~/types/Variant';
+import { keyValidation, requiredValidation } from '~/data/validations';
+import { INamespace, INamespaceBase } from '~/types/Namespace';
+import { stringAsKey } from '~/utils/helpers';
 
-type VariantFormProps = {
+type NamespaceFormProps = {
   setOpen: (open: boolean) => void;
-  flagKey: string;
-  variant?: IVariant;
+  namespace?: INamespace;
   onSuccess: () => void;
 };
 
-const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
-  const { setOpen, flagKey, variant, onSuccess } = props;
-
-  const isNew = variant === undefined;
-  const title = isNew ? 'New Variant' : 'Edit Variant';
+const NamespaceForm = forwardRef((props: NamespaceFormProps, ref: any) => {
+  const { setOpen, namespace, onSuccess } = props;
+  const isNew = namespace === undefined;
+  const title = isNew ? 'New Namespace' : 'Edit Namespace';
   const submitPhrase = isNew ? 'Create' : 'Update';
-
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
 
-  const { currentNamespace } = useNamespace();
-
-  const handleSubmit = async (values: IVariantBase) => {
+  const handleSubmit = async (values: INamespaceBase) => {
     if (isNew) {
-      return createVariant(currentNamespace.key, flagKey, values);
+      return createNamespace(values);
     }
 
-    return updateVariant(currentNamespace.key, flagKey, variant?.id, values);
+    return updateNamespace(namespace.key, values);
   };
 
   return (
     <Formik
       initialValues={{
-        key: variant?.key || '',
-        name: variant?.name || '',
-        description: variant?.description || '',
-        attachment: variant?.attachment || ''
+        key: namespace?.key || '',
+        name: namespace?.name || '',
+        description: namespace?.description || ''
       }}
       onSubmit={(values, { setSubmitting }) => {
         handleSubmit(values)
           .then(() => {
             clearError();
             setSuccess(
-              `Successfully ${submitPhrase.toLocaleLowerCase()}d variant.`
+              `Successfully ${submitPhrase.toLocaleLowerCase()}d namespace.`
             );
             onSuccess();
           })
@@ -68,7 +61,7 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
       }}
       validationSchema={Yup.object({
         key: keyValidation,
-        attachment: jsonValidation
+        name: requiredValidation
       })}
     >
       {(formik) => (
@@ -80,8 +73,8 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
                   <Dialog.Title className="text-lg font-medium text-gray-900">
                     {title}
                   </Dialog.Title>
-                  <MoreInfo href="https://www.flipt.io/docs/concepts#variants">
-                    Learn more about variants
+                  <MoreInfo href="https://www.flipt.io/docs/concepts#namespaces">
+                    Learn more about namespaces
                   </MoreInfo>
                 </div>
                 <div className="flex h-7 items-center">
@@ -100,6 +93,39 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
                 <div>
                   <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
+                  >
+                    Name
+                  </label>
+                </div>
+                <div className="sm:col-span-2">
+                  <Input
+                    name="name"
+                    id="name"
+                    forwardRef={ref}
+                    autoFocus={isNew}
+                    handleChange={(e) => {
+                      // check if the name and key are currently in sync
+                      // we do this so we don't override a custom key value
+                      if (
+                        isNew &&
+                        (formik.values.key === '' ||
+                          formik.values.key === stringAsKey(formik.values.name))
+                      ) {
+                        formik.setFieldValue(
+                          'key',
+                          stringAsKey(e.target.value)
+                        );
+                      }
+                      formik.handleChange(e);
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
+                <div>
+                  <label
                     htmlFor="key"
                     className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
                   >
@@ -107,23 +133,15 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
                   </label>
                 </div>
                 <div className="sm:col-span-2">
-                  <Input name="key" id="key" forwardRef={ref} />
-                </div>
-              </div>
-              <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                  >
-                    Name
-                  </label>
-                  <span className="text-xs text-gray-400" id="name-optional">
-                    Optional
-                  </span>
-                </div>
-                <div className="sm:col-span-2">
-                  <Input name="name" id="name" />
+                  <Input
+                    name="key"
+                    id="key"
+                    disabled={!isNew}
+                    handleChange={(e) => {
+                      const formatted = stringAsKey(e.target.value);
+                      formik.setFieldValue('key', formatted);
+                    }}
+                  />
                 </div>
               </div>
               <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
@@ -143,25 +161,6 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
                 </div>
                 <div className="sm:col-span-2">
                   <Input name="description" id="description" />
-                </div>
-              </div>
-              <div className="space-y-1 px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:space-y-0 sm:px-6 sm:py-5">
-                <div>
-                  <label
-                    htmlFor="attachment"
-                    className="block text-sm font-medium text-gray-900 sm:mt-px sm:pt-2"
-                  >
-                    Attachment
-                  </label>
-                  <span
-                    className="text-xs text-gray-400"
-                    id="attachment-optional"
-                  >
-                    Optional
-                  </span>
-                </div>
-                <div className="sm:col-span-2">
-                  <TextArea name="attachment" id="attachment" />
                 </div>
               </div>
             </div>
@@ -187,5 +186,5 @@ const VariantForm = forwardRef((props: VariantFormProps, ref: any) => {
   );
 });
 
-VariantForm.displayName = 'VariantForm';
-export default VariantForm;
+NamespaceForm.displayName = 'NamespaceForm';
+export default NamespaceForm;

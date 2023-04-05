@@ -9,6 +9,7 @@ import Loading from '~/components/Loading';
 import MoreInfo from '~/components/MoreInfo';
 import { updateDistribution } from '~/data/api';
 import { useError } from '~/data/hooks/error';
+import useNamespace from '~/data/hooks/namespace';
 import { useSuccess } from '~/data/hooks/success';
 import { IEvaluatable, IRollout } from '~/types/Evaluatable';
 import { ISegment } from '~/types/Segment';
@@ -47,8 +48,11 @@ type SelectableVariant = IVariant & ISelectable;
 
 export default function EditRuleForm(props: RuleFormProps) {
   const { setOpen, rule, onSuccess } = props;
+
   const { setError, clearError } = useError();
   const { setSuccess } = useSuccess();
+
+  const { currentNamespace } = useNamespace();
 
   const [distributionsValid, setDistributionsValid] = useState<boolean>(true);
 
@@ -78,6 +82,7 @@ export default function EditRuleForm(props: RuleFormProps) {
           found.distribution.rollout !== rollout.distribution.rollout
         ) {
           return updateDistribution(
+            currentNamespace.key,
             rule.flag.key,
             rule.id,
             rollout.distribution.id,
@@ -95,7 +100,7 @@ export default function EditRuleForm(props: RuleFormProps) {
       initialValues={{
         segmentKey: rule.segment.key || ''
       }}
-      onSubmit={() => {
+      onSubmit={(_, { setSubmitting }) => {
         handleSubmit()
           ?.then(() => {
             clearError();
@@ -104,10 +109,13 @@ export default function EditRuleForm(props: RuleFormProps) {
           })
           .catch((err) => {
             setError(err);
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
     >
-      {(_formik) => {
+      {(formik) => {
         return (
           <Form className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
             <div className="flex-1">
@@ -254,7 +262,7 @@ export default function EditRuleForm(props: RuleFormProps) {
                         <div>
                           <label
                             htmlFor={dist.variant.key}
-                            className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pt-2 sm:pr-2"
+                            className="block truncate text-right text-sm text-gray-600 sm:mt-px sm:pr-2 sm:pt-2"
                           >
                             {dist.variant.key}
                           </label>
@@ -307,10 +315,10 @@ export default function EditRuleForm(props: RuleFormProps) {
                 <Button
                   primary
                   type="submit"
-                  disabled={!(distributionsValid && !_formik.isSubmitting)}
+                  disabled={!(distributionsValid && !formik.isSubmitting)}
                   className="min-w-[80px]"
                 >
-                  {_formik.isSubmitting ? <Loading isPrimary /> : 'Update'}
+                  {formik.isSubmitting ? <Loading isPrimary /> : 'Update'}
                 </Button>
               </div>
             </div>

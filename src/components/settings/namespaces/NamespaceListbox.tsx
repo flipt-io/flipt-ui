@@ -38,7 +38,7 @@ export default function NamespaceListbox(props: NamespaceLisboxProps) {
       }))}
       selected={{
         ...currentNamespace,
-        displayValue: currentNamespace?.name || ''
+        displayValue: currentNamespace.name || ''
       }}
       setSelected={setCurrentNamespace}
     />

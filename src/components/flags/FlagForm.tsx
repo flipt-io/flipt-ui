@@ -32,9 +32,9 @@ export default function FlagForm(props: FlagFormProps) {
 
   const handleSubmit = (values: IFlagBase) => {
     if (isNew) {
-      return createFlag(currentNamespace?.key, values);
+      return createFlag(currentNamespace.key, values);
     }
-    return updateFlag(currentNamespace?.key, flag?.key, values);
+    return updateFlag(currentNamespace.key, flag?.key, values);
   };
 
   const initialValues: IFlagBase = {

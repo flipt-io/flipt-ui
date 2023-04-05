@@ -159,7 +159,7 @@ export default function FlagTable(props: FlagTableProps) {
                   <th
                     key={header.id}
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
                     <div
                       className="group inline-flex cursor-pointer"
@@ -193,7 +193,7 @@ export default function FlagTable(props: FlagTableProps) {
                   <th
                     key={header.id}
                     scope="col"
-                    className="py-3.5 px-3 text-left text-sm font-semibold text-gray-900"
+                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                   >
                     {header.isPlaceholder
                       ? null

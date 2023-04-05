@@ -121,13 +121,13 @@ export default function Login() {
             </div>
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm">
-              <div className="py-8 px-4 sm:px-10">
+              <div className="px-4 py-8 sm:px-10">
                 <div className="mt-6 flex flex-col space-y-5">
                   {providers.map((provider) => (
                     <div key={provider.name}>
                       <a
                         href="#"
-                        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:text-violet-500 hover:shadow-violet-300"
+                        className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:text-violet-500 hover:shadow-violet-300"
                         onClick={(e) => {
                           e.preventDefault();
                           authorize(provider.authorize_url);

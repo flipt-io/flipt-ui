@@ -1,7 +1,8 @@
 # Flipt UI
 
 ## Archived
-:warn: Archived as of 2023-04-10. This repository is no longer maintained as the code has been merged back into [flipt-io/flipt](https://github.com/flipt-io/flipt).
+
+⚠️ Archived as of 2023-04-10. This repository is no longer maintained as the code has been merged back into [flipt-io/flipt](https://github.com/flipt-io/flipt). ⚠️
 
 It is preserved here for historical purposes.
 

@@ -1,9 +1,12 @@
 # Flipt UI
 
+## Archived
+:warn: Archived as of 2023-04-10. This repository is no longer maintained as the code has been merged back into [flipt-io/flipt](https://github.com/flipt-io/flipt).
+
+It is preserved here for historical purposes.
+
 [![Build](https://github.com/flipt-io/flipt-ui/actions/workflows/build.yml/badge.svg)](https://github.com/flipt-io/flipt-ui/actions/workflows/build.yml)
 ![Discord](https://img.shields.io/discord/960634591000014878?color=%238440f1&label=Discord&logo=discord&logoColor=%238440f1&style=flat)
-
-This repository contains the UI for [Flipt](https://github.com/flipt-io/flipt) as of v1.17.0.
 
 It is built with [React](https://reactjs.org/), [Tailwind CSS](https://tailwindcss.com/) and [TypeScript](https://www.typescriptlang.org/).
 
